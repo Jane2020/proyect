@@ -23,7 +23,7 @@ class MeterController extends Controller
     {
     	$meterEntity = new MeterSearch();
     	$limit = self::LIMIT_PAGINATOR;
-        $offset = 0;
+        $offset = 1;
         $meterNumber = null;
         
         $meterForm = $this->createForm(new MeterSearchType(), $meterEntity);
