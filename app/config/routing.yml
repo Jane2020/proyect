@@ -1,3 +1,11 @@
+payment_meter:
+    resource: "@PaymentMeterBundle/Resources/config/routing.yml"
+    prefix:   /
+
+payment_member:
+    resource: "@PaymentMemberBundle/Resources/config/routing.yml"
+    prefix:   /
+
 payment_managerial:
     resource: "@PaymentManagerialBundle/Resources/config/routing.yml"
     prefix:   /
