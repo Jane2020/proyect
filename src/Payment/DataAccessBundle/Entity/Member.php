@@ -60,10 +60,6 @@ class Member
     /**
      * @var \DateTime
      * 
-     * @Assert\Regex(
-     *     pattern = "/^\d{2}\-\d{2}\-\d{4}$/",
-     *     message = "Valor de la fecha de nacimiento es incorrecta." 
-     * )
      */
     private $birthDate;
 
