@@ -3,6 +3,7 @@
 namespace Payment\DataAccessBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Member
@@ -12,45 +13,97 @@ class Member
     /**
      * @var integer
      */
-    private $id;
+    public $id;
 
-    /**
+     /**
      * @var string
+     * 
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese la cédula de identidad."
+     * )
+     * 
+     * @Assert\Regex(
+     *     pattern = "/^(?:\+)?\d{10}$/",
+     *     message = "Por favor ingrese 10 dígitos."
+     * )
      */
     private $documentNumber;
 
-    /**
+     /**
      * @var string
+     * 
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el nombre."
+     * )
+     * 
+     * @Assert\Regex(
+     *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.]+$/",
+     *     message = "Valor del nombre es incorrecto."
+     * )
      */
     private $name;
 
     /**
      * @var string
+     * 
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el apellido."
+     * )
+     * 
+     * @Assert\Regex(
+     *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.]+$/",
+     *     message = "Valor del apellido es incorrecto."
+     * )
      */
     private $lastname;
 
     /**
      * @var \DateTime
+     * 
+     * @Assert\Regex(
+     *     pattern = "/^\d{2}\-\d{2}\-\d{4}$/",
+     *     message = "Valor de la fecha de nacimiento es incorrecta." 
+     * )
      */
     private $birthDate;
 
     /**
      * @var string
+     * 
+     * @Assert\Regex(
+     *     pattern = "/^[a-zA-Z0-9ÁÉÍÓÚÑáéíóúñ\s\,\.\:\;\-\#]+$/",
+     *     message = "Valor de la dirección es incorrecta." 
+     * )    
      */
     private $address;
 
     /**
      * @var string
+     * 
+     * @Assert\Regex(
+     *     pattern = "/^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]\.?){0,63}[a-z0-9!#$%&'*+\/=?^_`{|}~-]@(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\])$/i",
+     *     message = "Valor del e-mail es incorrecto." 
+     * )  
      */
     private $email;
 
     /**
      * @var string
+     * 
+     * @Assert\Regex(
+     *     pattern = "/^(?:\+)?\d{9}$/",
+     *     message = "Por favor ingrese 9 dígitos." 
+     * )  
      */
     private $phone;
 
     /**
      * @var string
+     * 
+     * @Assert\Regex(
+     *     pattern = "/^(?:\+)?\d{10}$/",
+     *     message = "Por favor ingrese 10 dígitos." 
+     * ) 
      */
     private $celularPhone;
 

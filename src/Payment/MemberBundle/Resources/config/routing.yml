@@ -1,0 +1,12 @@
+_listMember:
+    pattern:  /gestion-de-miembros/listado
+    defaults: { _controller: PaymentMemberBundle:Member:listMember }
+_activeMember:
+    pattern:  /gestion-de-miembros/activacion
+    defaults: { _controller: PaymentMemberBundle:Member:activeMember }
+_editMember:
+    pattern:  /gestion-de-miembros/edicion
+    defaults: { _controller: PaymentMemberBundle:Member:editMember }
+_deleteMember:
+    pattern:  /gestion-de-miembros/eliminacion
+    defaults: { _controller: PaymentMemberBundle:Member:deleteMember }     
