@@ -14,7 +14,7 @@ use Payment\FinesBundle\Form\Type\FinesTypeEditType;
 
 class FinesTypeController extends Controller
 {
-	const LIMIT_PAGINATOR = 10;
+	const LIMIT_PAGINATOR = 20;
 	
 	/**
 	 * @Template()
