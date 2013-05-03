@@ -14,6 +14,81 @@
  {
 	$( "#memberEdit_birthDate" ).datepicker({dateFormat: "dd-mm-yy"});
  });
+
+ function checkDocumentNumber()
+ {
+	 var provinceNumber = 24;
+	 var cedula=document.getElementById("memberEdit_documentNumber").value;
+	 if ((cedula.length != 10) && cedula.match("/^[0-9]{10}$"))
+     {
+         return false;
+     }
+
+     province = cedula.substring(0, 2);
+     
+     if (!((province > 0) && (province <= provinceNumber))) 
+     {
+         return false;
+     }
+
+     //verifica que el último dígito de la cédula sea válido
+     var d = new Array(10);
+
+     //Asignamos el string a un array
+     d = cedula.split("");
+
+   	 imp = 0;
+     par = 0;
+
+     //sumamos los duplos de posición impar
+     for (i = 0; i < d.length; i += 2) 
+     {
+         d[i] = ((d[i] * 2) > 9) ? ((d[i] * 2) - 9) : (d[i] * 2);
+         imp = imp + d[i];
+     }
+
+     //sumamos los digitos de posición par
+     for (i = 1; i < (d.length - 1); i += 2) 
+     {
+    	 d[i] = d[i] * 1;
+    	 par = par + d[i];
+     }
+     //Sumamos los dos resultados
+     suma = imp + par;
+     
+     //Restamos de la decena superior
+     d10=suma/10;
+	 d10=Math.floor(d10);
+	 d10=(d10+1)*10;
+	 d10=(d10-suma);
+     
+     //Si es diez el décimo dígito es cero        
+     d10 = (d10 == 10) ? 0 : d10;
+
+	 if (d10 == d[9])
+	 {
+	     return true;
+	 }
+	 else
+	 {
+		 return false;
+	 }
+ }
+ 	 	
+
+ function submitForm()
+ {	
+	 if (checkDocumentNumber() == true)
+     {
+		 document.memberEdit.submit();
+     }
+	 else
+	 {
+     	alert('Por favor verifique que número de cédula es correcto.');
+     }
+ }
+ 
+ 
 </script>
 {% endblock %}
 
@@ -82,7 +157,7 @@
 		{{ form_errors(form) }}				
 		<tr>
 			<td height="50px;" align="right" valign="bottom">
- 				<input type="submit" value="Guardar" name="btsend" id="button_enter"/>
+ 				<input type="button" value="Guardar" name="btsend" id="button_enter" onClick="javascript:submitForm();"/>
  				<input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listMember') }}'"/>
 			</td>
 		</tr>
