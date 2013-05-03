@@ -103,7 +103,8 @@ const LIMIT_PAGINATOR = 10;
     				$managerial->setEndDate(new \DateTime($managerial->getEndDate()));
     				$user = $this->get('security.context')->getToken()->getUser(); 
     				
-    				$managerial->setSystemUserId($user->getId());
+    				$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
+    				$managerial->setSystemUser($userData);
     				$em->persist($managerial);
     				$em->flush();
     				$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
