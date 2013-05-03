@@ -9,16 +9,6 @@ Transaction:
             nullable: false
             generator:
                 strategy: IDENTITY
-        transactionTypeId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: transaction_type_id
-        managerialId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: managerial_id
         totalValue:
             type: decimal
             nullable: false
@@ -27,9 +17,32 @@ Transaction:
             type: datetime
             nullable: false
             column: system_date
-        systemUserId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: system_user_id
+    manyToOne:
+        transactionType:
+            targetEntity: TransactionType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                transaction_type_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        managerial:
+            targetEntity: Managerial
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                managerial_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        systemUser:
+            targetEntity: SystemUser
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                system_user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -27,7 +27,9 @@ Payment\DataAccessBundle\Entity\Member:
             fixed: false
             nullable: false
         birthDate:
-            type: date
+            type: string
+            length: 10
+            fixed: false
             nullable: true
             column: birth_date
         address:

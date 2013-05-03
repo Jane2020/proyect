@@ -21,18 +21,27 @@ Payment\DataAccessBundle\Entity\Account:
             fixed: false
             nullable: true
             column: meter_number
-        memberId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: member_id
-        systemUserId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: system_user_id
         isActive:
             type: boolean
             nullable: false
             column: is_active
+    manyToOne:
+        systemUser:
+            targetEntity: SystemUser
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                system_user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        member:
+            targetEntity: Member
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                member_id:
+                    referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -10,29 +10,50 @@ Payment\DataAccessBundle\Entity\Income:
             nullable: false
             generator:
                 strategy: IDENTITY
-        incomeTypeId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: income_type_id
-        transactionId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: transaction_id
-        consumptionId:
-            type: integer
-            unsigned: false
-            nullable: true
-            column: consumption_id
-        finesId:
-            type: integer
-            unsigned: false
-            nullable: true
-            column: fines_id
-        systemUserId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: system_user_id
+    manyToOne:
+        incomeType:
+            targetEntity: IncomeType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                income_type_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        transaction:
+            targetEntity: Transaction
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                transaction_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        consumption:
+            targetEntity: Consumption
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                consumption_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        fines:
+            targetEntity: Fines
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                fines_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        systemUser:
+            targetEntity: SystemUser
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                system_user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

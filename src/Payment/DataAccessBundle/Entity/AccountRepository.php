@@ -12,4 +12,31 @@ use Doctrine\ORM\EntityRepository;
  */
 class AccountRepository extends EntityRepository
 {
+	public function findMeterByParametersToList($meterAccountNumber, $offset, $limit, $count = true)
+	{
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('a');
+		if ($count)
+		{
+			$queryBuilder->add('select', $queryBuilder->expr()->count('a.id'));
+		}
+		else
+		{
+			$queryBuilder->select(array('a','me'));
+			$queryBuilder->setFirstResult($offset);
+			$queryBuilder->setMaxResults($limit);
+		}
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Account a');
+		$queryBuilder->innerJoin('a.member', 'me');
+			
+		if ($meterAccountNumber != null)
+		{
+			$meterAccountNumber = str_replace(' ', '%', $meterAccountNumber);
+			$queryBuilder->where($queryBuilder->expr()->like('a.accountNumber', $queryBuilder->expr()->literal('%'.$meterAccountNumber.'%')));								 
+		}
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;
+	}
+	
+	
 }

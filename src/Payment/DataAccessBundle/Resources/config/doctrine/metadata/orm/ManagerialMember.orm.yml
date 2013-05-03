@@ -9,21 +9,6 @@ ManagerialMember:
             nullable: false
             generator:
                 strategy: IDENTITY
-        managerialId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: managerial_id
-        chargeId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: charge_id
-        memberId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: member_id
         activationDate:
             type: datetime
             nullable: false
@@ -36,9 +21,41 @@ ManagerialMember:
             type: boolean
             nullable: false
             column: is_active
-        systemUserId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: system_user_id
+    manyToOne:
+        managerial:
+            targetEntity: Managerial
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                managerial_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        charge:
+            targetEntity: Charge
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                charge_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        member:
+            targetEntity: Member
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                member_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        systemUser:
+            targetEntity: SystemUser
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                system_user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

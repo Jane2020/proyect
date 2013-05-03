@@ -32,9 +32,14 @@ Payment\DataAccessBundle\Entity\Managerial:
             type: datetime
             nullable: false
             column: end_date
-        systemUserId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: system_user_id
+    manyToOne:
+        systemUser:
+            targetEntity: SystemUser
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                system_user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }
