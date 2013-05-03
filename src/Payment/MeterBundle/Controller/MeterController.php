@@ -2,6 +2,8 @@
 
 namespace Payment\MeterBundle\Controller;
 
+use Payment\DataAccessBundle\Entity\Account;
+
 use Payment\MeterBundle\Form\Type\MeterSearchType;
 use Payment\MeterBundle\Entity\MeterSearch;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -10,11 +12,12 @@ use Payment\ApplicationBundle\Libraries\Paginator\Paginator;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
-use Payment\DataAccessBundle\Entity\Member;
 
 
 class MeterController extends Controller
 {
+	const LIMIT_PAGINATOR = 10;
+	
 	/**
 	 * @Template()
 	 * @Secure(roles="ROLE_ADMIN")
@@ -24,8 +27,8 @@ class MeterController extends Controller
     	$meterEntity = new MeterSearch();
     	$limit = self::LIMIT_PAGINATOR;
         $offset = 0;
-        $meterNumber = null;
-        
+        $accountNumber = null;
+        $d = new MeterSearchType();
         $meterForm = $this->createForm(new MeterSearchType(), $meterEntity);
         if ($request->getMethod() == 'POST') 
         {
@@ -33,7 +36,7 @@ class MeterController extends Controller
             $datas = $meterForm->getData();
             if ($meterForm->isValid())
             {
-                $meterNumber = $datas->getNumber();
+                $accountNumber = $datas->getAccountNumber();
                 $offset = $datas->getOffset();
                 $limit = $datas->getLimit();
             }
@@ -44,10 +47,112 @@ class MeterController extends Controller
             $offsetItem = $offsetItem - 1;
         }
         $offsetItem = $offsetItem * $limit;
-        $total = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Account')->findMeterByParametersToList($meterNumber, $offsetItem, $limit);
+        $total = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Account')->findMeterByParametersToList($accountNumber, $offsetItem, $limit);
         $total = $total[0][1];
-        $meter = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Account')->findMeterByParametersToList($meterNumber, $offsetItem, $limit, false);
+        $meter = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Account')->findMeterByParametersToList($accountNumber, $offsetItem, $limit, false);
         $paginator = new Paginator($meterForm->getName(), $total, $offset, $limit);
         return array('form' => $meterForm->createView(), 'limit' => $limit, 'total' => $total, 'meter' => $meter, 'paginator' => $paginator);
     }
+
+    /**
+     * Secure(roles="ROLE_ADMIN")
+     */
+    public function deleteMeterAction(Request $request)
+    {
+    	return $this->actionToMeter($request,false);
+    }
+    
+    /**
+     * Secure(roles="ROLE_ADMIN")
+     */
+    public function activeMeterAction(Request $request)
+    {
+    	return $this->actionToMeter($request);
+    }
+
+    private function actionToMeter(Request $request, $active = true)
+    {
+    	$accountId = $request->request->get('cid', 0);
+    	if (is_array($accountId))
+    	{
+    		$accountId = $accountId[0];
+    	}
+    
+    	$em = $this->getDoctrine()->getManager();
+    	$account = $em->getRepository('PaymentDataAccessBundle:Account')->find($accountId);
+    
+    	if (!$account)
+    	{
+    		$message = "El item seleccionado no ha podido ser encontrado.";
+    	}
+    	else
+    	{
+    		if ($active)
+    		{
+    			$publish = $request->request->get('publish');
+    			$account->setIsActive($publish);
+    			$em->flush();
+    			if ($publish == 1)
+    			{
+    				$message = "El item ha sido Activado &eacute;xitosamente.";
+    			}
+    			else 
+    			{
+    				$message = "El item ha sido Desactivado &eacute;xitosamente.";
+    			}
+    		}
+    		else
+    		{
+    			$em->remove($account);
+    			$em->flush();
+    			$message = "El item ha sido Eliminado &eacute;xitosamente.";
+    		}
+    	}
+    
+    	$this->get('session')->getFlashBag()->add('message', $message);
+    	return $this->redirect($this->generateUrl('_listMeter'));
+    }
+    
+    /**
+     * @Template()
+     * Secure(roles="ROLE_ADMIN")
+     */
+    public function editMeterAction(Request $request)
+    {
+    	$title = "Edición";
+    	$accountId = $request->request->get('cid', 0);
+    	if (is_array($accountId))
+    	{
+    		$accountId = $accountId[0];
+    	}
+    	$em = $this->getDoctrine()->getManager();
+    	if ($accountId > 0)
+    	{
+    		$account = $em->getRepository('PaymentDataAccessBundle:Account')->find($accountId);
+    	}
+    	else
+    	{
+    		$account = new Account();
+    		$title = "Creación";
+    	}
+    	 
+    	$accountForm = $this->createForm(new AccountEditType(), $account);
+    
+    	if ($request->getMethod() == 'POST')
+    	{
+    		$band = $request->request->get('band', 0);
+    		if ($band != 0)
+    		{
+    			$accountForm->bind($request);
+    			if ($accountForm->isValid())
+    			{
+    				$em->persist($account);
+    				$em->flush();
+    				$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
+    				return $this->redirect($this->generateUrl('_listMeter'));
+    			}
+    		}
+    	}
+    	return array('form' => $memberForm->createView(), 'title' => $title, 'cid'=>$memberId);
+    }    
 }

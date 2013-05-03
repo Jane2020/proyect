@@ -3,10 +3,10 @@ _listMeter:
     defaults: { _controller: PaymentMeterBundle:Meter:listMeter }
 _activeMeter:
     pattern:  /gestion-de-medidores/activacion
-    defaults: { _controller: PaymentMeterBundle:Member:activeMeter }
+    defaults: { _controller: PaymentMeterBundle:Meter:activeMeter }
 _editMeter:
     pattern:  /gestion-de-medidores/edicion
-    defaults: { _controller: PaymentMeterBundle:Member:editMeter }
+    defaults: { _controller: PaymentMeterBundle:Meter:editMeter }
 _deleteMeter:
     pattern:  /gestion-de-medidores/eliminacion
-    defaults: { _controller: PaymentMeterBundle:Member:deleteMeter }     
+    defaults: { _controller: PaymentMeterBundle:Meter:deleteMeter }     
