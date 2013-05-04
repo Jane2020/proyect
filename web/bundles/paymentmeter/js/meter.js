@@ -15,29 +15,17 @@ function loadEvents(){
 }
 
 function setValidations(){
-    $("#memberTypeSearch").validate({
+    $("#meterSearch").validate({
         event: "blur", 
         rules: {
-            'memberTypeSearch[documentNumber]': { 
+            'meterSearch[accountNumber]': { 
                 regex: /^[0-9\-]+$/ 
-            },
-            'memberTypeSearch[name]': { 
-                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\/]+$/ 
-            }            ,
-            'memberTypeSearch[lastname]': { 
-                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\/]+$/ 
             }
         },
         messages: {
-            'memberTypeSearch[documentNumber]': { 
+            'meterSearch[accountNumber]': { 
                 regex: 'Por favor ingrese números (0-9) ó (-).' 
-            },
-            'memberTypeSearch[name]': { 
-                    regex: 'Por favor ingrese letras (a-z), números (0-9) ó (-),(_)' 
-                },
-            'memberTypeSearch[lastname]': { 
-                    regex: 'Por favor ingrese letras (a-z), números (0-9) ó (-),(_)' 
-                }
+            }
         },
         debug: true,
         errorElement: "div",

@@ -10,12 +10,12 @@ $.validator.addMethod(
     ); 
 
 function loadEvents(){	
-    setValidations(); 
+	setValidations(); 
     setValidationsEdit();
 }
 
 function setValidations(){
-    $("#memberTypeSearch").validate({
+	$("#memberTypeSearch").validate({
         event: "blur", 
         rules: {
             'memberTypeSearch[documentNumber]': { 
