@@ -117,9 +117,11 @@ class MemberController extends Controller
 				'cid' => $memberId);
 	}
 
-	private function actionToMember(Request $request, $active = true) {
+	private function actionToMember(Request $request, $active = true) 
+	{
 		$memberId = $request->request->get('cid', 0);
-		if (is_array($memberId)) {
+		if (is_array($memberId)) 
+		{
 			$memberId = $memberId[0];
 		}
 
@@ -127,22 +129,39 @@ class MemberController extends Controller
 		$member = $em->getRepository('PaymentDataAccessBundle:Member')
 				->find($memberId);
 
-		if (!$member) {
+		if (!$member) 
+		{
 			$message = "El item seleccionado no ha podido ser encontrado.";
-		} else {
-			if ($active) {
+		} 
+		else 
+		{
+			if ($active) 
+			{
 				$publish = $request->request->get('publish');
 				$member->setIsActive($publish);
 				$em->flush();
-				if ($publish == 1) {
+				if ($publish == 1) 
+				{
 					$message = "El item ha sido Activado &eacute;xitosamente.";
-				} else {
+				}
+				else 
+				{
 					$message = "El item ha sido Desactivado &eacute;xitosamente.";
 				}
-			} else {
-				$em->remove($member);
-				$em->flush();
-				$message = "El item ha sido Eliminado &eacute;xitosamente.";
+			} 
+			else 
+			{
+				$memberAssoc = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Account')->findBy(array('member'=>$memberId));
+				if($memberAssoc)
+				{
+					$message = "El item no pudo ser Eliminado, esta relacionado con un medidor.";
+				}
+				else
+				{
+					$em->remove($member);
+					$em->flush();
+					$message = "El item ha sido Eliminado &eacute;xitosamente.";
+				}
 			}
 		}
 
