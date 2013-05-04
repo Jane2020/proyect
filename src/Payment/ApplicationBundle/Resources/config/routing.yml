@@ -1,3 +1,7 @@
 home:
     pattern:  /inicio
     defaults: { _controller: PaymentApplicationBundle:Default:welcome }
+
+modal:
+    pattern:  /modal
+    defaults: { _controller: PaymentApplicationBundle:Default:modal }    
