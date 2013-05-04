@@ -4,7 +4,7 @@
 	{{ parent() }}
 <script type="text/javascript" src="{{ asset('bundles/paymentmeter/js/meter.js') }}"></script>
 <script type="text/javascript">
-  var form_id = "memberTypeSearch";
+  var form_id = "meterSearch";
   var action_edit = "{{ path('_editMeter') }}";
   var action_delete = "{{ path('_deleteMeter') }}";
   var action_publish = "{{ path('_activeMeter') }}";
@@ -55,7 +55,7 @@ loadEvents();
             </a>
         </td>
         <td style="text-align: center">
-        	<a href="{{ path('_editMember') }}">
+        	<a href="{{ path('_editMeter') }}">
             	<div id="button_new"></div>Nuevo
            	</a>
         </td>

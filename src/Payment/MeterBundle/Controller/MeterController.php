@@ -2,8 +2,9 @@
 
 namespace Payment\MeterBundle\Controller;
 
-use Payment\DataAccessBundle\Entity\Account;
+use Payment\MeterBundle\Form\Type\MeterEditType;
 
+use Payment\DataAccessBundle\Entity\Account;
 use Payment\MeterBundle\Form\Type\MeterSearchType;
 use Payment\MeterBundle\Entity\MeterSearch;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -129,15 +130,16 @@ class MeterController extends Controller
     	if ($accountId > 0)
     	{
     		$account = $em->getRepository('PaymentDataAccessBundle:Account')->find($accountId);
+    		$account->setMemberId($account->getMember()->getId());
+    		$account->setMemberName($account->getMember()->getName().' '.$account->getMember()->getLastname());    		
     	}
     	else
     	{
     		$account = new Account();
     		$title = "Creación";
     	}
-    	 
-    	$accountForm = $this->createForm(new AccountEditType(), $account);
-    
+
+    	$accountForm = $this->createForm(new MeterEditType(), $account);
     	if ($request->getMethod() == 'POST')
     	{
     		$band = $request->request->get('band', 0);
@@ -146,6 +148,12 @@ class MeterController extends Controller
     			$accountForm->bind($request);
     			if ($accountForm->isValid())
     			{
+    				$user = $this->get('security.context')->getToken()->getUser();
+    				$userId = $user->getId();
+    				$user = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($userId);
+    				$member = $em->getRepository('PaymentDataAccessBundle:Member')->find($account->getMemberId());
+    				$account->setMember($member);
+    				$account->setSystemUser($user);
     				$em->persist($account);
     				$em->flush();
     				$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
@@ -153,6 +161,6 @@ class MeterController extends Controller
     			}
     		}
     	}
-    	return array('form' => $memberForm->createView(), 'title' => $title, 'cid'=>$memberId);
+    	return array('form' => $accountForm->createView(), 'title' => $title, 'cid'=>$accountId);
     }    
 }
