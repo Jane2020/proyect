@@ -1,0 +1,9 @@
+<tr>	
+	<td class="title" valign="top">
+		{{ form_label(form.memberName) }}
+	</td>
+	<td>
+		{{ form_widget(form.memberName, { 'attr': {'class': 'required', 'readonly':'readonly'} }) }} 
+		<a class="modal" href="{{ path('modal',{'formName': form.name})}}">Buscar</a>		
+	</td>
+</tr>

@@ -35,6 +35,17 @@ class Account
     private $systemUser;
 
 
+    
+    /**
+     * Set id
+     *
+     * @return integer
+     */
+    public function setId($id)
+    {
+    	$this->id = $id;
+    }
+    
     /**
      * Get id
      *
@@ -150,6 +161,11 @@ class Account
      * @var boolean
      */
     private $isActive;
+    
+    /**
+     * @var string
+     */
+    private $memberName;
 
 
     /**
@@ -198,6 +214,28 @@ class Account
         return $this->systemUserId;
     }
 
+    /**
+     * Set memberName
+     *
+     * @param string $memberName
+     * @return Account
+     */
+    public function setMemberName($memberName)
+    {
+    	$this->memberName = $memberName;    
+    	return $this;
+    }
+    
+    /**
+     * Get memberName
+     *
+     * @return string
+     */
+    public function getMemberName()
+    {
+    	return $this->memberName;
+    }
+    
     /**
      * Set isActive
      *

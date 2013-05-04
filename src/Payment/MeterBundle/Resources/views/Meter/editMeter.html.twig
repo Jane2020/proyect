@@ -1,0 +1,77 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block title %}{{ title }} Tipo de Multa - {{ parent() }} {% endblock %}
+{% block javascripts %}
+ {{ parent() }}
+ <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+ <script type="text/javascript" src="{{ asset('bundles/paymentmeter/js/meter.js') }}"></script>
+ <script type="text/javascript">
+ 	$(document).ready(function(){  
+ 		$(".modal").fancybox({
+  	    	'autoSize'      : false,
+            'autoDimensions': false,
+  	        'width'         : 750,  
+  	        'height'        : 370,  
+  	  	    'autoScale'     : false,  
+  	        'transitionIn'      : 'none',  
+  	        'transitionOut'     : 'none',  
+  	        'type'          : 'iframe' 	        	     
+  	    });  
+  	}); 
+  	
+	loadEvents();
+
+	function cerrarFancyboxYRedirigeAUrl(url)
+  	{
+  	    $.fancybox.close();
+  	    window.location = url;
+  	}	
+ </script>
+{% endblock %}
+
+{% block content %}
+{{ title }} de Miembro
+<form action="{{ path('_editMeter') }}" method="post" {{ form_enctype(form) }} id="meterEdit" name="meterEdit">
+	<div id="contentLeft">
+		{% for flashMessage in app.session.flashbag.get('message') %}
+    	<div class="flash-message">
+     		{% autoescape false %}
+        		{{ flashMessage|trans({}, 'FOSUserBundle') }}
+     		{% endautoescape %}
+    	</div>
+    	<br>
+		{% endfor %}
+
+		{{ app.session.flashbag.set('message', '')}}	
+		{{ form_errors(form.accountNumber) }}
+		{{ form_errors(form.meterNumber) }}		
+	<br>
+	</div>
+	<div id="contentRight">
+	<table id="tableEditUser">
+		<tr>
+			<td class="title" valign="top">{{ form_label(form.accountNumber) }}</td>
+			<td>{{ form_widget(form.accountNumber, { 'attr': {'class': 'required'} }) }} </td>
+		</tr>
+		<tr>
+			<td class="title" valign="top">{{ form_label(form.meterNumber) }}</td>
+			<td>{{ form_widget(form.meterNumber, { 'attr': {'class': 'required'} }) }} </td>
+		</tr>
+		{% include 'PaymentApplicationBundle:Default:fieldInclude.html.twig' %}
+		<tr>
+			<td class="title" valign="top">{{ form_label(form.isActive) }}</td>
+			<td>{{ form_widget(form.isActive) }}  </td>
+		</tr>
+		{{ form_errors(form) }}				
+		<tr>
+			<td height="50px;" align="right" valign="bottom">
+ 				<input type="submit" value="Guardar" name="btsend" id="button_enter"/>
+ 				<input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listMeter') }}'"/>
+			</td>
+		</tr>
+	</table>
+	<input type="hidden" name="band" value="1">
+	<input type="hidden" name="cid" value="{{ cid }}">
+	{{ form_rest(form) }}
+</form>
+</div>
+{% endblock %}

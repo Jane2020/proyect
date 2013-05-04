@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class MemberRepository extends EntityRepository
 {
-	public function findMemberByParametersToList($memberName, $memberLastname ,$memberDocumentNumber, $offset, $limit, $count = true)
+	public function findMemberByParametersToList($memberName, $memberLastname ,$memberDocumentNumber, $active, $offset, $limit, $count = true)
 	{
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder('m');
 		if ($count) 
@@ -27,12 +27,23 @@ class MemberRepository extends EntityRepository
 			$queryBuilder->setMaxResults($limit);
 		}
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:Member m');
-		 
+		if ($active == false)
+		{
+			$queryBuilder->where($queryBuilder->expr()->eq('m.isActive', '1'));			
+		} 
+		
 		if ($memberName != null) 
 		{
 			$memberName = str_replace(' ', '%', $memberName);
 			$memberName = '%' . strtolower($memberName) . '%';
-			$queryBuilder->where($queryBuilder->expr()->like($queryBuilder->expr()->lower('m.name'), '?1'));
+			if ($active == false)
+			{
+				$queryBuilder->andwhere($queryBuilder->expr()->like($queryBuilder->expr()->lower('m.name'), '?1'));
+			}
+			else
+			{
+				$queryBuilder->where($queryBuilder->expr()->like($queryBuilder->expr()->lower('m.name'), '?1'));
+			}
 			$queryBuilder->setParameter(1, $memberName);
 		}
 		

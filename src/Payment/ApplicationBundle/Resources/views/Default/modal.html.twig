@@ -1,0 +1,99 @@
+{% block javascripts %}
+	<script type="text/javascript" src="{{ asset('libraries/js/jquery-1.7.2.min.js') }}"></script>
+    <script type="text/javascript" src="{{asset('libraries/js/jquery.validate.js')}}"></script>
+    <script type="text/javascript" src="{{asset('libraries/js/jquery.form.js')}}"></script>
+    <script type="text/javascript" src="{{asset('libraries/js/jquery-latest.js')}}"></script>
+	<script type="text/javascript" src="{{asset('bundles/paymentmember/js/member.js') }}"></script>
+	<script type="text/javascript">
+		var form_id = "memberTypeSearch";
+		loadEvents();
+	</script>	  	
+  	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}		
+{% block content %}
+<form action="" method="post" {{ form_enctype(form) }} id='memberTypeSearch' name="memberTypeSearch">
+	{{ form_errors(form) }}
+	<table class="tableSearch">
+	    <tr>
+	    	<td class="titleSearch">{{ form_label(form.name) }}</td>
+            <td >{{ form_widget(form.name) }}</td>
+            <td class="titleSearch">{{ form_label(form.lastname) }}</td>
+            <td >{{ form_widget(form.lastname) }}</td>
+         </tr>
+         <tr>   
+            <td class="titleSearch">{{ form_label(form.documentNumber) }}</td>
+            <td >{{ form_widget(form.documentNumber) }}</td>
+            <td valign="top">
+				{{ form_widget(form.offset, { 'attr': {'value': '0'} }) }}  
+				{{ form_widget(form.limit, { 'attr': {'value': limit } }) }}  
+                <input type="submit" name="btsend" id="button_search" value='Buscar' />                
+            </td>
+            <td>
+            	<a href="" onclick ="parent.cerrarFancyboxYRedirigeAUrl('{{ url('_editMember') }}')">
+            		<button>Nuevo</button>
+           		</a>            	 
+            </td>
+	    </tr> 
+        <tr>
+        	<td></td>
+        	<td>{{ form_errors(form.name) }}</td>
+        	<td></td>
+        	<td>{{ form_errors(form.lastname) }}</td>
+        	<td></td>
+        	<td>{{ form_errors(form.documentNumber) }}</td>
+        	<td><br></td>
+        </tr>
+   </table>
+{{ form_rest(form) }}
+</form>
+<form id='form_check' name='form_check' action='' method='post'>
+<table id="tableListUser" >
+	<tr>
+	    <th class="title_check">Nombre del Miembro</th>
+        <th class="title">Cédula de Identidad</th>
+        <th class="title">Direcci&oacute;n</th>
+    </tr>
+{% for item in member %}
+    <tr>
+	    <td class="content_table" >
+			<a href="#" onclick ="javascript:doAction({{ item.id }}, '{{ item.name }}','{{ item.lastname }}')">
+				{{ item.name }} {{ item.lastname }}
+			</a>
+        </td>
+        <td class="content_table">
+			{{ item.documentNumber }}
+        </td >	
+        <td class="content_table" >
+			{{ item.address }}
+        </td>                                    
+   </tr>
+{% endfor %}
+   <tr>
+   {% if  total==0 %}
+   		<td colspan="5" align="center" class="content_table_left">
+       		No existen miembros a mostrar
+        </td>
+	{% endif %}
+	</tr>
+</table>
+{% if total>10 %}
+<table id="paginator" width="100%">
+	<tr>
+		<td align="center">
+			{% include 'PaymentApplicationBundle:Paginator:paginator.html.twig' %}
+        </td>	
+    </tr>
+</table>
+{% endif %}
+<script type="text/javascript">
+		function doAction (id, name, lastname ) {
+			var memberId = '#'+'{{ formName }}'+'_memberId';
+			var memberName = '#'+'{{ formName }}'+'_memberName';
+			var memberNameValue = name+' '+lastname;
+		    parent.$(memberName).val(memberNameValue);
+		    parent.$(memberId).val(id);
+		    parent.$.fancybox.close();		    		  
+		}		
+ </script>	  
+</form>
+{% endblock %}

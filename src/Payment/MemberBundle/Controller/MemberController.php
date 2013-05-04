@@ -51,12 +51,12 @@ class MemberController extends Controller
 		$total = $this->getDoctrine()->getManager()
 				->getRepository('PaymentDataAccessBundle:Member')
 				->findMemberByParametersToList($memberName, $memberLastName,
-						$memberDocumentNumber, $offsetItem, $limit);
+						$memberDocumentNumber, true, $offsetItem, $limit);
 		$total = $total[0][1];
 		$member = $this->getDoctrine()->getManager()
 				->getRepository('PaymentDataAccessBundle:Member')
 				->findMemberByParametersToList($memberName, $memberLastName,
-						$memberDocumentNumber, $offsetItem, $limit, false);
+						$memberDocumentNumber, true, $offsetItem, $limit, false);
 		$paginator = new Paginator($memberTypeForm->getName(), $total, $offset,
 				$limit);
 		return array('form' => $memberTypeForm->createView(),

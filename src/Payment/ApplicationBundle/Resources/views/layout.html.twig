@@ -3,6 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/javascript" src="{{ asset('libraries/js/jquery-1.7.2.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('libraries/fancybox/jquery.fancybox.pack.js')}}"></script>
         <script type="text/javascript" src="{{asset('libraries/js/jquery.validate.js')}}"></script>
         <script type="text/javascript" src="{{asset('libraries/js/jquery.form.js')}}"></script>
         <script	type="text/javascript"	src="{{asset('libraries/js/jquery-ui-1.8.21.custom.min.js')}}"></script>
@@ -11,6 +12,7 @@
         {% block javascripts %}
         {% endblock %}
         {% block stylesheets %}
+         <link rel="stylesheet" type="text/css" href="{{ asset('libraries/fancybox/jquery.fancybox.css') }}" media="all"/>
         <link  href="{{asset('libraries/css/jquery-ui-1.8.21.custom.css')}}" rel="stylesheet" type="text/css" media="screen" ></link>
 		<link  href="{{asset('css/modules.css')}}" rel="stylesheet" type="text/css" media="screen" ></link>
 		<link  href="{{asset('css/layout.css')}}" rel="stylesheet" type="text/css" media="screen" ></link>
