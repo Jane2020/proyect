@@ -49,7 +49,45 @@ class ManagerialMember
      */
     private $systemUser;
 
-
+    /**
+     * @var string
+     */
+    private $memberName;
+    
+    /**
+     * Set id
+     *
+     * @param int $id
+     */
+    public function setId($id)
+    {
+    	$this->id = $id;
+    	return $this;
+    }
+    
+    
+    /**
+     * Set memberName
+     *
+     * @param string $memberName
+     * @return Account
+     */
+    public function setMemberName($memberName)
+    {
+    	$this->memberName = $memberName;
+    	return $this;
+    }
+    
+    /**
+     * Get memberName
+     *
+     * @return string
+     */
+    public function getMemberName()
+    {
+    	return $this->memberName;
+    }
+    
     /**
      * Get id
      *

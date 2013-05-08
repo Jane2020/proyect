@@ -3,7 +3,7 @@
 namespace Payment\DataAccessBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-
+use Doctrine\ORM\Query\ResultSetMapping;
 /**
  * ManagerialMemberRepository
  *
@@ -12,4 +12,72 @@ use Doctrine\ORM\EntityRepository;
  */
 class ManagerialMemberRepository extends EntityRepository
 {
+	public function findManagerialMemberByNameToList($managerialMemberText, $offset, $limit, $count = true) 
+	{
+	
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('mm');
+		if ($count)
+		{
+			$queryBuilder->add('select', $queryBuilder->expr()->count('mm.id'));
+		} 
+		else 
+		{
+			$queryBuilder->select(array('mm', 'ma', 'me', 'c'));
+			$queryBuilder->orderBy('me.name');
+			$queryBuilder->setFirstResult($offset);
+			$queryBuilder->setMaxResults($limit);
+		}
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:ManagerialMember mm');
+		$queryBuilder->innerJoin('mm.managerial', 'ma');
+		$queryBuilder->innerJoin('mm.member', 'me');
+		$queryBuilder->innerJoin('mm.charge', 'c');
+			
+		if ($managerialMemberText != null)
+		{
+			$managerialMemberText = str_replace(' ', '%', $managerialMemberText);
+			$managerialMemberText = '%' . strtolower($managerialMemberText) . '%';
+			$queryBuilder->where($queryBuilder->expr()->orX(
+					$queryBuilder->expr()->like($queryBuilder->expr()->lower('me.name'), '?1'), 
+					$queryBuilder->expr()->like($queryBuilder->expr()->lower('me.lastname'), '?1')));
+			$queryBuilder->setParameter(1, $managerialMemberText);
+		}
+		
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;
+	}
+	
+	public function assignedChargeExist($memberId, $directiveId, $chargeId, $managerialMemberId)
+	{
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder("m");
+		$queryBuilder->select('m.id');
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:ManagerialMember m');
+		$queryBuilder->innerJoin('m.member', 'me');
+		$queryBuilder->innerJoin('m.charge', 'c');
+		$queryBuilder->innerJoin('m.managerial', 'ma');
+		$queryBuilder->where($queryBuilder->expr()->andX(
+					$queryBuilder->expr()->orX($queryBuilder->expr()->eq('c.id', '?4'), $queryBuilder->expr()->eq('me.id', '?3')),
+					$queryBuilder->expr()->eq('ma.id', '?1'), 
+					$queryBuilder->expr()->eq('m.isActive', '1')
+					));
+			
+		if ($managerialMemberId > 0)
+		{
+			$queryBuilder->andWhere($queryBuilder->expr()->neq('m.id', '?2'));
+			$queryBuilder->setParameter(2, $managerialMemberId);
+		}
+		$queryBuilder->setParameter(1, $directiveId);								
+		$queryBuilder->setParameter(3, $memberId);
+		$queryBuilder->setParameter(4, $chargeId);
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		if($result)
+		{
+			return true;
+		}	
+		else
+		{
+			return false;
+		}
+	}
 }
