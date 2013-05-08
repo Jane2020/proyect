@@ -16,6 +16,15 @@ class MeterEditType extends AbstractType
 		$builder->add('meterNumber','text',  array('label'=>'Número de Medidor:', 'required'=>false, 'max_length'=>64));
 		$builder->add('isActive','checkbox',  array('label'=>'Activo: ', 'required'=>false,));
 		$builder->add('memberName','text',  array('label'=>'Nombre del Miembro:', 'required'=>false, 'max_length'=>128));
+		$builder->add('accountType', 'entity',
+				array(
+						'class' => 'PaymentDataAccessBundle:AccountType',
+						'label' => 'Tipo de Cuenta',
+						'empty_value' => 'Seleccione',
+						'required' => false,
+						'property' => 'name',
+				)
+		);
 	}
 
 	public function getName()

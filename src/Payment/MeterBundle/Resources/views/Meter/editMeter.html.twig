@@ -43,7 +43,8 @@
 
 		{{ app.session.flashbag.set('message', '')}}	
 		{{ form_errors(form.accountNumber) }}
-		{{ form_errors(form.meterNumber) }}		
+		{{ form_errors(form.meterNumber) }}	
+		{{ form_errors(form.accountType) }}	
 	<br>
 	</div>
 	<div id="contentRight">
@@ -57,6 +58,10 @@
 			<td>{{ form_widget(form.meterNumber, { 'attr': {'class': 'required'} }) }} </td>
 		</tr>
 		{% include 'PaymentApplicationBundle:Default:fieldInclude.html.twig' %}
+		<tr>
+			<td class="title" valign="top">{{ form_label(form.accountType) }}</td>
+			<td>{{ form_widget(form.accountType, { 'attr': {'class': 'required'} }) }} </td>
+		</tr>
 		<tr>
 			<td class="title" valign="top">{{ form_label(form.isActive) }}</td>
 			<td>{{ form_widget(form.isActive) }}  </td>
