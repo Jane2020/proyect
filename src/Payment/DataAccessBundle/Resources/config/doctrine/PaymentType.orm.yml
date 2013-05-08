@@ -1,0 +1,29 @@
+Payment\DataAccessBundle\Entity\PaymentType:
+    type: entity
+    table: payment_type
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 64
+            fixed: false
+            nullable: false
+        description:
+            type: string
+            length: 512
+            fixed: false
+            nullable: false
+        cost:
+            type: decimal
+            nullable: false
+        isActive:
+            type: boolean
+            nullable: false
+            column: is_active
+    lifecycleCallbacks: {  }

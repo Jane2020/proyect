@@ -1,0 +1,62 @@
+Payment\DataAccessBundle\Entity\Payment:
+    type: entity
+    repositoryClass: Payment\DataAccessBundle\Entity\PaymentRepository
+    table: payment
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        cost:
+            type: decimal
+            nullable: false
+        paymentDate:
+            type: datetime
+            nullable: false
+            column: payment_date
+        isDeleted:
+            type: boolean
+            nullable: false
+            column: is_deleted
+        description:
+            type: string
+            length: 256
+            fixed: false
+            nullable: false
+        userId:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: user_id
+    manyToOne:
+        systemUser:
+            targetEntity: SystemUser
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                system_user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        member:
+            targetEntity: Member
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                member_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        paymentType:
+            targetEntity: PaymentType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                payment_type_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

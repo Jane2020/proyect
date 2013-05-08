@@ -1,0 +1,38 @@
+Parameter:
+    type: entity
+    table: parameter
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        key:
+            type: string
+            length: 256
+            fixed: false
+            nullable: false
+        value:
+            type: string
+            length: 512
+            fixed: false
+            nullable: false
+        typeField:
+            type: string
+            length: 256
+            fixed: false
+            nullable: false
+            column: type_field
+        order:
+            type: integer
+            unsigned: false
+            nullable: false
+        rexType:
+            type: string
+            length: 256
+            fixed: false
+            nullable: false
+            column: rex_type
+    lifecycleCallbacks: {  }

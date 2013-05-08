@@ -1,0 +1,391 @@
+<?php
+
+namespace Payment\DataAccessBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Expense
+ */
+class Expense
+{
+    /**
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     */
+    private $systemDate;
+
+    /**
+     * @var \DateTime
+     */
+    private $expenseDate;
+
+    /**
+     * @var float
+     */
+    private $expenseValue;
+
+    /**
+     * @var string
+     */
+    private $description;
+
+    /**
+     * @var integer
+     */
+    private $userId;
+
+    /**
+     * @var boolean
+     */
+    private $isDeleted;
+
+    /**
+     * @var string
+     */
+    private $expenseName;
+
+    /**
+     * @var string
+     */
+    private $expenseNumber;
+
+    /**
+     * @var string
+     */
+    private $expenseRuc;
+
+    /**
+     * @var float
+     */
+    private $expenseIva;
+
+    /**
+     * @var string
+     */
+    private $expenseAddress;
+
+    /**
+     * @var string
+     */
+    private $expensePhone;
+
+    /**
+     * @var \Payment\DataAccessBundle\Entity\Transaction
+     */
+    private $transaction;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set systemDate
+     *
+     * @param \DateTime $systemDate
+     * @return Expense
+     */
+    public function setSystemDate($systemDate)
+    {
+        $this->systemDate = $systemDate;
+    
+        return $this;
+    }
+
+    /**
+     * Get systemDate
+     *
+     * @return \DateTime 
+     */
+    public function getSystemDate()
+    {
+        return $this->systemDate;
+    }
+
+    /**
+     * Set expenseDate
+     *
+     * @param \DateTime $expenseDate
+     * @return Expense
+     */
+    public function setExpenseDate($expenseDate)
+    {
+        $this->expenseDate = $expenseDate;
+    
+        return $this;
+    }
+
+    /**
+     * Get expenseDate
+     *
+     * @return \DateTime 
+     */
+    public function getExpenseDate()
+    {
+        return $this->expenseDate;
+    }
+
+    /**
+     * Set expenseValue
+     *
+     * @param float $expenseValue
+     * @return Expense
+     */
+    public function setExpenseValue($expenseValue)
+    {
+        $this->expenseValue = $expenseValue;
+    
+        return $this;
+    }
+
+    /**
+     * Get expenseValue
+     *
+     * @return float 
+     */
+    public function getExpenseValue()
+    {
+        return $this->expenseValue;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Expense
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set userId
+     *
+     * @param integer $userId
+     * @return Expense
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+    
+        return $this;
+    }
+
+    /**
+     * Get userId
+     *
+     * @return integer 
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Set isDeleted
+     *
+     * @param boolean $isDeleted
+     * @return Expense
+     */
+    public function setIsDeleted($isDeleted)
+    {
+        $this->isDeleted = $isDeleted;
+    
+        return $this;
+    }
+
+    /**
+     * Get isDeleted
+     *
+     * @return boolean 
+     */
+    public function getIsDeleted()
+    {
+        return $this->isDeleted;
+    }
+
+    /**
+     * Set expenseName
+     *
+     * @param string $expenseName
+     * @return Expense
+     */
+    public function setExpenseName($expenseName)
+    {
+        $this->expenseName = $expenseName;
+    
+        return $this;
+    }
+
+    /**
+     * Get expenseName
+     *
+     * @return string 
+     */
+    public function getExpenseName()
+    {
+        return $this->expenseName;
+    }
+
+    /**
+     * Set expenseNumber
+     *
+     * @param string $expenseNumber
+     * @return Expense
+     */
+    public function setExpenseNumber($expenseNumber)
+    {
+        $this->expenseNumber = $expenseNumber;
+    
+        return $this;
+    }
+
+    /**
+     * Get expenseNumber
+     *
+     * @return string 
+     */
+    public function getExpenseNumber()
+    {
+        return $this->expenseNumber;
+    }
+
+    /**
+     * Set expenseRuc
+     *
+     * @param string $expenseRuc
+     * @return Expense
+     */
+    public function setExpenseRuc($expenseRuc)
+    {
+        $this->expenseRuc = $expenseRuc;
+    
+        return $this;
+    }
+
+    /**
+     * Get expenseRuc
+     *
+     * @return string 
+     */
+    public function getExpenseRuc()
+    {
+        return $this->expenseRuc;
+    }
+
+    /**
+     * Set expenseIva
+     *
+     * @param float $expenseIva
+     * @return Expense
+     */
+    public function setExpenseIva($expenseIva)
+    {
+        $this->expenseIva = $expenseIva;
+    
+        return $this;
+    }
+
+    /**
+     * Get expenseIva
+     *
+     * @return float 
+     */
+    public function getExpenseIva()
+    {
+        return $this->expenseIva;
+    }
+
+    /**
+     * Set expenseAddress
+     *
+     * @param string $expenseAddress
+     * @return Expense
+     */
+    public function setExpenseAddress($expenseAddress)
+    {
+        $this->expenseAddress = $expenseAddress;
+    
+        return $this;
+    }
+
+    /**
+     * Get expenseAddress
+     *
+     * @return string 
+     */
+    public function getExpenseAddress()
+    {
+        return $this->expenseAddress;
+    }
+
+    /**
+     * Set expensePhone
+     *
+     * @param string $expensePhone
+     * @return Expense
+     */
+    public function setExpensePhone($expensePhone)
+    {
+        $this->expensePhone = $expensePhone;
+    
+        return $this;
+    }
+
+    /**
+     * Get expensePhone
+     *
+     * @return string 
+     */
+    public function getExpensePhone()
+    {
+        return $this->expensePhone;
+    }
+
+    /**
+     * Set transaction
+     *
+     * @param \Payment\DataAccessBundle\Entity\Transaction $transaction
+     * @return Expense
+     */
+    public function setTransaction(\Payment\DataAccessBundle\Entity\Transaction $transaction = null)
+    {
+        $this->transaction = $transaction;
+    
+        return $this;
+    }
+
+    /**
+     * Get transaction
+     *
+     * @return \Payment\DataAccessBundle\Entity\Transaction 
+     */
+    public function getTransaction()
+    {
+        return $this->transaction;
+    }
+}
