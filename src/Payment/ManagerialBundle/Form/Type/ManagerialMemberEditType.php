@@ -6,14 +6,6 @@ use Doctrine\ORM\EntityRepository;
 
 class ManagerialMemberEditType extends AbstractType
 {
-	private $em;
-	
-	
-	public function __construct($entityManager)
-	{
-		$this->em          = $entityManager;		
-	}
-	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('id','hidden');
