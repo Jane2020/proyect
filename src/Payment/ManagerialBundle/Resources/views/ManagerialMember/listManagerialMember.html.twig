@@ -1,0 +1,174 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block title %}Directiva - {{ parent() }} {% endblock %}
+{% block javascripts %}
+ {{ parent() }}
+<script type="text/javascript" src="{{ asset('bundles/paymentmanagerialmember/js/managerialMember.js') }}"></script>
+<script type="text/javascript">
+  var form_id = "managerialMemberSearch";
+  var action_edit = "{{ path('_editManagerialMember') }}";
+  var action_publish = "{{ path('_activeManagerialMember') }}";
+
+  function submit_check(action)
+  {	
+          if (action == 'Edit')
+          {
+              document.form_check.action = action_edit;
+          } 
+          else 
+          {
+              if (action == 'Publish')
+              {
+              	document.form_check.publish.value = 1;
+              }
+              document.form_check.action = action_publish;                 
+           }
+          document.form_check.submit();
+  }
+  
+  function isChecked(isItChecked)
+  {
+        if (isItChecked == true)
+        {
+            document.form_check.boxchecked.value++;
+        }
+        else 
+        {
+        	document.form_check.boxchecked.value--;
+        }
+   }  
+loadEvents();
+    </script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}	
+{% block content %}
+    <br><br>
+    <table width="350" border="0" align="right" style="padding:5px;">
+        <tr>
+            <td style="text-align: center"><a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para editar');}else{ submit_check('Edit')}">
+                    <div id="button_edit"></div>Editar</a>
+            </td>
+            <td style="text-align: center"><a href="{{ path('_editManagerialMember') }}">
+                    <div id="button_new"></div>Nuevo</a>
+            </td>
+             <td style="text-align: center"><a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para activar');}else{if(confirm('Está seguro que desea activar el miembro de la directiva seleccionado?')){submit_check('Publish');}}">
+                    <div id="button_active"></div>Activar</a>
+            </td>
+
+
+
+            <td style="text-align: center"><a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para desactivar');}else{if(confirm('Está seguro que desea desactivar el miembro de la directiva seleccionado?')){submit_check('Unpublish');}}">
+                    <div id="button_deactivate"></div>Desactivar</a>
+            </td>
+         </tr>
+    </table>
+    <br>
+    <br>
+    <br>
+    {% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="flash-message">
+    {% autoescape false %}
+        {{ flashMessage|trans({}, 'FOSUserBundle') }}
+    {% endautoescape %}
+    </div><br>
+{% endfor %}
+
+{{ app.session.flashbag.set('message', '')}}
+
+<form action="{{ path('_listManagerialMember') }}" method="post" {{ form_enctype(form) }} id='managerialMemberSearch' name="managerialMemberSearch">
+	{{ form_errors(form) }}
+    <table class="tableSearch">
+		<tr>
+        	<td class="titleSearch">{{ form_label(form.name) }}</td>
+            <td >{{ form_widget(form.name, { 'attr': {'class': 'textoBuscar' } }) }}</td>
+            <td valign="top">
+				{{ form_widget(form.offset, { 'attr': {'value': '0'} }) }}  
+				{{ form_widget(form.limit, { 'attr': {'value': limit } }) }}  
+                <input type="submit" name="btsend" id="button_search" value='Buscar' />
+            </td>
+        </tr> 
+        <tr>
+		    <td colspan="3"><div class="error"></div></td>
+        </tr>
+        <tr>
+            <td></td><td>{{ form_errors(form.name) }}</td><td><br></td>
+        </tr>
+   </table>
+	{{ form_rest(form) }}
+</form>
+
+<form id='form_check' name='form_check' action='' method='post'>
+	<table id="tableListUser" >
+    	<tr>
+        	<th class="title">
+			</th>
+            <th class="title">
+                Nombre del Miembro
+            </th>
+            <th class="title">
+                Cargo
+            </th>
+            <th class="title_check">
+            	Nombre de Directiva
+            </th>
+            <th class="title">
+                Fecha de Inicio
+            </th>
+            <th class="title">
+                Fecha de Fin
+            </th>
+            <th class="title">
+                Activado
+        	</th>
+		</tr>
+{% set i = 1 %}
+{% for item in managerialMember %}
+        <tr>
+            <td class="content_table">
+            	<input type="checkbox" onclick="isChecked(this.checked);" value="{{ item.id }}" name="cid[]" id="cb{{ i }}">
+            </td>
+            <td class="content_table" >
+				{{ item.member.name }} {{ item.member.lastname }}
+           	</td>
+           	<td class="content_table">
+				{{ item.charge.name }}
+            </td >	
+            <td class="content_table">
+				{{ item.managerial.name }}
+            </td >            
+            <td class="content_table" >
+				{{ item.activationDate | date("Y-m-d") }}
+            </td>  
+            <td class="content_table" >
+				{{ item.desactivationDate | date("Y-m-d")}}
+            </td>  
+            <td align="center" class="content_table">
+				{% if item.isActive == 1 %} 
+					<img src="{{ asset('bundles/paymentsecurity/images/tick.png') }}" alt="Activo" />
+				{% else %} 
+                    <img src="{{ asset('bundles/paymentsecurity/images/publish.png') }}" alt="No activo" />
+				{% endif %}
+            </td>                                    
+		</tr>
+{% set i = i +1 %}
+{% endfor %}
+        <tr>
+		{% if  total==0 %}
+			<td colspan="6" align="center" class="content_table_left">
+            	No existen miembros de las directivas a mostrar
+           	</td>
+		{% endif %}
+        </tr>
+	</table>
+{% if total>10 %}
+    <table id="paginator" width="100%">
+    	<tr>
+        	<td align="center">
+				{% include 'PaymentApplicationBundle:Paginator:paginator.html.twig' %}
+            </td>	
+        </tr>
+	</table>
+{% endif %}
+    <input type="hidden" value="0" name="boxchecked">
+    <input type="hidden" value="0" name="publish">
+</form>
+{% endblock %}	
