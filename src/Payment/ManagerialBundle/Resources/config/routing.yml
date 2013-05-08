@@ -10,3 +10,12 @@ _editManagerial:
 _deleteManagerial:
     pattern:  /gestion-de-directivas/eliminacion
     defaults: { _controller: PaymentManagerialBundle:Managerial:deleteManagerial }
+_listManagerialMember:
+    pattern:  /gestion-de-miembros-directivas/listado
+    defaults: { _controller: PaymentManagerialBundle:ManagerialMember:listManagerialMember }  
+_activeManagerialMember:
+    pattern:  /gestion-de-miembros-directivas/activacion
+    defaults: { _controller: PaymentManagerialBundle:ManagerialMember:activeManagerialMember }
+_editManagerialMember:
+    pattern:  /gestion-de-miembros-directivas/edicion
+    defaults: { _controller: PaymentManagerialBundle:ManagerialMember:editManagerialMember }   
