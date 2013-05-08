@@ -1,0 +1,16 @@
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentapplication/css/chosen.css') }}" />
+<tr>
+<td>
+{{ form_label(form.account) }}
+</td>
+<td>
+{{ form_widget(form.account, { 'attr': {'class': 'chzn-select required', 'data-placeholder':'Numero..', 'style': 'width:100px;' } }) }} 
+</td>
+</tr>
+<script type="text/javascript" src="{{ asset('bundles/paymentapplication/js/chosen.jquery.js') }}"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+(function($) {
+	$(".chzn-select").chosen();
+	})(jQuery);
+</script>
