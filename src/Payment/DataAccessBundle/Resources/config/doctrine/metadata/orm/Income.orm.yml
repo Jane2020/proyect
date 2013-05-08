@@ -9,23 +9,21 @@ Income:
             nullable: false
             generator:
                 strategy: IDENTITY
+        amount:
+            type: decimal
+            nullable: false
+        basicServiceUnitCost:
+            type: decimal
+            nullable: false
+            column: basic_service_unit_cost
     manyToOne:
-        incomeType:
-            targetEntity: IncomeType
+        payment:
+            targetEntity: Payment
             cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:
-                income_type_id:
-                    referencedColumnName: id
-            orphanRemoval: false
-        transaction:
-            targetEntity: Transaction
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                transaction_id:
+                payment_id:
                     referencedColumnName: id
             orphanRemoval: false
         consumption:
@@ -37,13 +35,22 @@ Income:
                 consumption_id:
                     referencedColumnName: id
             orphanRemoval: false
-        fines:
-            targetEntity: Fines
+        transaction:
+            targetEntity: Transaction
             cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:
-                fines_id:
+                transaction_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        incomeType:
+            targetEntity: IncomeType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                income_type_id:
                     referencedColumnName: id
             orphanRemoval: false
         systemUser:

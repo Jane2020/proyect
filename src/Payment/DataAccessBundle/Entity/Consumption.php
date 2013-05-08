@@ -276,4 +276,172 @@ class Consumption
     {
         return $this->systemUserId;
     }
+    /**
+     * @var float
+     */
+    private $consumptionValue;
+
+    /**
+     * @var integer
+     */
+    private $meterCurrentReading;
+
+    /**
+     * @var integer
+     */
+    private $meterPreviousReadingId;
+
+    /**
+     * @var string
+     */
+    private $description;
+
+    /**
+     * @var integer
+     */
+    private $userId;
+
+    /**
+     * @var boolean
+     */
+    private $isDeleted;
+
+
+    /**
+     * Set consumptionValue
+     *
+     * @param float $consumptionValue
+     * @return Consumption
+     */
+    public function setConsumptionValue($consumptionValue)
+    {
+        $this->consumptionValue = $consumptionValue;
+    
+        return $this;
+    }
+
+    /**
+     * Get consumptionValue
+     *
+     * @return float 
+     */
+    public function getConsumptionValue()
+    {
+        return $this->consumptionValue;
+    }
+
+    /**
+     * Set meterCurrentReading
+     *
+     * @param integer $meterCurrentReading
+     * @return Consumption
+     */
+    public function setMeterCurrentReading($meterCurrentReading)
+    {
+        $this->meterCurrentReading = $meterCurrentReading;
+    
+        return $this;
+    }
+
+    /**
+     * Get meterCurrentReading
+     *
+     * @return integer 
+     */
+    public function getMeterCurrentReading()
+    {
+        return $this->meterCurrentReading;
+    }
+
+    /**
+     * Set meterPreviousReadingId
+     *
+     * @param integer $meterPreviousReadingId
+     * @return Consumption
+     */
+    public function setMeterPreviousReadingId($meterPreviousReadingId)
+    {
+        $this->meterPreviousReadingId = $meterPreviousReadingId;
+    
+        return $this;
+    }
+
+    /**
+     * Get meterPreviousReadingId
+     *
+     * @return integer 
+     */
+    public function getMeterPreviousReadingId()
+    {
+        return $this->meterPreviousReadingId;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Consumption
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set userId
+     *
+     * @param integer $userId
+     * @return Consumption
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+    
+        return $this;
+    }
+
+    /**
+     * Get userId
+     *
+     * @return integer 
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Set isDeleted
+     *
+     * @param boolean $isDeleted
+     * @return Consumption
+     */
+    public function setIsDeleted($isDeleted)
+    {
+        $this->isDeleted = $isDeleted;
+    
+        return $this;
+    }
+
+    /**
+     * Get isDeleted
+     *
+     * @return boolean 
+     */
+    public function getIsDeleted()
+    {
+        return $this->isDeleted;
+    }
 }

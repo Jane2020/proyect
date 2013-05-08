@@ -25,13 +25,13 @@ Account:
             nullable: false
             column: is_active
     manyToOne:
-        systemUser:
-            targetEntity: SystemUser
+        accountType:
+            targetEntity: AccountType
             cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:
-                system_user_id:
+                account_type_id:
                     referencedColumnName: id
             orphanRemoval: false
         member:
@@ -41,6 +41,15 @@ Account:
             inversedBy: null
             joinColumns:
                 member_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        systemUser:
+            targetEntity: SystemUser
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                system_user_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

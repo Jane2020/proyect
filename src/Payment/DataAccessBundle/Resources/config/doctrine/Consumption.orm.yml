@@ -10,10 +10,10 @@ Payment\DataAccessBundle\Entity\Consumption:
             nullable: false
             generator:
                 strategy: IDENTITY
-        costValue:
+        consumptionValue:
             type: decimal
             nullable: false
-            column: cost_value
+            column: consumption_value
         readDate:
             type: datetime
             nullable: false
@@ -22,16 +22,30 @@ Payment\DataAccessBundle\Entity\Consumption:
             type: datetime
             nullable: false
             column: system_date
+        meterCurrentReading:
+            type: bigint
+            nullable: false
+            column: 'meter_current _reading'
+        meterPreviousReadingId:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: meter_previous_reading_id
+        description:
+            type: string
+            length: 512
+            fixed: false
+            nullable: false
+        userId:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: user_id
+        isDeleted:
+            type: boolean
+            nullable: false
+            column: is_deleted
     manyToOne:
-        systemUser:
-            targetEntity: SystemUser
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                system_user_id:
-                    referencedColumnName: id
-            orphanRemoval: false
         account:
             targetEntity: Account
             cascade: {  }
@@ -41,13 +55,13 @@ Payment\DataAccessBundle\Entity\Consumption:
                 account_id:
                     referencedColumnName: id
             orphanRemoval: false
-        cost:
-            targetEntity: ServiceCost
+        systemUser:
+            targetEntity: SystemUser
             cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:
-                cost_id:
+                system_user_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

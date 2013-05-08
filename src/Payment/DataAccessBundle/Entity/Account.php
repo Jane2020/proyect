@@ -258,4 +258,32 @@ class Account
     {
         return $this->isActive;
     }
+    /**
+     * @var \Payment\DataAccessBundle\Entity\AccountType
+     */
+    private $accountType;
+
+
+    /**
+     * Set accountType
+     *
+     * @param \Payment\DataAccessBundle\Entity\AccountType $accountType
+     * @return Account
+     */
+    public function setAccountType(\Payment\DataAccessBundle\Entity\AccountType $accountType = null)
+    {
+        $this->accountType = $accountType;
+    
+        return $this;
+    }
+
+    /**
+     * Get accountType
+     *
+     * @return \Payment\DataAccessBundle\Entity\AccountType 
+     */
+    public function getAccountType()
+    {
+        return $this->accountType;
+    }
 }

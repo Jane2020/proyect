@@ -1,6 +1,5 @@
 Payment\DataAccessBundle\Entity\Charge:
     type: entity
-    repositoryClass: Payment\DataAccessBundle\Entity\ChargeRepository
     table: charge
     fields:
         id:

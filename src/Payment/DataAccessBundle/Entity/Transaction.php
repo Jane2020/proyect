@@ -248,4 +248,32 @@ class Transaction
     {
         return $this->systemUserId;
     }
+    /**
+     * @var integer
+     */
+    private $transcationReverseId;
+
+
+    /**
+     * Set transcationReverseId
+     *
+     * @param integer $transcationReverseId
+     * @return Transaction
+     */
+    public function setTranscationReverseId($transcationReverseId)
+    {
+        $this->transcationReverseId = $transcationReverseId;
+    
+        return $this;
+    }
+
+    /**
+     * Get transcationReverseId
+     *
+     * @return integer 
+     */
+    public function getTranscationReverseId()
+    {
+        return $this->transcationReverseId;
+    }
 }

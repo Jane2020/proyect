@@ -304,4 +304,116 @@ class Income
     {
         return $this->systemUserId;
     }
+    /**
+     * @var float
+     */
+    private $amount;
+
+    /**
+     * @var float
+     */
+    private $basicServiceUnitCost;
+
+    /**
+     * @var \Payment\DataAccessBundle\Entity\Payments
+     */
+    private $payments;
+
+
+    /**
+     * Set amount
+     *
+     * @param float $amount
+     * @return Income
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+    
+        return $this;
+    }
+
+    /**
+     * Get amount
+     *
+     * @return float 
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * Set basicServiceUnitCost
+     *
+     * @param float $basicServiceUnitCost
+     * @return Income
+     */
+    public function setBasicServiceUnitCost($basicServiceUnitCost)
+    {
+        $this->basicServiceUnitCost = $basicServiceUnitCost;
+    
+        return $this;
+    }
+
+    /**
+     * Get basicServiceUnitCost
+     *
+     * @return float 
+     */
+    public function getBasicServiceUnitCost()
+    {
+        return $this->basicServiceUnitCost;
+    }
+
+    /**
+     * Set payments
+     *
+     * @param \Payment\DataAccessBundle\Entity\Payments $payments
+     * @return Income
+     */
+    public function setPayments(\Payment\DataAccessBundle\Entity\Payments $payments = null)
+    {
+        $this->payments = $payments;
+    
+        return $this;
+    }
+
+    /**
+     * Get payments
+     *
+     * @return \Payment\DataAccessBundle\Entity\Payments 
+     */
+    public function getPayments()
+    {
+        return $this->payments;
+    }
+    /**
+     * @var \Payment\DataAccessBundle\Entity\Payment
+     */
+    private $payment;
+
+
+    /**
+     * Set payment
+     *
+     * @param \Payment\DataAccessBundle\Entity\Payment $payment
+     * @return Income
+     */
+    public function setPayment(\Payment\DataAccessBundle\Entity\Payment $payment = null)
+    {
+        $this->payment = $payment;
+    
+        return $this;
+    }
+
+    /**
+     * Get payment
+     *
+     * @return \Payment\DataAccessBundle\Entity\Payment 
+     */
+    public function getPayment()
+    {
+        return $this->payment;
+    }
 }

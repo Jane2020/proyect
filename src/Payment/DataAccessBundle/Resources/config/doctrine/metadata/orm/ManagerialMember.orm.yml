@@ -22,15 +22,6 @@ ManagerialMember:
             nullable: false
             column: is_active
     manyToOne:
-        managerial:
-            targetEntity: Managerial
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                managerial_id:
-                    referencedColumnName: id
-            orphanRemoval: false
         charge:
             targetEntity: Charge
             cascade: {  }
@@ -38,6 +29,15 @@ ManagerialMember:
             inversedBy: null
             joinColumns:
                 charge_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        managerial:
+            targetEntity: Managerial
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                managerial_id:
                     referencedColumnName: id
             orphanRemoval: false
         member:

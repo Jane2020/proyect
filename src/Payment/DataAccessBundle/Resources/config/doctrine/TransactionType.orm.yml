@@ -1,6 +1,5 @@
 Payment\DataAccessBundle\Entity\TransactionType:
     type: entity
-    repositoryClass: Payment\DataAccessBundle\Entity\TransactionTypeRepository
     table: transaction_type
     fields:
         id:
