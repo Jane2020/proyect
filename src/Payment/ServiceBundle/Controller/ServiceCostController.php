@@ -14,7 +14,7 @@ use Payment\ServiceBundle\Form\Type\ServiceCostEditType;
 
 class ServiceCostController extends Controller
 {
-	const LIMIT_PAGINATOR = 30;
+	const LIMIT_PAGINATOR = 10;
 	
 	/**
 	 * @Template()
