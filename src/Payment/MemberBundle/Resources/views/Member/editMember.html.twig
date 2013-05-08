@@ -12,7 +12,7 @@
  <script type="text/javascript">
  $(function() 
  {
-	$( "#memberEdit_birthDate" ).datepicker({dateFormat: "dd-mm-yy",  changeMonth: true,
+	$( "#memberEdit_birthDate" ).datepicker({dateFormat: "yy-mm-dd",  changeMonth: true,
 		changeYear: true});
  });
 
@@ -133,7 +133,7 @@
 		</tr>
 		<tr>
 			<td class="title" valign="top">{{ form_label(form.birthDate) }}</td>
-			<td>{{ form_widget(form.birthDate) }} </td>
+			<td>{{ form_widget(form.birthDate)}} </td>			
 		</tr>  
 		<tr>
 			<td class="title" valign="top">{{ form_label(form.address) }}</td>

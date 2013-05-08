@@ -74,7 +74,8 @@ class MemberController extends Controller
 	/**
 	 * Secure(roles="ROLE_ADMIN")
 	 */
-	public function activeMemberAction(Request $request) {
+	public function activeMemberAction(Request $request) 
+	{
 		return $this->actionToMember($request);
 	}
 
@@ -82,39 +83,45 @@ class MemberController extends Controller
 	 * @Template()
 	 * Secure(roles="ROLE_ADMIN")
 	 */
-	public function editMemberAction(Request $request) {
+	public function editMemberAction(Request $request) 
+	{
 		$title = "Edición";
 		$memberId = $request->request->get('cid', 0);
-		if (is_array($memberId)) {
+		if (is_array($memberId)) 
+		{
 			$memberId = $memberId[0];
 		}
 		$em = $this->getDoctrine()->getManager();
-		if ($memberId > 0) {
-			$member = $em->getRepository('PaymentDataAccessBundle:Member')
-					->find($memberId);
-		} else {
+		if ($memberId > 0) 
+		{
+			$member = $em->getRepository('PaymentDataAccessBundle:Member')->find($memberId);
+			$member->setBirthDate($member->getBirthDate()->format('Y-m-d'));
+		}
+		else 
+		{
 			$member = new Member();
 			$title = "Creación";
 		}
-
+		
 		$memberForm = $this->createForm(new MemberEditType(), $member);
 
-		if ($request->getMethod() == 'POST') {
+		if ($request->getMethod() == 'POST') 
+		{
 			$band = $request->request->get('band', 0);
-			if ($band != 0) {
+			if ($band != 0) 
+			{
 				$memberForm->bind($request);
-				if ($memberForm->isValid()) {
+				if ($memberForm->isValid()) 
+				{
+					$member->setBirthDate(new \DateTime($member->getBirthDate()));
 					$em->persist($member);
 					$em->flush();
-					$this->get('session')->getFlashBag()
-							->add('message',
-									'El Item ha sido almacenado &eacute;xitosamente.');
+					$this->get('session')->getFlashBag()->add('message','El Item ha sido almacenado &eacute;xitosamente.');
 					return $this->redirect($this->generateUrl('_listMember'));
 				}
 			}
 		}
-		return array('form' => $memberForm->createView(), 'title' => $title,
-				'cid' => $memberId);
+		return array('form' => $memberForm->createView(), 'title' => $title,'cid' => $memberId);
 	}
 
 	private function actionToMember(Request $request, $active = true) 
