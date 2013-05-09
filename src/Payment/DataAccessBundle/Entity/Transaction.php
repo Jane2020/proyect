@@ -276,4 +276,32 @@ class Transaction
     {
         return $this->transcationReverseId;
     }
+    /**
+     * @var \Payment\DataAccessBundle\Entity\Transaction
+     */
+    private $transcationReverse;
+
+
+    /**
+     * Set transcationReverse
+     *
+     * @param \Payment\DataAccessBundle\Entity\Transaction $transcationReverse
+     * @return Transaction
+     */
+    public function setTranscationReverse(\Payment\DataAccessBundle\Entity\Transaction $transcationReverse = null)
+    {
+        $this->transcationReverse = $transcationReverse;
+    
+        return $this;
+    }
+
+    /**
+     * Get transcationReverse
+     *
+     * @return \Payment\DataAccessBundle\Entity\Transaction 
+     */
+    public function getTranscationReverse()
+    {
+        return $this->transcationReverse;
+    }
 }

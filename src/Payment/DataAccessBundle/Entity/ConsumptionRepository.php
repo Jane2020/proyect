@@ -12,4 +12,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class ConsumptionRepository extends EntityRepository
 {
+	public function findconsumptionByNameToList($consumptionSelect, $offset, $limit, $count = true) {
+	
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('c');
+		if ($count) {
+			$queryBuilder->add('select', $queryBuilder->expr()->count('c.id'));
+		} else {
+			$queryBuilder->add('select', 'c');
+			$queryBuilder->orderBy('c.id','DESC');
+			$queryBuilder->setFirstResult($offset);
+			$queryBuilder->setMaxResults($limit);
+		}
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Consumption c');
+		$queryBuilder->Where('c.isDeleted = 0');
+		if ($consumptionSelect != null) {
+			$queryBuilder->andWhere('c.account = ?1');
+			$queryBuilder->setParameter(1, $consumptionSelect);	
+		}
+		
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;
+	}
 }

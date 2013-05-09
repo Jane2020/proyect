@@ -35,4 +35,8 @@ Parameter:
             fixed: false
             nullable: false
             column: rex_type
+        isActive:
+            type: boolean
+            nullable: false
+            column: is_active
     lifecycleCallbacks: {  }

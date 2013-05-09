@@ -17,12 +17,16 @@ Transaction:
             type: datetime
             nullable: false
             column: system_date
-        transcationReverseId:
-            type: integer
-            unsigned: false
-            nullable: true
-            column: transcation_reverse_id
     manyToOne:
+        transcationReverse:
+            targetEntity: Transaction
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                transcation_reverse_id:
+                    referencedColumnName: id
+            orphanRemoval: false
         managerial:
             targetEntity: Managerial
             cascade: {  }

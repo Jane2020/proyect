@@ -248,4 +248,32 @@ class Payment
     {
         return $this->paymentType;
     }
+    /**
+     * @var \Payment\DataAccessBundle\Entity\SystemUser
+     */
+    private $changeUser;
+
+
+    /**
+     * Set changeUser
+     *
+     * @param \Payment\DataAccessBundle\Entity\SystemUser $changeUser
+     * @return Payment
+     */
+    public function setChangeUser(\Payment\DataAccessBundle\Entity\SystemUser $changeUser = null)
+    {
+        $this->changeUser = $changeUser;
+    
+        return $this;
+    }
+
+    /**
+     * Get changeUser
+     *
+     * @return \Payment\DataAccessBundle\Entity\SystemUser 
+     */
+    public function getChangeUser()
+    {
+        return $this->changeUser;
+    }
 }

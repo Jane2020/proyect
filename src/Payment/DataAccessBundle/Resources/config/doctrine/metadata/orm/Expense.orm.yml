@@ -25,12 +25,7 @@ Expense:
             type: string
             length: 512
             fixed: false
-            nullable: false
-        userId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: user_id
+            nullable: true
         isDeleted:
             type: boolean
             nullable: true
@@ -61,7 +56,7 @@ Expense:
             type: string
             length: 512
             fixed: false
-            nullable: true
+            nullable: false
             column: expense_address
         expensePhone:
             type: string
@@ -77,6 +72,24 @@ Expense:
             inversedBy: null
             joinColumns:
                 transaction_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        changeUser:
+            targetEntity: SystemUser
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                change_user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        systemUser:
+            targetEntity: SystemUser
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                system_user_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

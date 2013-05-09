@@ -388,4 +388,60 @@ class Expense
     {
         return $this->transaction;
     }
+    /**
+     * @var \Payment\DataAccessBundle\Entity\SystemUser
+     */
+    private $changeUser;
+
+    /**
+     * @var \Payment\DataAccessBundle\Entity\SystemUser
+     */
+    private $systemUser;
+
+
+    /**
+     * Set changeUser
+     *
+     * @param \Payment\DataAccessBundle\Entity\SystemUser $changeUser
+     * @return Expense
+     */
+    public function setChangeUser(\Payment\DataAccessBundle\Entity\SystemUser $changeUser = null)
+    {
+        $this->changeUser = $changeUser;
+    
+        return $this;
+    }
+
+    /**
+     * Get changeUser
+     *
+     * @return \Payment\DataAccessBundle\Entity\SystemUser 
+     */
+    public function getChangeUser()
+    {
+        return $this->changeUser;
+    }
+
+    /**
+     * Set systemUser
+     *
+     * @param \Payment\DataAccessBundle\Entity\SystemUser $systemUser
+     * @return Expense
+     */
+    public function setSystemUser(\Payment\DataAccessBundle\Entity\SystemUser $systemUser = null)
+    {
+        $this->systemUser = $systemUser;
+    
+        return $this;
+    }
+
+    /**
+     * Get systemUser
+     *
+     * @return \Payment\DataAccessBundle\Entity\SystemUser 
+     */
+    public function getSystemUser()
+    {
+        return $this->systemUser;
+    }
 }

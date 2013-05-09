@@ -164,4 +164,32 @@ class Parameter
     {
         return $this->rexType;
     }
+    /**
+     * @var boolean
+     */
+    private $isActive;
+
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return Parameter
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+    
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean 
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
 }

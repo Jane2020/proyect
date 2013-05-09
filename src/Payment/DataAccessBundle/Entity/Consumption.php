@@ -444,4 +444,60 @@ class Consumption
     {
         return $this->isDeleted;
     }
+    /**
+     * @var \Payment\DataAccessBundle\Entity\SystemUser
+     */
+    private $changeUser;
+
+    /**
+     * @var \Payment\DataAccessBundle\Entity\Consumption
+     */
+    private $meterPreviousReading;
+
+
+    /**
+     * Set changeUser
+     *
+     * @param \Payment\DataAccessBundle\Entity\SystemUser $changeUser
+     * @return Consumption
+     */
+    public function setChangeUser(\Payment\DataAccessBundle\Entity\SystemUser $changeUser = null)
+    {
+        $this->changeUser = $changeUser;
+    
+        return $this;
+    }
+
+    /**
+     * Get changeUser
+     *
+     * @return \Payment\DataAccessBundle\Entity\SystemUser 
+     */
+    public function getChangeUser()
+    {
+        return $this->changeUser;
+    }
+
+    /**
+     * Set meterPreviousReading
+     *
+     * @param \Payment\DataAccessBundle\Entity\Consumption $meterPreviousReading
+     * @return Consumption
+     */
+    public function setMeterPreviousReading(\Payment\DataAccessBundle\Entity\Consumption $meterPreviousReading = null)
+    {
+        $this->meterPreviousReading = $meterPreviousReading;
+    
+        return $this;
+    }
+
+    /**
+     * Get meterPreviousReading
+     *
+     * @return \Payment\DataAccessBundle\Entity\Consumption 
+     */
+    public function getMeterPreviousReading()
+    {
+        return $this->meterPreviousReading;
+    }
 }

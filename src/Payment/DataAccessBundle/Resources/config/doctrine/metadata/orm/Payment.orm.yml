@@ -18,26 +18,21 @@ Payment:
             column: payment_date
         isDeleted:
             type: boolean
-            nullable: false
+            nullable: true
             column: is_deleted
         description:
             type: string
             length: 256
             fixed: false
-            nullable: false
-        userId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: user_id
+            nullable: true
     manyToOne:
-        systemUser:
+        changeUser:
             targetEntity: SystemUser
             cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:
-                system_user_id:
+                change_user_id:
                     referencedColumnName: id
             orphanRemoval: false
         member:
@@ -56,6 +51,15 @@ Payment:
             inversedBy: null
             joinColumns:
                 payment_type_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        systemUser:
+            targetEntity: SystemUser
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                system_user_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

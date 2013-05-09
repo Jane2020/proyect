@@ -24,27 +24,26 @@ Consumption:
         meterCurrentReading:
             type: bigint
             nullable: false
-            column: 'meter_current _reading'
-        meterPreviousReadingId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: meter_previous_reading_id
+            column: meter_current_reading
         description:
             type: string
             length: 512
             fixed: false
-            nullable: false
-        userId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: user_id
+            nullable: true
         isDeleted:
             type: boolean
-            nullable: false
+            nullable: true
             column: is_deleted
     manyToOne:
+        changeUser:
+            targetEntity: SystemUser
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                change_user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
         account:
             targetEntity: Account
             cascade: {  }
@@ -52,6 +51,15 @@ Consumption:
             inversedBy: null
             joinColumns:
                 account_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        meterPreviousReading:
+            targetEntity: Consumption
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                meter_previous_reading_id:
                     referencedColumnName: id
             orphanRemoval: false
         systemUser:
