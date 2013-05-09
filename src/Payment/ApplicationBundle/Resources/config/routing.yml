@@ -4,4 +4,8 @@ home:
 
 modal:
     pattern:  /modal
-    defaults: { _controller: PaymentApplicationBundle:Default:modal }    
+    defaults: { _controller: PaymentApplicationBundle:Default:modal }  
+
+menu:
+    pattern:  /menu
+    defaults: { _controller: PaymentApplicationBundle:Default:generalMenu }          
