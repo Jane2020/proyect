@@ -75,4 +75,14 @@ class DefaultController extends Controller
 		$paginator = new Paginator($memberTypeForm->getName(), $total, $offset,	$limit);
 		return array('form' => $memberTypeForm->createView(), 'limit' => $limit, 'total' => $total, 'member' => $member, 'paginator' => $paginator, 'formName' => $formName);
 	}
+	
+	/**
+	 * @Template()
+	 *
+	 */
+	public function generalMenuAction(Request $request)
+	{
+		$parentMenu = $this->getDoctrine()->getRepository('PaymentDataAccessBundle:NavigationItem')->getMenus(0);
+		return array('parentMenu'=>$parentMenu);
+	}
 }
