@@ -21,6 +21,14 @@ class Consumption
 
     /**
      * @var \DateTime
+     * 
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese la Fecha de lectura."
+     * )
+     * 
+     * @Assert\Regex(
+     *     pattern = "/^\d{2,4}\-\d{1,2}\-\d{1,2}$/",
+     *     message = "Valor de Fecha de lectura es incorrecto."
      */
     private $readDate;
 
@@ -283,6 +291,15 @@ class Consumption
 
     /**
      * @var integer
+     * 
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese la lectura del medidor."
+     * )
+     *
+     * @Assert\Regex(
+     *     pattern = "/^[0-9]{11}$/",
+     *     message = "Valor de la lectura del medidor es incorrecto."
+     * )
      */
     private $meterCurrentReading;
 
@@ -293,6 +310,11 @@ class Consumption
 
     /**
      * @var string
+     * 
+      * @Assert\Regex(
+     *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\@\/]+$/",
+     *     message = "Valor de la descripcion es incorrecto."
+     * )
      */
     private $description;
 

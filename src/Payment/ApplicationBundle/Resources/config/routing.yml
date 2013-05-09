@@ -5,3 +5,7 @@ home:
 modal:
     pattern:  /modal
     defaults: { _controller: PaymentApplicationBundle:Default:modal }    
+
+deleteItem:
+    pattern:  /delete/delete-item
+    defaults: { _controller: PaymentApplicationBundle:Default:deleteItem }

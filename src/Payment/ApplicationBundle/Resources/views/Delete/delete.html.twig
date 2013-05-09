@@ -1,0 +1,15 @@
+<p id="message_error" class="validateTips" style="font-size: 62.5%;"></p>
+
+<form id="dialog-form-exec" name="dialog-form-exec" action="{{ path(link) }}" method="post">
+    <table style="width: 100%">
+        <tr>
+            <td>Observaciones:</td>
+        </tr>
+        <tr>
+            <td><textarea id="remark" name="remark" rows="6" cols="29"/></td>    
+        </tr>   
+        <tr>
+            <td><input type="hidden" name="cid" value="{{ cid }}"/></td>
+        </tr>
+    </table>
+</form>

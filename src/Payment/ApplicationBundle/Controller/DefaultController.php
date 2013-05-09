@@ -75,4 +75,19 @@ class DefaultController extends Controller
 		$paginator = new Paginator($memberTypeForm->getName(), $total, $offset,	$limit);
 		return array('form' => $memberTypeForm->createView(), 'limit' => $limit, 'total' => $total, 'member' => $member, 'paginator' => $paginator, 'formName' => $formName);
 	}
+	
+	/**
+     * 
+     * @Template
+	 *
+     */
+    public function deleteItemAction()
+    {
+        $req = $this->getRequest();
+        $cid = $req->get('cid', 1);
+		$link = $req->get('link');
+        return $this->render("PaymentApplicationBundle:Delete:delete.html.twig", array('cid' => $cid, 'link' => $link));
+    }
+
+
 }
