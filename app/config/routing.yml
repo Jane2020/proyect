@@ -1,3 +1,7 @@
+payment_payment:
+    resource: "@PaymentPaymentBundle/Resources/config/routing.yml"
+    prefix:   /
+
 payment_meter:
     resource: "@PaymentMeterBundle/Resources/config/routing.yml"
     prefix:   /
@@ -12,10 +16,6 @@ payment_managerial:
 
 payment_service:
     resource: "@PaymentServiceBundle/Resources/config/routing.yml"
-    prefix:   /
-
-payment_fines:
-    resource: "@PaymentFinesBundle/Resources/config/routing.yml"
     prefix:   /
 
 payment_application:
