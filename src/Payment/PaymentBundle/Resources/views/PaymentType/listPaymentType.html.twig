@@ -1,0 +1,180 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block title %}Usuarios - {{ parent() }} {% endblock %}
+{% block javascripts %}
+ {{ parent() }}
+<script type="text/javascript" src="{{ asset('bundles/paymentfines/js/paymentType.js') }}"></script>
+<script type="text/javascript">
+ 
+  var form_id = "finesTypeSearch";
+  var action_edit = "{{ path('_editPaymentType') }}";
+  var action_delete = "{{ path('_deletePaymentType') }}";
+  var action_publish = "{{ path('_activePaymentType') }}";
+
+  function submit_check(action)
+  {	
+          if (action == 'Edit')
+          {
+              document.form_check.action = action_edit;
+           } else {
+                  if (action == 'Remove')
+                  {
+                          document.form_check.action = action_delete;
+                  } else {
+                          if (action == 'Publish')
+                          {
+                                  document.form_check.publish.value = 1;
+                          }
+                          document.form_check.action = action_publish; 
+                  }
+           }
+          document.form_check.submit();
+  }
+  
+function isChecked(isItChecked){
+        if (isItChecked == true){
+                document.form_check.boxchecked.value++;
+        }
+        else {
+        document.form_check.boxchecked.value--;
+        }
+}  
+loadEvents();
+    </script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}	
+
+{% block content %}
+
+    <br><br>
+
+    <table width="350" border="0" align="right" style="padding:5px;">
+        <tr>
+
+
+            <td style="text-align: center"><a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para editar');}else{ submit_check('Edit')}">
+                    <div id="button_edit"></div>Editar</a>
+            </td>
+            <td style="text-align: center"><a href="{{ path('_editPaymentType') }}">
+                    <div id="button_new"></div>Nuevo</a>
+            </td>
+             <td style="text-align: center"><a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para activar');}else{if(confirm('Está seguro que desea activar el pago seleccionado?')){submit_check('Publish');}}">
+                    <div id="button_active"></div>Activar</a>
+            </td>
+
+
+
+            <td style="text-align: center"><a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para desactivar');}else{if(confirm('Está seguro que desea desactivar el pago seleccionado?')){submit_check('Unpublish');}}">
+                    <div id="button_deactivate"></div>Desactivar</a>
+            </td>
+            
+           <td style="text-align: center"><a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para eliminar');}else{if(confirm('Está seguro que desea eliminar el pago seleccionado?')){submit_check('Remove');}}">
+                    <div id="button_delete"></div>Eliminar</a>
+            </td>
+         </tr>
+    </table>
+
+    <br>
+    <br>
+    <br>
+    
+    {% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="flash-message">
+    {% autoescape false %}
+        {{ flashMessage|trans({}, 'FOSUserBundle') }}
+    {% endautoescape %}
+    </div><br>
+{% endfor %}
+
+{{ app.session.flashbag.set('message', '')}}
+
+<form action="{{ path('_listPaymentType') }}" method="post" {{ form_enctype(form) }} id='paymentTypeSearch' name="paymentTypeSearch">
+	{{ form_errors(form) }}
+                <table class="tableSearch">
+                    <tr>
+                        <td class="titleSearch">{{ form_label(form.name) }}</td>
+                        <td >{{ form_widget(form.name, { 'attr': {'class': 'textoBuscar' } }) }}</td>
+                        <td valign="top">
+	{{ form_widget(form.offset, { 'attr': {'value': '0'} }) }}  
+	{{ form_widget(form.limit, { 'attr': {'value': limit } }) }}  
+
+                                <input type="submit" name="btsend" id="button_search" value='Buscar' />
+                            </td>
+                        </tr> 
+                        <tr>
+                            <td colspan="3"><div class="error"></div></td>
+                        </tr>
+                        <tr>
+                            <td></td><td>{{ form_errors(form.name) }}</td><td><br></td></tr>
+                    </table>
+{{ form_rest(form) }}
+                </form>
+
+                <form id='form_check' name='form_check' action='' method='post'>
+                    <table id="tableListUser" >
+                        <tr>
+                            <th class="title">
+
+                            </th>
+                            <th class="title_check">
+                                Tipo de Pago
+                            </th>
+
+                            <th class="title">
+                                Descripci&oacute;n
+                            </th>
+                            <th class="title">
+                                Valor
+                            </th>
+                            <th class="title">
+                                Activado
+                            </th>
+                        </tr>
+{% set i = 1 %}
+{% for item in paymentType %}
+                        <tr>
+
+                            <td class="content_table">
+                                <input type="checkbox" onclick="isChecked(this.checked);" value="{{ item.id }}" name="cid[]" id="cb{{ i }}">
+                            </td>
+                            <td class="content_table" >
+		{{ item.name }}
+                                </td>
+                                <td class="content_table">
+		{{ item.description }}
+                                    </td >	
+                                    <td class="content_table" >
+		{{ item.cost }}
+                                        </td>  
+                                        <td align="center" class="content_table">
+		{% if item.isActive == 1 %} <img src="{{ asset('bundles/paymentsecurity/images/tick.png') }}" alt="Activo" />
+		{% else %} 
+                                                    <img src="{{ asset('bundles/paymentsecurity/images/publish.png') }}" alt="No activo" />
+		{% endif %}
+                                                </td>                                    
+                                            </tr>
+{% set i = i +1 %}
+{% endfor %}
+                                            <tr>
+	{% if  total==0 %}
+                                                    <td colspan="6" align="center" class="content_table_left">
+                                                        No existen usuarios a mostrar
+                                                    </td>
+	{% endif %}
+
+                                                </tr>
+                                            </table>
+
+{% if total>10 %}
+                                            <table id="paginator" width="100%">
+                                                <tr>
+                                                    <td align="center">
+			{% include 'PaymentApplicationBundle:Paginator:paginator.html.twig' %}
+                                                        </td>	
+
+                                                    </tr>
+                                                </table>
+{% endif %}
+                                                <input type="hidden" value="0" name="boxchecked">
+                                                <input type="hidden" value="0" name="publish">
+                                            </form>
+{% endblock %}	

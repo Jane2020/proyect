@@ -12,4 +12,31 @@ use Doctrine\ORM\EntityRepository;
  */
 class PaymentRepository extends EntityRepository
 {
+	public function findPaymentTypeByNameToList($finesTypeText, $offset, $limit, $count = true)
+	{
+	
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('ft');
+		if ($count) {
+			$queryBuilder->add('select', $queryBuilder->expr()->count('ft.id'));
+		} else {
+			$queryBuilder->add('select', 'ft');
+			$queryBuilder->orderBy('ft.name');
+			$queryBuilder->setFirstResult($offset);
+			$queryBuilder->setMaxResults($limit);
+		}
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:PaymentType ft');
+			
+		if ($finesTypeText != null) {
+			$finesTypeText = str_replace(' ', '%', $finesTypeText);
+			$finesTypeText = '%' . strtolower($finesTypeText) . '%';
+			$queryBuilder->andWhere(
+					$queryBuilder->expr()->like($queryBuilder->expr()->lower('ft.name'), '?1')
+			);
+			$queryBuilder->setParameter(1, $finesTypeText);
+	
+		}
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;
+	}
 }

@@ -1,0 +1,12 @@
+_listPaymentType:
+    pattern:  /gestion-de-tipo-pagos/listado
+    defaults: { _controller: PaymentPaymentBundle:PaymentType:listPaymentType }
+_activePaymentType:
+    pattern:  /gestion-de-tipo-pagos/activacion
+    defaults: { _controller: PaymentPaymentBundle:PaymentType:activePaymentType }
+_editPaymentType:
+    pattern:  /gestion-de-tipo-pagos/edicion
+    defaults: { _controller: PaymentPaymentBundle:PaymentType:editPaymentType }
+_deletePaymentType:
+    pattern:  /gestion-de-tipo-pagos/eliminacion
+    defaults: { _controller: PaymentPaymentBundle:PaymentType:deletePaymentType }

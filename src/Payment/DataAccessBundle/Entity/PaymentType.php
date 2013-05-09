@@ -36,6 +36,18 @@ class PaymentType
 
 
     /**
+     * Set id
+     *
+     * @param string $id
+     * @return PaymentType
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+    
+    /**
      * Get id
      *
      * @return integer 

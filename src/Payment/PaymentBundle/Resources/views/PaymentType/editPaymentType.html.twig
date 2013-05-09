@@ -1,0 +1,62 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block title %}{{ title }} Tipo de Multa - {{ parent() }} {% endblock %}
+{% block javascripts %}
+ {{ parent() }}
+ <script type="text/javascript" src="{{ asset('bundles/paymentpayment/js/paymentType.js') }}"></script>
+<script type="text/javascript">
+loadEvents();
+</script>
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}
+
+{% block content %}
+{{ title }} Tipo de Pago
+<form action="{{ path('_editPaymentType') }}" method="post" {{ form_enctype(form) }} id="paymentTypeEdit" name="paymentTypeEdit">
+<div id="contentLeft">
+ {% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="flash-message">
+     {% autoescape false %}
+        {{ flashMessage|trans({}, 'FOSUserBundle') }}
+     {% endautoescape %}
+    </div><br>
+{% endfor %}
+
+{{ app.session.flashbag.set('message', '')}}
+
+{{ form_errors(form.name) }}
+{{ form_errors(form.description) }}
+{{ form_errors(form.cost) }}
+{{ form_errors(form) }}
+&nbsp;
+</div>
+<div id="contentRight">
+<table id="tableEditUser">
+<td class="title" valign="top">{{ form_label(form.name) }}</td>
+<td>{{ form_widget(form.name, { 'attr': {'class': 'required'} }) }} </td>
+</tr>
+<tr>
+<td class="title" valign="top">{{ form_label(form.description) }}</td>
+<td>{{ form_widget(form.description, { 'attr': {'row': '15', 'cols':'30'} }) }} </td>
+</tr>  
+<tr>
+<td class="title" valign="top">{{ form_label(form.cost) }}</td>
+<td>{{ form_widget(form.cost) }} </td>
+</tr>
+<tr>
+<td class="title" valign="top">{{ form_label(form.isActive) }}</td>
+<td>{{ form_widget(form.isActive) }}  </td>
+</tr>
+<tr>
+
+<td height="50px;" align="right" valign="bottom">
+ <input type="submit" value="Guardar" name="btsend" id="button_enter"/>
+ <input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listPaymentType') }}'"/>
+</td>
+</tr>
+</table>
+<input type="hidden" name="band" value="1">
+<input type="hidden" name="cid" value="{{ cid }}">
+{{ form_rest(form) }}
+</form>
+</div>
+{% endblock %}
