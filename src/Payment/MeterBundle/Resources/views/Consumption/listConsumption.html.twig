@@ -72,12 +72,15 @@ loadEvents();
 	{{ form_errors(form) }}
                 <table class="tableSearch">
                     <tr>
-                        {% include 'PaymentApplicationBundle:Finder:finder.html.twig' %}
+                    {% set required = 1 %}
+                    {% include 'PaymentApplicationBundle:Finder:finder.html.twig' %}
                         <td valign="top">
 	{{ form_widget(form.offset, { 'attr': {'value': '0'} }) }}  
 	{{ form_widget(form.limit, { 'attr': {'value': limit } }) }}  
 
                                 <input type="submit" name="btsend" id="button_search" value='Buscar' />
+                                &nbsp;
+                                <input type="button" name="button" id="button_search" value='Resetear' onclick="document.consumptionSearch.consumptionSearch_account.value = ''; document.consumptionSearch.submit();"/>
                             </td>
                         </tr> 
                         <tr>

@@ -1,10 +1,13 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentapplication/css/chosen.css') }}" />
-
+{% set class = 'chzn-select ' %}
+{% if (required == 1)   %}
+{% set class = 'chzn-select required' %}
+{% endif %}
 <td>
 {{ form_label(form.account) }}
 </td>
 <td>
-{{ form_widget(form.account, { 'attr': {'class': 'chzn-select required', 'data-placeholder':'Numero..', 'style': 'width:100px;' } }) }} 
+{{ form_widget(form.account, { 'attr': {'class': class, 'data-placeholder':'Numero..', 'style': 'width:100px;' } }) }} 
 </td>
 
 <script type="text/javascript" src="{{ asset('bundles/paymentapplication/js/chosen.jquery.js') }}"></script>

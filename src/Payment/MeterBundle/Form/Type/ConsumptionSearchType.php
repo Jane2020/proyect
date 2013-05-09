@@ -17,7 +17,8 @@ class ConsumptionSearchType extends AbstractType
     			},
     			'property' => 'accountNumber',
     			'empty_value' => '',
-    			'label' => '# Conexión'
+    			'label' => '# Conexión',
+    			'required' => false,    				
 	));
 		
 		$builder->add('offset','hidden');
