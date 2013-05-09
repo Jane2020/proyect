@@ -1,6 +1,6 @@
 Payment\DataAccessBundle\Entity\Transaction:
     type: entity
-    repositoryClass: Payment\DataAccessBundle\Entity\TransactionRepository
+    repositoryClass:  Payment\DataAccessBundle\Repository\TransactionRepository
     table: transaction
     fields:
         id:
@@ -19,15 +19,6 @@ Payment\DataAccessBundle\Entity\Transaction:
             nullable: false
             column: system_date
     manyToOne:
-        transcationReverse:
-            targetEntity: Transaction
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                transcation_reverse_id:
-                    referencedColumnName: id
-            orphanRemoval: false
         managerial:
             targetEntity: Managerial
             cascade: {  }
@@ -35,6 +26,15 @@ Payment\DataAccessBundle\Entity\Transaction:
             inversedBy: null
             joinColumns:
                 managerial_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        transcationReverse:
+            targetEntity: Transaction
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                transcation_reverse_id:
                     referencedColumnName: id
             orphanRemoval: false
         transactionType:

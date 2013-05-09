@@ -1,6 +1,6 @@
 Payment\DataAccessBundle\Entity\Consumption:
     type: entity
-    repositoryClass: Payment\DataAccessBundle\Entity\ConsumptionRepository
+    repositoryClass:  Payment\DataAccessBundle\Repository\ConsumptionRepository
     table: consumption
     fields:
         id:
@@ -36,15 +36,6 @@ Payment\DataAccessBundle\Entity\Consumption:
             nullable: true
             column: is_deleted
     manyToOne:
-        changeUser:
-            targetEntity: SystemUser
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                change_user_id:
-                    referencedColumnName: id
-            orphanRemoval: false
         account:
             targetEntity: Account
             cascade: {  }
@@ -52,6 +43,15 @@ Payment\DataAccessBundle\Entity\Consumption:
             inversedBy: null
             joinColumns:
                 account_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        changeUser:
+            targetEntity: SystemUser
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                change_user_id:
                     referencedColumnName: id
             orphanRemoval: false
         meterPreviousReading:

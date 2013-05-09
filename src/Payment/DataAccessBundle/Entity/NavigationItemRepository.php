@@ -12,4 +12,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class NavigationItemRepository extends EntityRepository
 {
+	
+	/**
+	 * Función que devuelve todos los items para el menú
+	 *
+	 * @param int $level  Nivel del Menú
+	 * @param int $parentId Identificador del Padre del Menú
+	 * @param string $sc security
+	 *
+	 */
+	public function getMenus($parentId)
+	{
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('n');
+		$queryBuilder->add('select', 'n');
+		$queryBuilder->orderBy('n.ordering');
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:NavigationItem n');
+		$queryBuilder->andWhere($queryBuilder->expr()->eq('n.isActive', '1')); 
+				//	$queryBuilder->expr()->eq('n.roles', '2'),
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;
+	}	
 }

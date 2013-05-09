@@ -1,6 +1,6 @@
 Payment\DataAccessBundle\Entity\Parameter:
     type: entity
-    repositoryClass: Payment\DataAccessBundle\Entity\ParameterRepository
+    repositoryClass:  Payment\DataAccessBundle\Repository\ParameterRepository
     table: parameter
     fields:
         id:

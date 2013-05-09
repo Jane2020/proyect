@@ -12,11 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class PaymentRepository extends EntityRepository
 {
-	public function findPaymentTypeByNameToList($finesTypeText, $offset, $limit, $count = true)
+	public function findPaymentTypeByNameToList($paymentTypeText, $offset, $limit, $count = true)
 	{
 	
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder('ft');
-		if ($count) {
+		if ($count) 
+		{
 			$queryBuilder->add('select', $queryBuilder->expr()->count('ft.id'));
 		} else {
 			$queryBuilder->add('select', 'ft');
@@ -26,14 +27,46 @@ class PaymentRepository extends EntityRepository
 		}
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:PaymentType ft');
 			
-		if ($finesTypeText != null) {
-			$finesTypeText = str_replace(' ', '%', $finesTypeText);
-			$finesTypeText = '%' . strtolower($finesTypeText) . '%';
+		if ($paymentTypeText != null) 
+		{
+			$paymentTypeText = str_replace(' ', '%', $paymentTypeText);
+			$paymentTypeText = '%' . strtolower($paymentTypeText) . '%';
 			$queryBuilder->andWhere(
 					$queryBuilder->expr()->like($queryBuilder->expr()->lower('ft.name'), '?1')
 			);
-			$queryBuilder->setParameter(1, $finesTypeText);
+			$queryBuilder->setParameter(1, $paymentTypeText);
 	
+		}
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;
+	}
+	
+	public function findPaymentByNameToList($paymentText, $offset, $limit, $count = true)
+	{
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('p');
+		if ($count)
+		{
+			$queryBuilder->add('select', $queryBuilder->expr()->count('p.id'));
+		} else {
+			$queryBuilder->select(array('p', 'me', 'pt'));
+			$queryBuilder->orderBy('p.paymentDate');
+			$queryBuilder->setFirstResult($offset);
+			$queryBuilder->setMaxResults($limit);
+		}
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Payment p');
+		$queryBuilder->innerJoin('p.paymentType', 'pt');
+		$queryBuilder->innerJoin('p.member', 'me');
+		
+		if ($paymentText != null)
+		{
+			$paymentText = str_replace(' ', '%', $paymentText);
+			$paymentText = '%' . strtolower($paymentText) . '%';
+			$queryBuilder->andWhere(
+					$queryBuilder->expr()->like($queryBuilder->expr()->lower('me.name'), '?1')
+			);
+			$queryBuilder->setParameter(1, $paymentText);
+		
 		}
 		$query = $queryBuilder->getQuery();
 		$result = $query->getResult();

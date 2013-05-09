@@ -17,15 +17,6 @@ Income:
             nullable: false
             column: basic_service_unit_cost
     manyToOne:
-        payment:
-            targetEntity: Payment
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                payment_id:
-                    referencedColumnName: id
-            orphanRemoval: false
         consumption:
             targetEntity: Consumption
             cascade: {  }
@@ -33,6 +24,15 @@ Income:
             inversedBy: null
             joinColumns:
                 consumption_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        payment:
+            targetEntity: Payment
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                payment_id:
                     referencedColumnName: id
             orphanRemoval: false
         transaction:

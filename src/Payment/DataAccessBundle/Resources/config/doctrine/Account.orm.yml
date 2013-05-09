@@ -1,6 +1,6 @@
 Payment\DataAccessBundle\Entity\Account:
     type: entity
-    repositoryClass: Payment\DataAccessBundle\Entity\AccountRepository
+    repositoryClass:  Payment\DataAccessBundle\Repository\AccountRepository
     table: account
     fields:
         id:
@@ -25,16 +25,10 @@ Payment\DataAccessBundle\Entity\Account:
             type: boolean
             nullable: false
             column: is_active
+        sewerage:
+            type: boolean
+            nullable: true
     manyToOne:
-        accountType:
-            targetEntity: AccountType
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                account_type_id:
-                    referencedColumnName: id
-            orphanRemoval: false
         member:
             targetEntity: Member
             cascade: {  }
@@ -42,6 +36,15 @@ Payment\DataAccessBundle\Entity\Account:
             inversedBy: null
             joinColumns:
                 member_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        accountType:
+            targetEntity: AccountType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                account_type_id:
                     referencedColumnName: id
             orphanRemoval: false
         systemUser:

@@ -35,15 +35,6 @@ Consumption:
             nullable: true
             column: is_deleted
     manyToOne:
-        changeUser:
-            targetEntity: SystemUser
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                change_user_id:
-                    referencedColumnName: id
-            orphanRemoval: false
         account:
             targetEntity: Account
             cascade: {  }
@@ -51,6 +42,15 @@ Consumption:
             inversedBy: null
             joinColumns:
                 account_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        changeUser:
+            targetEntity: SystemUser
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                change_user_id:
                     referencedColumnName: id
             orphanRemoval: false
         meterPreviousReading:

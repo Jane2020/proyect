@@ -1,6 +1,6 @@
 Payment\DataAccessBundle\Entity\Managerial:
     type: entity
-    repositoryClass: Payment\DataAccessBundle\Entity\ManagerialRepository
+    repositoryClass:  Payment\DataAccessBundle\Repository\ManagerialRepository
     table: managerial
     fields:
         id:

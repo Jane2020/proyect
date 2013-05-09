@@ -286,4 +286,32 @@ class Account
     {
         return $this->accountType;
     }
+    /**
+     * @var boolean
+     */
+    private $sewerage;
+
+
+    /**
+     * Set sewerage
+     *
+     * @param boolean $sewerage
+     * @return Account
+     */
+    public function setSewerage($sewerage)
+    {
+        $this->sewerage = $sewerage;
+    
+        return $this;
+    }
+
+    /**
+     * Get sewerage
+     *
+     * @return boolean 
+     */
+    public function getSewerage()
+    {
+        return $this->sewerage;
+    }
 }

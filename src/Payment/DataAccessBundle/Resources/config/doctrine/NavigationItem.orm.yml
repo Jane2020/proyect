@@ -1,6 +1,6 @@
 Payment\DataAccessBundle\Entity\NavigationItem:
     type: entity
-    repositoryClass: Payment\DataAccessBundle\Entity\NavigationItemRepository
+    repositoryClass:  Payment\DataAccessBundle\Repository\NavigationItemRepository
     table: navigation_item
     fields:
         id:

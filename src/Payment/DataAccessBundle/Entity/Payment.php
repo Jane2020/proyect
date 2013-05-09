@@ -53,8 +53,23 @@ class Payment
      * @var \Payment\DataAccessBundle\Entity\PaymentType
      */
     private $paymentType;
-
-
+    
+    private $memberId;
+    
+    private $memberName;
+    
+     /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Payment
+     */
+    public function setId($id)
+    {
+        $this->id = $id;    
+        return $this;
+    }
+    
     /**
      * Get id
      *
@@ -276,4 +291,50 @@ class Payment
     {
         return $this->changeUser;
     }
+    
+    
+    /**
+     * Set memberId
+     *
+     * @param integer $memberId
+     * @return ManagerialMember
+     */
+    public function setMemberId($memberId)
+    {
+    	$this->memberId = $memberId;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get memberId
+     *
+     * @return integer
+     */
+    public function getMemberId()
+    {
+    	return $this->memberId;
+    }
+    
+    /**
+     * Set memberName
+     *
+     * @param string $memberName
+     * @return Account
+     */
+    public function setMemberName($memberName)
+    {
+    	$this->memberName = $memberName;
+    	return $this;
+    }
+    
+    /**
+     * Get memberName
+     *
+     * @return string
+     */
+    public function getMemberName()
+    {
+    	return $this->memberName;
+    }    
 }
