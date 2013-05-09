@@ -1,6 +1,6 @@
 Payment\DataAccessBundle\Entity\Member:
     type: entity
-    repositoryClass:  Payment\DataAccessBundle\Repository\MemberRepository
+    repositoryClass: Payment\DataAccessBundle\Entity\MemberRepository
     table: member
     fields:
         id:

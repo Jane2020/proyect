@@ -1,6 +1,6 @@
 Payment\DataAccessBundle\Entity\Transaction:
     type: entity
-    repositoryClass:  Payment\DataAccessBundle\Repository\TransactionRepository
+    repositoryClass: Payment\DataAccessBundle\Entity\TransactionRepository
     table: transaction
     fields:
         id:

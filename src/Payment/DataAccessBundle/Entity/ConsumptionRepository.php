@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class ConsumptionRepository extends EntityRepository
 {
-	public function findconsumptionByNameToList($consumptionSelect, $offset, $limit, $count = true) {
+	public function findconsumptionByNameToList($consumptionSelect, $offset, $limit, $operator, $count = true ) {
 	
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder('c');
 		if ($count) {
@@ -23,13 +23,21 @@ class ConsumptionRepository extends EntityRepository
 			$queryBuilder->setFirstResult($offset);
 			$queryBuilder->setMaxResults($limit);
 		}
-		$queryBuilder->add('from', 'PaymentDataAccessBundle:Consumption c');
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Consumption c');			
+		
 		$queryBuilder->Where('c.isDeleted = 0');
 		if ($consumptionSelect != null) {
 			$queryBuilder->andWhere('c.account = ?1');
 			$queryBuilder->setParameter(1, $consumptionSelect);	
 		}
-		
+		if ($operator)
+		{
+			$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p', 'WITH', 'p.id = 1');
+			$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p1', 'WITH', 'p1.id = 2');
+			$queryBuilder->andWhere('c.readDate >= p.value');
+			$queryBuilder->andWhere('c.readDate <= p1.value');
+		}	
+
 		$query = $queryBuilder->getQuery();
 		$result = $query->getResult();
 		return $result;

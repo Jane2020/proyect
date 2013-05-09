@@ -1,0 +1,64 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block title %}{{ title }} Consumo - {{ parent() }} {% endblock %}
+{% block javascripts %}
+ {{ parent() }}
+ <script type="text/javascript" src="{{ asset('bundles/paymentmeter/js/consumption.js') }}"></script>
+<script type="text/javascript">
+loadEvents();
+</script>
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}
+
+{% block content %}
+{{ title }} Consumo
+<form action="{{ path('_editConsumption') }}" method="post" {{ form_enctype(form) }} id="consumptionEdit" name="consumptionEdit">
+<div id="contentLeft">
+ {% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="flash-message">
+     {% autoescape false %}
+        {{ flashMessage|trans({}, 'FOSUserBundle') }}
+     {% endautoescape %}
+    </div><br>
+{% endfor %}
+
+{{ app.session.flashbag.set('message', '')}}
+
+{{ form_errors(form.account) }}
+{{ form_errors(form.meterCurrentReading) }}
+{{ form_errors(form.readDate) }}
+{{ form_errors(form.description) }}
+{{ form_errors(form) }}
+&nbsp;
+</div>
+<div id="contentRight">
+<table id="tableEditUser">
+<tr>
+	{% set required = 1 %}
+    {% include 'PaymentApplicationBundle:Finder:finder.html.twig' %}
+</tr>
+<tr>
+<td class="title" valign="top">{{ form_label(form.meterCurrentReading) }}</td>
+<td>{{ form_widget(form.meterCurrentReading, { 'attr': {'class': 'required'} }) }} </td>
+</tr>  
+<tr>
+<td class="title" valign="top">{{ form_label(form.readDate) }}</td>
+<td>{{ form_widget(form.readDate, { 'attr': {'class': 'required', 'readOnly': 'true'} }) }} </td>
+</tr>
+<tr>
+<td class="title" valign="top">{{ form_label(form.description) }}</td>
+<td>{{ form_widget(form.description, { 'attr': {'class': 'required', 'rows': 5, 'cols': 30} }) }} </td>
+</tr>
+<tr>
+
+<td height="50px;" align="right" valign="bottom">
+ <input type="submit" value="Guardar" name="btsend" id="button_enter"/>
+ <input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listConsumption') }}'"/>
+</td>
+</tr>
+</table>
+<input type="hidden" name="band" value="1">
+<input type="hidden" name="cid" value="{{ cid }}">
+{{ form_rest(form) }}
+</form>
+</div>
+{% endblock %}

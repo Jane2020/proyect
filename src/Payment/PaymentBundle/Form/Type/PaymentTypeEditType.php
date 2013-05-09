@@ -10,7 +10,7 @@ class PaymentTypeEditType extends AbstractType
 		$builder->add('id','hidden');
 		$builder->add('name','text',  array('label'=>'Nombre:', 'required'=>false, 'max_length'=>64));
 		$builder->add('description','textarea',  array('label'=>'Descripción:', 'required'=>false, 'max_length'=>64));
-		$builder->add('cost','text',  array('label'=>'Valor de Multa:', 'required'=>false, 'max_length'=>8));
+		$builder->add('cost','text',  array('label'=>'Valor del Pago:', 'required'=>false, 'max_length'=>8));
 		$builder->add('isActive','checkbox',  array('label'=>'Activo: ', 'required'=>false,));
 	}
 

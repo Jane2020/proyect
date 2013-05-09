@@ -34,10 +34,14 @@
   </div>
 </div>
 <div id="contentAll">
-	menu principal
-			<div id="barra7">
-        		{% block content %}{% endblock %}
-        	</div>
+	<div id="barra7">
+		<div id="botonera">
+			<table>
+				{% render url('menu') %} 
+			</table>
+		</div>
+		{% block content %}{% endblock %}
+    </div>
 </div>
 <div class="wrapper col4">
   <div id="footer"> 

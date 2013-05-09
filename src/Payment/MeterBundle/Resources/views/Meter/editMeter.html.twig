@@ -63,9 +63,14 @@
 			<td>{{ form_widget(form.accountType, { 'attr': {'class': 'required'} }) }} </td>
 		</tr>
 		<tr>
+			<td class="title" valign="top">{{ form_label(form.sewerage) }}</td>
+			<td>{{ form_widget(form.sewerage) }}  </td>
+		</tr>
+		<tr>
 			<td class="title" valign="top">{{ form_label(form.isActive) }}</td>
 			<td>{{ form_widget(form.isActive) }}  </td>
 		</tr>
+	
 		{{ form_errors(form) }}				
 		<tr>
 			<td height="50px;" align="right" valign="bottom">

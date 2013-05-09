@@ -1,6 +1,6 @@
 Payment\DataAccessBundle\Entity\Consumption:
     type: entity
-    repositoryClass:  Payment\DataAccessBundle\Repository\ConsumptionRepository
+    repositoryClass: Payment\DataAccessBundle\Entity\ConsumptionRepository
     table: consumption
     fields:
         id:

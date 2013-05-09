@@ -4,7 +4,7 @@
  {{ parent() }}
 
 <script type="text/javascript">
- 
+  var link = '_deleteConsumption';
   var form_id = "ConsumptionSearch";
   var action_edit = "{{ path('_editConsumption') }}";
   var action_delete = "{{ path('_deleteConsumption') }}";
@@ -29,8 +29,9 @@ function isChecked(isItChecked){
         document.form_check.boxchecked.value--;
         }
 }  
-loadEvents();
     </script>
+
+ <script type="text/javascript" src="{{ asset('bundles/paymentapplication/js/deleteConfirmation.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}	
 
@@ -45,11 +46,14 @@ loadEvents();
             <td style="text-align: center"><a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para editar');}else{ submit_check('Edit')}">
                     <div id="button_edit"></div>Editar</a>
             </td>
-            <td style="text-align: center"><a href="{{ path('_editManagerial') }}">
+            <td style="text-align: center"><a href="{{ path('_editConsumption') }}">
                     <div id="button_new"></div>Nuevo</a>
             </td>            
-           <td style="text-align: center"><a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para eliminar');}else{if(confirm('Está seguro que desea eliminar el usuario seleccionado?')){submit_check('Remove');}}">
+           <td style="text-align: center">
+	<a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para eliminar');}else{if(confirm('Está seguro que desea eliminar el item seleccionado?')){ dialogOpenRef('{{ path('deleteItem') }}');}}">
                     <div id="button_delete"></div>Eliminar</a>
+    <div id="dialog" title="Eliminar Item Seleccionado">    
+</div>
             </td>
          </tr>
     </table>
@@ -72,7 +76,7 @@ loadEvents();
 	{{ form_errors(form) }}
                 <table class="tableSearch">
                     <tr>
-                    {% set required = 1 %}
+                    {% set required = 0 %}
                     {% include 'PaymentApplicationBundle:Finder:finder.html.twig' %}
                         <td valign="top">
 	{{ form_widget(form.offset, { 'attr': {'value': '0'} }) }}  
@@ -91,7 +95,7 @@ loadEvents();
                     </table>
 {{ form_rest(form) }}
                 </form>
-
+<div id="total">Se encuentran registradas {{total}} lecturas en el sistema.</div>
                 <form id='form_check' name='form_check' action='' method='post'>
                     <table id="tableListUser" >
                         <tr>
@@ -114,9 +118,7 @@ loadEvents();
                             <th class="title">
                                 Fecha de Lectura
                             </th>   
-                            <th class="title"> <!-- revisar si es admiisntrador -->
-                                Observaciones
-                            </th>                           
+                                                   
                         </tr>
 {% set i = 1 %}
 {% for item in consumption %}
@@ -143,10 +145,7 @@ loadEvents();
                                     </td >	
                                         <td class="content_table" >
 		{{ item.readDate | date("Y-m-d")}}
-                                        </td>  
-                <td class="content_table" > <!-- revisar si es admiisntrador -->
-		{{ item.description }}
-                                        </td>                                                          
+                                        </td>                                                           
                                             </tr>
 {% set i = i +1 %}
 {% endfor %}

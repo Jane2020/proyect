@@ -1,6 +1,6 @@
 Payment\DataAccessBundle\Entity\Parameter:
     type: entity
-    repositoryClass:  Payment\DataAccessBundle\Repository\ParameterRepository
+    repositoryClass: Payment\DataAccessBundle\Entity\ParameterRepository
     table: parameter
     fields:
         id:
@@ -40,4 +40,9 @@ Payment\DataAccessBundle\Entity\Parameter:
             type: boolean
             nullable: false
             column: is_active
+        name:
+            type: string
+            length: 128
+            fixed: false
+            nullable: false
     lifecycleCallbacks: {  }

@@ -39,4 +39,9 @@ Parameter:
             type: boolean
             nullable: false
             column: is_active
+        name:
+            type: string
+            length: 128
+            fixed: false
+            nullable: false
     lifecycleCallbacks: {  }

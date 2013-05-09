@@ -1,6 +1,6 @@
 Payment\DataAccessBundle\Entity\Income:
     type: entity
-    repositoryClass:  Payment\DataAccessBundle\Repository\IncomeRepository
+    repositoryClass: Payment\DataAccessBundle\Entity\IncomeRepository
     table: income
     fields:
         id:
