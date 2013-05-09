@@ -1,0 +1,173 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block title %}Consumo - {{ parent() }} {% endblock %}
+{% block javascripts %}
+ {{ parent() }}
+
+<script type="text/javascript">
+ 
+  var form_id = "ConsumptionSearch";
+  var action_edit = "{{ path('_editConsumption') }}";
+  var action_delete = "{{ path('_deleteConsumption') }}";
+
+  function submit_check(action)
+  {	
+          if (action == 'Edit')
+          {
+              document.form_check.action = action_edit;
+           } else {
+                  
+              document.form_check.action = action_delete;
+           }
+          document.form_check.submit();
+  }
+  
+function isChecked(isItChecked){
+        if (isItChecked == true){
+                document.form_check.boxchecked.value++;
+        }
+        else {
+        document.form_check.boxchecked.value--;
+        }
+}  
+loadEvents();
+    </script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}	
+
+{% block content %}
+
+    <br><br>
+
+    <table width="350" border="0" align="right" style="padding:5px;">
+        <tr>
+
+
+            <td style="text-align: center"><a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para editar');}else{ submit_check('Edit')}">
+                    <div id="button_edit"></div>Editar</a>
+            </td>
+            <td style="text-align: center"><a href="{{ path('_editManagerial') }}">
+                    <div id="button_new"></div>Nuevo</a>
+            </td>            
+           <td style="text-align: center"><a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para eliminar');}else{if(confirm('Está seguro que desea eliminar el usuario seleccionado?')){submit_check('Remove');}}">
+                    <div id="button_delete"></div>Eliminar</a>
+            </td>
+         </tr>
+    </table>
+
+    <br>
+    <br>
+    <br>
+    
+    {% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="flash-message">
+    {% autoescape false %}
+        {{ flashMessage|trans({}, 'FOSUserBundle') }}
+    {% endautoescape %}
+    </div><br>
+{% endfor %}
+
+{{ app.session.flashbag.set('message', '')}}
+
+<form action="{{ path('_listConsumption') }}" method="post" {{ form_enctype(form) }} id='consumptionSearch' name="consumptionSearch">
+	{{ form_errors(form) }}
+                <table class="tableSearch">
+                    <tr>
+                        {% include 'PaymentApplicationBundle:Finder:finder.html.twig' %}
+                        <td valign="top">
+	{{ form_widget(form.offset, { 'attr': {'value': '0'} }) }}  
+	{{ form_widget(form.limit, { 'attr': {'value': limit } }) }}  
+
+                                <input type="submit" name="btsend" id="button_search" value='Buscar' />
+                            </td>
+                        </tr> 
+                        <tr>
+                            <td colspan="3"><div class="error"></div></td>
+                        </tr>
+                        <tr>
+                            <td></td><td>{{ form_errors(form.account) }}</td><td><br></td></tr>
+                    </table>
+{{ form_rest(form) }}
+                </form>
+
+                <form id='form_check' name='form_check' action='' method='post'>
+                    <table id="tableListUser" >
+                        <tr>
+                            <th class="title">
+
+                            </th>
+                            <th class="title_check">
+                                # Conexión
+                            </th>
+
+                            <th class="title">
+                               Medida Anterior
+                            </th>
+                            <th class="title">
+                               Medida Actual
+                            </th>
+                            <th class="title">
+                               Consumo mensual
+                            </th>
+                            <th class="title">
+                                Fecha de Lectura
+                            </th>   
+                            <th class="title"> <!-- revisar si es admiisntrador -->
+                                Observaciones
+                            </th>                           
+                        </tr>
+{% set i = 1 %}
+{% for item in consumption %}
+                        <tr>
+
+                            <td class="content_table">
+                                <input type="checkbox" onclick="isChecked(this.checked);" value="{{ item.id }}" name="cid[]" id="cb{{ i }}">
+                            </td>
+                            <td class="content_table" >
+		{{ item.account.accountNumber }}
+                                </td>
+                                <td class="content_table">
+		{{ item.meterCurrentReading }}
+                                    </td >	                                    
+                                    <td class="content_table" >
+                                    {% if(item.meterPreviousReading) %}
+										{{ item.meterPreviousReading.meterCurrentReading }}
+									{% else %}
+										0
+									{% endif %}
+                                        </td>  
+                                        <td class="content_table">
+		{{ item.consumptionValue |number_format(0)  }}
+                                    </td >	
+                                        <td class="content_table" >
+		{{ item.readDate | date("Y-m-d")}}
+                                        </td>  
+                <td class="content_table" > <!-- revisar si es admiisntrador -->
+		{{ item.description }}
+                                        </td>                                                          
+                                            </tr>
+{% set i = i +1 %}
+{% endfor %}
+                                            <tr>
+	{% if  total==0 %}
+                                                    <td colspan="6" align="center" class="content_table_left">
+                                                        No existen usuarios a mostrar
+                                                    </td>
+	{% endif %}
+
+                                                </tr>
+                                            </table>
+
+{% if total>10 %}
+                                            <table id="paginator" width="100%">
+                                                <tr>
+                                                    <td align="center">
+			{% include 'PaymentApplicationBundle:Paginator:paginator.html.twig' %}
+                                                        </td>	
+
+                                                    </tr>
+                                                </table>
+{% endif %}
+                                                <input type="hidden" value="0" name="boxchecked">
+                                                <input type="hidden" value="0" name="publish">
+                                            </form>
+{% endblock %}	

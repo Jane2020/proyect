@@ -10,3 +10,13 @@ _editMeter:
 _deleteMeter:
     pattern:  /gestion-de-medidores/eliminacion
     defaults: { _controller: PaymentMeterBundle:Meter:deleteMeter }     
+
+_listConsumption:
+    pattern:  /gestion-de-consumo/listado
+    defaults: { _controller: PaymentMeterBundle:Consumption:listConsumption }
+_editConsumption:
+    pattern:  /gestion-de-consumo/edicion
+    defaults: { _controller: PaymentMeterBundle:Consumption:editConsumption }
+_deleteConsumption:
+    pattern:  /gestion-de-consumo/eliminacion
+    defaults: { _controller: PaymentMeterBundle:Consumption:deleteConsumption }  
