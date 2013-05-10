@@ -26,6 +26,7 @@ class ConsumptionRepository extends EntityRepository
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:Consumption c');			
 		
 		$queryBuilder->Where('c.isDeleted = 0');
+		
 		if ($consumptionSelect != null) {
 			$queryBuilder->andWhere('c.account = ?1');
 			$queryBuilder->setParameter(1, $consumptionSelect);	
@@ -34,10 +35,31 @@ class ConsumptionRepository extends EntityRepository
 		{
 			$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p', 'WITH', 'p.id = 1');
 			$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p1', 'WITH', 'p1.id = 2');
-			$queryBuilder->andWhere('c.readDate >= p.value');
-			$queryBuilder->andWhere('c.readDate <= p1.value');
+			$queryBuilder->andWhere('c.systemDate >= p.value');
+			$queryBuilder->andWhere('c.systemDate <= p1.value');
 		}	
 
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;
+	}
+	
+	public function findPrevious($consumption)
+	{
+		if ($consumption->getId() > 1)
+		{
+			return $consumption->getMeterPreviousReading();
+		}
+		
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('c');
+		$queryBuilder->add('select', 'c');
+		$queryBuilder->orderBy('c.id','DESC');
+		$queryBuilder->setFirstResult(0);
+		$queryBuilder->setMaxResults(1);		
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Consumption c');		
+		$queryBuilder->Where('c.isDeleted = 0');
+		$queryBuilder->andWhere('c.account = ?1');
+		$queryBuilder->setParameter(1, $consumption->getAccount());			
 		$query = $queryBuilder->getQuery();
 		$result = $query->getResult();
 		return $result;

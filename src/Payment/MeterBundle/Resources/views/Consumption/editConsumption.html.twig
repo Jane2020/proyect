@@ -44,10 +44,12 @@ loadEvents();
 <td class="title" valign="top">{{ form_label(form.readDate) }}</td>
 <td>{{ form_widget(form.readDate, { 'attr': {'class': 'required', 'readOnly': 'true'} }) }} </td>
 </tr>
+{% if(rol == false) %}
 <tr>
 <td class="title" valign="top">{{ form_label(form.description) }}</td>
 <td>{{ form_widget(form.description, { 'attr': {'class': 'required', 'rows': 5, 'cols': 30} }) }} </td>
 </tr>
+{% endif %}
 <tr>
 
 <td height="50px;" align="right" valign="bottom">

@@ -99,40 +99,74 @@ class ConsumptionController extends Controller
 		}
 	
 		$em = $this->getDoctrine()->getManager();
+		$accountId = 0;
 		if ($consumptionId > 0)
 		{
 			$consumption = $em->getRepository('PaymentDataAccessBundle:Consumption')->find($consumptionId);
 			$consumption->setReadDate($consumption->getReadDate()->format('Y-m-d'));
+			$accountId = $consumption->getAccount()->getId();			
+			if($consumption->getIsDeleted())
+			{
+				throw new AccessDeniedException();
+			}			
 			
 		} else {
 			$consumption = new Consumption();
 			$title = "Crear";
 		}
-	
-		$consumptionForm = $this->createForm(new ConsumptionEditType(), $consumption);
+		$rol = true;
+		if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$rol = false;
+		}
+		
+		$consumptionForm = $this->createForm(new ConsumptionEditType($em,$rol,$accountId), $consumption);
 	
 		if ($request->getMethod() == 'POST') {
 			$band = $request->request->get('band', 0);
 			if ($band != 0)
 			{
 				$consumptionForm->bind($request);
-				if ($consumptionForm->isValid())
-				{
-					$consumption->setStartDate(new \DateTime($consumption->getStartDate()));
-					$consumption->setEndDate(new \DateTime($consumption->getEndDate()));
-					$user = $this->get('security.context')->getToken()->getUser();
-	
-					$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
-					$consumption->setSystemUser($userData);
-					$em->persist($consumption);
-					$em->flush();
-					$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
-	
-					return $this->redirect($this->generateUrl('_listconsumption'));
+				$consumptionExist = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Consumption')->findconsumptionByNameToList($consumption->getAccount(), 0, 5, true, false);
+				
+				if((!$consumptionExist) || ($consumptionId > 0))
+				{	
+					$consumptionAnt = $em->getRepository('PaymentDataAccessBundle:Consumption')->findPrevious($consumption);
+					$meterAnt = 0;
+					if($consumptionAnt)	{
+						if(is_array($consumptionAnt)) 
+						{
+							$consumptionAnt = $consumptionAnt[0];
+						}
+						$consumption->setMeterPreviousReading($consumptionAnt);
+						$meterAnt = $consumptionAnt->getMeterCurrentReading();
+					}
+					$value = $consumption->getMeterCurrentReading() - $meterAnt;
+					if($value >= 0)
+					{					
+						if ($consumptionForm->isValid())
+						{							
+							$consumption->setConsumptionValue($value);
+							$consumption->setReadDate(new \DateTime($consumption->getReadDate()));
+							$consumption->setSystemDate(new \DateTime());	
+												
+							$user = $this->get('security.context')->getToken()->getUser();	
+							$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
+							$consumption->setSystemUser($userData);
+							$consumption->setIsDeleted(0);
+							$em->persist($consumption);
+							$em->flush();
+							$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
+			
+							return $this->redirect($this->generateUrl('_listConsumption'));
+						}
+					}
+					$this->get('session')->getFlashBag()->add('message', 'La lectura ingresada, es menor a la lectura anterior del medidor que es: '.$meterAnt.'. Por favor corrija su ingreso.');
+				} else {
+					$this->get('session')->getFlashBag()->add('message', 'La lectura para la cuenta '.$consumption->getAccount()->getAccountNumber().' ya se encuentra registrada.');
 				}
 			}
 		}
-		return array('form' => $consumptionForm->createView(), 'title' => $title, 'cid'=>$consumptionId);
+		return array('form' => $consumptionForm->createView(), 'title' => $title, 'cid'=>$consumptionId,'rol' => $rol);
 	}
 	
 }

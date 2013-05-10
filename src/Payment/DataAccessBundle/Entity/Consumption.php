@@ -3,6 +3,7 @@
 namespace Payment\DataAccessBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Consumption
@@ -29,6 +30,7 @@ class Consumption
      * @Assert\Regex(
      *     pattern = "/^\d{2,4}\-\d{1,2}\-\d{1,2}$/",
      *     message = "Valor de Fecha de lectura es incorrecto."
+     *     )
      */
     private $readDate;
 
@@ -297,7 +299,7 @@ class Consumption
      * )
      *
      * @Assert\Regex(
-     *     pattern = "/^[0-9]{11}$/",
+     *     pattern = "/^[0-9]{1,11}$/",
      *     message = "Valor de la lectura del medidor es incorrecto."
      * )
      */
@@ -313,7 +315,7 @@ class Consumption
      * 
       * @Assert\Regex(
      *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\@\/]+$/",
-     *     message = "Valor de la descripcion es incorrecto."
+     *     message = "Valor de las Observaciones es incorrecto."
      * )
      */
     private $description;
@@ -521,5 +523,10 @@ class Consumption
     public function getMeterPreviousReading()
     {
         return $this->meterPreviousReading;
+    }
+    
+    public function setId($id)
+    {
+    	$this->id = $id;
     }
 }

@@ -18,7 +18,7 @@ function setValidationsEdit(){
         event: "blur", 
         rules: {
             'consumptionEdit[meterCurrentReading]': {        		
-                regex: /^[0-9]{11}$/ 
+                regex: /^[0-9]{1,11}$/ 
             },
             'consumptionEdit[readDate]': {        		
                 regex: /^\d{2,4}\-\d{1,2}\-\d{1,2}$/

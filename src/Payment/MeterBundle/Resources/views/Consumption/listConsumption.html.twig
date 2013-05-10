@@ -131,17 +131,17 @@ function isChecked(isItChecked){
 		{{ item.account.accountNumber }}
                                 </td>
                                 <td class="content_table">
-		{{ item.meterCurrentReading }}
-                                    </td >	                                    
-                                    <td class="content_table" >
-                                    {% if(item.meterPreviousReading) %}
+                                {% if(item.meterPreviousReading) %}
 										{{ item.meterPreviousReading.meterCurrentReading }}
 									{% else %}
 										0
-									{% endif %}
+									{% endif %}		
+                                    </td >	                                    
+                                    <td class="content_table" >
+                                    {{ item.meterCurrentReading }}
                                         </td>  
                                         <td class="content_table">
-		{{ item.consumptionValue |number_format(0)  }}
+		{{ item.consumptionValue | number_format(0,'', '')  }}
                                     </td >	
                                         <td class="content_table" >
 		{{ item.readDate | date("Y-m-d")}}
