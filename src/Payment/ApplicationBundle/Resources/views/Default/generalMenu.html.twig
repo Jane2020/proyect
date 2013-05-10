@@ -1,0 +1,9 @@
+{% for menu in parentMenu %}
+	<tr>
+		<td>
+	 		<a href="{{path(menu.getLinkId)}}" id="link_tabs">
+				{{menu.getTitle}} 
+			</a>
+		</td>	
+	</tr>			
+{% endfor %}

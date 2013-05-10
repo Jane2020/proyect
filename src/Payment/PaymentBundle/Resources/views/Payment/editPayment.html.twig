@@ -1,0 +1,83 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block title %}{{ title }} Tipo de Multa - {{ parent() }} {% endblock %}
+{% block javascripts %}
+ {{ parent() }}
+ <script type="text/javascript" src="{{ asset('bundles/paymentpayment/js/payment.js') }}"></script>
+ <script type="text/javascript">
+	$(document).ready(function(){  
+		$(".modal").fancybox({
+	    	'autoSize'      : false,
+        'autoDimensions': false,
+	        'width'         : 750,  
+	        'height'        : 370,  
+	  	    'autoScale'     : false,  
+	        'transitionIn'      : 'none',  
+	        'transitionOut'     : 'none',  
+	        'type'          : 'iframe' 	        	     
+	    });  
+	}); 
+
+	loadEvents();
+
+	function cerrarFancyboxYRedirigeAUrl(url)
+	{
+	    $.fancybox.close();
+	    window.location = url;
+	}
+
+	 $(function() 
+			 {
+				$( "#paymentEdit_paymentDate" ).datepicker({dateFormat: "yy-mm-dd",  changeMonth: true,
+					changeYear: true});
+			 })
+
+</script>
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}
+
+{% block content %}
+{{ title }} Pago
+<form action="{{ path('_editPayment') }}" method="post" {{ form_enctype(form) }} id="paymentEdit" name="paymentEdit">
+<div id="contentLeft">
+ {% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="flash-message">
+     {% autoescape false %}
+        {{ flashMessage|trans({}, 'FOSUserBundle') }}
+     {% endautoescape %}
+    </div><br>
+{% endfor %}
+
+	{{ app.session.flashbag.set('message', '')}}
+	{{ form_errors(form.paymentType) }}
+	{{ form_errors(form.cost) }}
+	{{ form_errors(form) }}
+&nbsp;
+</div>
+<div id="contentRight">
+	<table id="tableEditUser">
+		{% include 'PaymentApplicationBundle:Default:fieldInclude.html.twig' %}
+		<tr>
+			<td class="title" valign="top">{{ form_label(form.paymentType) }}</td>
+			<td>{{ form_widget(form.paymentType, { 'attr': {'class': 'required'} }) }} </td>
+		</tr>
+		<tr>
+			<td class="title" valign="top">{{ form_label(form.cost) }}</td>
+			<td>{{ form_widget(form.cost, { 'attr': {'class': 'required'} }) }} </td>
+		</tr>
+		<tr>
+			<td class="title" valign="top">{{ form_label(form.paymentDate) }}</td>
+			<td>{{ form_widget(form.paymentDate, { 'attr': {'class': 'required', 'readOnly': 'true'} }) }}  </td>
+		</tr>
+		<tr>
+			<td height="50px;" align="right" valign="bottom">
+ 				<input type="submit" value="Guardar" name="btsend" id="button_enter"/>
+ 				<input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listPayment') }}'"/>
+			</td>
+		</tr>
+	</table>
+	<input type="hidden" name="band" value="1">
+	<input type="hidden" name="cid" value="{{ cid }}">
+	{{ form_rest(form) }}
+</form>
+</div>
+{% endblock %}

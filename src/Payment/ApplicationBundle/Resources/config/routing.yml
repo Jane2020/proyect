@@ -1,0 +1,15 @@
+home:
+    pattern:  /inicio
+    defaults: { _controller: PaymentApplicationBundle:Default:welcome }
+
+modal:
+    pattern:  /modal
+    defaults: { _controller: PaymentApplicationBundle:Default:modal }  
+
+menu:
+    pattern:  /menu
+    defaults: { _controller: PaymentApplicationBundle:Default:generalMenu }      
+
+deleteItem:
+    pattern:  /delete/delete-item
+    defaults: { _controller: PaymentApplicationBundle:Default:deleteItem }
