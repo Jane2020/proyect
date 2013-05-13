@@ -10,6 +10,8 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 use Payment\TransactionBundle\Entity\ExpenseSearch;
 use Payment\TransactionBundle\Form\Type\ExpenseSearchType;
 use Payment\DataAccessBundle\Entity\Transaction;
+use Payment\DataAccessBundle\Entity\Expense;
+use Payment\TransactionBundle\Form\Type\ExpenseEditType;
 
 class ExpenseController extends Controller
 {
@@ -99,5 +101,72 @@ class ExpenseController extends Controller
 		$this->get('session')->getFlashBag()->add('message', $message);
 		return $this->redirect($this->generateUrl('_listExpense'));
 	
+	}
+	
+	/**
+	 * @Template()
+	 * Secure(roles="ROLE_ADMIN")
+	 */
+	public function editExpenseAction(Request $request)
+	{
+		$title = "Editar";
+		$expenseId = $request->request->get('cid', 0);
+		if (is_array($expenseId)) {
+			$expenseId = $expenseId[0];
+		}
+	
+		$em = $this->getDoctrine()->getManager();
+		$accountId = 0;
+		if ($expenseId > 0)
+		{
+			$expense = $em->getRepository('PaymentDataAccessBundle:Expense')->find($expenseId);
+			$expense->setExpenseDate($expense->getExpenseDate()->format('Y-m-d'));			
+				
+		} else {
+			$expense = new Expense();
+			$title = "Crear";
+		}
+		
+		$expenseForm = $this->createForm(new ExpenseEditType(), $expense);
+	
+		if ($request->getMethod() == 'POST') {
+			$band = $request->request->get('band', 0);
+			if ($band != 0)
+			{
+				$expenseForm->bind($request);
+				if ($expenseForm->isValid())
+				{					
+					$user = $this->get('security.context')->getToken()->getUser();
+					$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
+					
+					if ($expenseId == 0)
+					{
+						$transaction = new Transaction();
+						$managerial = $em->getRepository('PaymentDataAccessBundle:Managerial')->findOneBy(array('isActive' => 1),array('id' => 'DESC'));
+						$transactionType = $em->getRepository('PaymentDataAccessBundle:TransactionType')->find(2);
+						$transaction->setManagerial($managerial);
+						$transaction->setTotalValue($expense->getExpenseValue());
+						$transaction->setTransactionType($transactionType);
+						$transaction->setSystemDate(new \DateTime());
+						$transaction->setSystemUser($userData);					
+						$em->persist($transaction);
+						$em->flush();
+						$expense->setTransaction($transaction);
+					}
+
+					$expense->setExpenseDate(new \DateTime($expense->getExpenseDate()));
+					$expense->setSystemDate(new \DateTime());					
+					$expense->setSystemUser($userData);
+					$expense->setIsDeleted(0);					
+					$em->persist($expense);
+					$em->flush();
+					$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
+								
+					return $this->redirect($this->generateUrl('_listExpense'));
+				}
+			
+			}
+		}
+		return array('form' => $expenseForm->createView(), 'title' => $title, 'cid'=>$expenseId);
 	}
 }

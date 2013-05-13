@@ -33,7 +33,7 @@ function isChecked(isItChecked){
 
  <script type="text/javascript" src="{{ asset('bundles/paymentapplication/js/deleteConfirmation.js') }}"></script>
  <script type="text/javascript" src="{{ asset('bundles/paymenttransaction/js/expenseSearch.js') }}"></script>
-<<script type="text/javascript">
+<script type="text/javascript">
 loadEvents();
 </script>
  <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
@@ -95,8 +95,8 @@ loadEvents();
                         </tr> 
                         <tr>
                             <td></td><td>{{ form_errors(form.expenseRuc) }}</td>
-                            <td>{{ form_errors(form.expenseName) }}</td>
-                            <td>{{ form_errors(form.expenseDate) }}</td><td><br></td></tr>
+                            <td></td><td>{{ form_errors(form.expenseName) }}</td>
+                            <td></td><td>{{ form_errors(form.expenseDate) }}</td><td><br></td></tr>
                     </table>
 {{ form_rest(form) }}
                 </form>
@@ -141,7 +141,7 @@ loadEvents();
 		{{ item.expenseDate | date("Y-m-d") }}
                                 </td>
                                 <td class="content_table" >
-		{{ item.description }}
+		{{ item.expenseDescription }}
                                 </td>
                                 <td class="content_table" >
 		{{ item.expenseValue | number_format(2)}}

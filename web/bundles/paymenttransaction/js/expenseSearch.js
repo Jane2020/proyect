@@ -18,7 +18,7 @@ function setValidations(){
         event: "blur", 
         rules: {
             'expenseSearch[expenseName]': { 
-                regex: /^[a-zA-Z áéíóúÁÉÍÓÚÑñ]+$/ 
+                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/
             },
             'expenseSearch[expenseRuc]': { 
                 regex: /^[0-9]+$/ 

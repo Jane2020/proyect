@@ -1,11 +1,26 @@
 <?php
 namespace Payment\TransactionBundle\Entity;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ExpenseSearch {
 
 	private $expenseDate;
+	
+	/**
+	 * @Assert\Regex(
+	 *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/",
+	 *     message = "El valor de nombre es incorrecto."
+	 * )
+	 */
 	private $expenseName;
+	
+	/**
+	 * @Assert\Regex(
+	 *     pattern = "/^[0-9]+$/ ",
+	 *     message = "El valor de ruc es incorrecto."
+	 * )
+	 */
 	private $expenseRuc;
 
 	/**
