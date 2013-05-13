@@ -4,12 +4,12 @@
  {{ parent() }}
 <script type="text/javascript" src="{{ asset('bundles/paymentpayment/js/payment.js') }}"></script>
 <script type="text/javascript">
- 
+
+  var link = '_deletePayment'; 
   var form_id = "paymentSearch";
   var action_edit = "{{ path('_editPayment') }}";
   var action_delete = "{{ path('_deletePayment') }}";
-  var action_publish = "{{ path('_activePayment') }}";
-
+    
   function submit_check(action)
   {	
  	if (action == 'Edit')
@@ -39,6 +39,7 @@
 }  
 loadEvents();
 </script>
+<script type="text/javascript" src="{{ asset('bundles/paymentapplication/js/deleteConfirmation.js') }}"></script>
  <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}	
 
@@ -52,9 +53,13 @@ loadEvents();
         <td style="text-align: center"><a href="{{ path('_editPayment') }}">
         	<div id="button_new"></div>Nuevo</a>
         </td>
-        <td style="text-align: center"><a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para eliminar');}else{if(confirm('Está seguro que desea eliminar el pago seleccionado?')){submit_check('Remove');}}">
-            <div id="button_delete"></div>Eliminar</a>
-        </td>
+        <td style="text-align: center">
+			<a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para eliminar');}else{if(confirm('Está seguro que desea eliminar el item seleccionado?')){ dialogOpenRef('{{ path('deleteItem') }}');}}">
+            	<div id="button_delete"></div>Eliminar
+            </a>
+    		<div id="dialog" title="Eliminar Item Seleccionado">    
+			</div>
+        </td>      
     </tr>
 </table>
 <br><br><br>

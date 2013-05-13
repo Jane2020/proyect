@@ -82,7 +82,9 @@ class DefaultController extends Controller
 	 */
 	public function generalMenuAction(Request $request)
 	{
-		$parentMenu = $this->getDoctrine()->getRepository('PaymentDataAccessBundle:NavigationItem')->getMenus(0);
+		$rol = $this->get('security.context')->getToken()->getUser()->getRoles();
+		$rol = trim($rol[0]);
+		$parentMenu = $this->getDoctrine()->getRepository('PaymentDataAccessBundle:NavigationItem')->getMenus(0, $rol);
 		return array('parentMenu'=>$parentMenu);
 	}
 	
@@ -98,6 +100,57 @@ class DefaultController extends Controller
 		$link = $req->get('link');
         return $this->render("PaymentApplicationBundle:Delete:delete.html.twig", array('cid' => $cid, 'link' => $link));
     }
-
-
+    
+    /**
+     *
+     * @Template
+     *
+     */
+    public function configurationItemAction(Request $request)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$validationArray = array();
+    	$parameters = $this->getDoctrine()->getRepository('PaymentDataAccessBundle:Parameter')->findBy(array(), array('order' => 'asc'));
+    	if ($request->getMethod() == 'POST')
+    	{
+    		foreach ($parameters as $item)
+    		{
+    			$parameter = $request->request->get($item->getKey());
+    			$name= $item->getName();
+    			$validation = $this->validationParameters($parameter, $item->getRexType());
+    			$item->setValue(trim($parameter));
+    			if ($validation == false)
+    			{
+    				$validationArray[] = 'Por favor ingrese correctamente '.$parameter;	
+    			}    			
+    		}
+    		if (!$validationArray)
+    		{
+    			foreach ($parameters as $item)
+    			{
+    				$em->persist($item);
+    				$em->flush();
+    			}
+    			$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
+    			return $this->render("PaymentApplicationBundle:Default:welcome.html.twig");
+    		}
+    	}    		   	
+    	return $this->render("PaymentApplicationBundle:Configuration:configurationItem.html.twig", array('parameters' => $parameters, 'validationArray' => $validationArray));
+    }
+    
+    /**
+     * Función que realiza la validación de los parametros ingresados. 
+     * 
+     * @param string $parameter
+     * @param string $rexType
+     */
+    private function validationParameters($parameter, $rexType)
+    {
+    	$rexType = "'".$rexType."'";
+    	if (!$parameter or (!preg_match($rexType, $parameter)))
+    	{
+    		return false;
+    	}	
+    	return true; 
+    }
 }

@@ -1,0 +1,78 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block title %}Usuarios - {{ parent() }} {% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+<script type="text/javascript" src="{{ asset('bundles/paymentconfiguration/js/configuration.js') }}"></script>
+<script type="text/javascript">
+  loadEvents(); 
+</script>
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}	
+
+{% block content %}
+<br>
+{% for flashMessage in app.session.flashbag.get('message') %}
+<div class="flash-message">
+    {% autoescape false %}
+        {{ flashMessage|trans({}, 'FOSUserBundle') }}
+    {% endautoescape %}
+</div><br>
+{% endfor %}
+{{ app.session.flashbag.set('message', '')}}
+
+<form action="" method="post" id='configurationForm' name="configurationForm">
+<table id="tableListUser" >
+<tr>
+	<td align="center" colspan="2">
+		<b>PARAMETROS DE CONFIGURACIÓN</b>
+	</td>	
+</tr>
+<tr>
+	<td align="center" colspan="2">
+		&nbsp;
+	</td>	
+</tr>
+<tr>
+	<td align="center">
+		<b>NOMBRE</b>
+	</td>
+	<td align="center">
+		<b>VALOR</b>
+	</td>
+</tr>
+{% for item in parameters %}
+    <tr>
+	    <td class="content_table" >
+			{{ item.name }}
+        </td>   
+         <td class="content_table" >
+         {% if (item.typeField == 'input') %}
+         		<input type="text" name="{{ item.key }}" value="{{ item.value }}">
+         {% endif %}			
+		 {% if (item.typeField == 'date') %}
+		 	<script type="text/javascript">
+		 		$(function() 
+				{
+					$( "#"+"{{ item.key }}" ).datepicker({dateFormat: "yy-mm-dd",  changeMonth: true, changeYear: true});
+	 			});
+  				loadEvents();
+			</script>
+		 	<input type="text" name="{{ item.key }}" value="{{ item.value }}" id="{{ item.key }}" readonly="readonly">
+		 {% endif %}	
+        </td>                              
+   </tr>
+{% endfor %}
+<tr>
+	<td align="center" colspan="2">
+		&nbsp;
+	</td>	
+</tr>
+<tr>
+	<td align="center" colspan="2">
+		<input type="submit" name="save" value="Guardar">
+		<input type="button" name="save" value="Cancelar">
+	</td>
+</tr>
+</table>
+</form>
+{% endblock %}

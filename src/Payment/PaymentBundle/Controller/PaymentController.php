@@ -97,7 +97,8 @@ class PaymentController extends Controller
 					$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
 					$member = $em->getRepository('PaymentDataAccessBundle:Member')->find($payment->getMemberId());
 					$payment->setSystemUser($userData);
-					$payment->setMember($member);					
+					$payment->setMember($member);	
+					$payment->setIsDeleted(0);				
 					$em->persist($payment);
 					$em->flush();
 					$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
@@ -113,28 +114,34 @@ class PaymentController extends Controller
 	/**
 	 * Secure(roles="ROLE_ADMIN")
 	 */
-	public function deleteManagerialAction(Request $request)
+	public function deletePaymentAction(Request $request)
 	{
-		$managerialId = $request->request->get('cid', 0);
-		if (is_array($managerialId)) 
+		$paymentId = $request->request->get('cid', 0);
+		if (is_array($paymentId)) 
 		{
-			$managerialId = $managerialId[0];
+			$paymentId = $paymentId[0];
 		}
 		$em = $this->getDoctrine()->getManager();
-		$managerial = $em->getRepository('PaymentDataAccessBundle:Managerial')->find($managerialId);
-		
-		if (!$managerial) 
+		$payment = $em->getRepository('PaymentDataAccessBundle:Payment')->find($paymentId);
+	
+		if (!$payment) 
 		{
 			$message = "El item seleccionado no ha podido ser encontrado.";
-		}
+		} 
 		else 
 		{
-			$em->remove($managerial);
+			$remark = $request->request->get('remark');
+			$payment->setIsDeleted(1);
+			$payment->setDescription($remark);
+			$user = $this->get('security.context')->getToken()->getUser();
+			$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
+			$payment->setChangeUser($userData);
+			$payment->setPaymentDate(new \DateTime());
 			$em->flush();
-			$message = "El item ha sido Eliminado &eacute;xitosamente.";			
+			$message = "El item ha sido Eliminado &eacute;xitosamente.";
 		}
-		
 		$this->get('session')->getFlashBag()->add('message', $message);
-		return $this->redirect($this->generateUrl('_listManagerial'));
+		return $this->redirect($this->generateUrl('_listPayment'));
+	
 	}
 }

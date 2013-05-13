@@ -13,3 +13,7 @@ menu:
 deleteItem:
     pattern:  /delete/delete-item
     defaults: { _controller: PaymentApplicationBundle:Default:deleteItem }
+
+configurationItem:
+    pattern:  /configurar-items
+    defaults: { _controller: PaymentApplicationBundle:Default:configurationItem }
