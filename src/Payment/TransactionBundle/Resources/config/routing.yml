@@ -1,3 +1,9 @@
-payment_transaction_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: PaymentTransactionBundle:Default:index }
+_listExpense:
+    pattern:  /gestion-de-gastos/listado
+    defaults: { _controller: PaymentTransactionBundle:Expense:listExpense }
+_editExpense:
+    pattern:  /gestion-de-gastos/edicion
+    defaults: { _controller: PaymentTransactionBundle:Expense:editExpense }
+_deleteExpense:
+    pattern:  /gestion-de-gastos/eliminacion
+    defaults: { _controller: PaymentTransactionBundle:Expense:deleteExpense }  

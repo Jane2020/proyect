@@ -30,7 +30,7 @@ function setValidations(){
         },
         messages: {
             'memberTypeSearch[documentNumber]': { 
-                regex: 'Por favor ingrese números (0-9) ó (-).' 
+                regex: 'Por favor ingrese números (0-9).' 
             },
             'memberTypeSearch[name]': { 
                     regex: 'Por favor ingrese letras (a-z), números (0-9) ó (-),(_)' 
