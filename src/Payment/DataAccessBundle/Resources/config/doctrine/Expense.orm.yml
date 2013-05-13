@@ -65,6 +65,12 @@ Payment\DataAccessBundle\Entity\Expense:
             fixed: false
             nullable: true
             column: expense_phone
+        expenseDescription:
+            type: string
+            length: 512
+            fixed: false
+            nullable: true
+            column: expense_description
     manyToOne:
         transaction:
             targetEntity: Transaction

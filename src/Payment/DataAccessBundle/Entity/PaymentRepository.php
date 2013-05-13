@@ -26,7 +26,6 @@ class PaymentRepository extends EntityRepository
 			$queryBuilder->setMaxResults($limit);
 		}
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:PaymentType ft');
-			
 		if ($paymentTypeText != null) 
 		{
 			$paymentTypeText = str_replace(' ', '%', $paymentTypeText);
@@ -57,6 +56,7 @@ class PaymentRepository extends EntityRepository
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:Payment p');
 		$queryBuilder->innerJoin('p.paymentType', 'pt');
 		$queryBuilder->innerJoin('p.member', 'me');
+		$queryBuilder->where($queryBuilder->expr()->eq('p.isDeleted', '0'));
 		
 		if ($paymentText != null)
 		{

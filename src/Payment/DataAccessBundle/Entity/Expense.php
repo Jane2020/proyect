@@ -444,4 +444,32 @@ class Expense
     {
         return $this->systemUser;
     }
+    /**
+     * @var string
+     */
+    private $expenseDescription;
+
+
+    /**
+     * Set expenseDescription
+     *
+     * @param string $expenseDescription
+     * @return Expense
+     */
+    public function setExpenseDescription($expenseDescription)
+    {
+        $this->expenseDescription = $expenseDescription;
+    
+        return $this;
+    }
+
+    /**
+     * Get expenseDescription
+     *
+     * @return string 
+     */
+    public function getExpenseDescription()
+    {
+        return $this->expenseDescription;
+    }
 }

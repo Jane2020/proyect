@@ -337,4 +337,32 @@ class Payment
     {
     	return $this->memberName;
     }    
+    /**
+     * @var \Payment\DataAccessBundle\Entity\Account
+     */
+    private $account;
+
+
+    /**
+     * Set account
+     *
+     * @param \Payment\DataAccessBundle\Entity\Account $account
+     * @return Payment
+     */
+    public function setAccount(\Payment\DataAccessBundle\Entity\Account $account = null)
+    {
+        $this->account = $account;
+    
+        return $this;
+    }
+
+    /**
+     * Get account
+     *
+     * @return \Payment\DataAccessBundle\Entity\Account 
+     */
+    public function getAccount()
+    {
+        return $this->account;
+    }
 }

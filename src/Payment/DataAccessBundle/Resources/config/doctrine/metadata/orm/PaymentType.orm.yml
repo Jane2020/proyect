@@ -26,4 +26,14 @@ PaymentType:
             type: boolean
             nullable: false
             column: is_active
+    manyToOne:
+        paymentTypeType:
+            targetEntity: PaymentTypeType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                payment_type_type_id:
+                    referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -26,6 +26,15 @@ Payment:
             fixed: false
             nullable: true
     manyToOne:
+        account:
+            targetEntity: Account
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                account_id:
+                    referencedColumnName: id
+            orphanRemoval: false
         changeUser:
             targetEntity: SystemUser
             cascade: {  }

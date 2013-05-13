@@ -148,4 +148,32 @@ class PaymentType
     {
         return $this->isActive;
     }
+    /**
+     * @var \Payment\DataAccessBundle\Entity\PaymentTypeType
+     */
+    private $paymentTypeType;
+
+
+    /**
+     * Set paymentTypeType
+     *
+     * @param \Payment\DataAccessBundle\Entity\PaymentTypeType $paymentTypeType
+     * @return PaymentType
+     */
+    public function setPaymentTypeType(\Payment\DataAccessBundle\Entity\PaymentTypeType $paymentTypeType = null)
+    {
+        $this->paymentTypeType = $paymentTypeType;
+    
+        return $this;
+    }
+
+    /**
+     * Get paymentTypeType
+     *
+     * @return \Payment\DataAccessBundle\Entity\PaymentTypeType 
+     */
+    public function getPaymentTypeType()
+    {
+        return $this->paymentTypeType;
+    }
 }
