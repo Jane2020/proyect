@@ -86,20 +86,25 @@ class PaymentTypeController extends Controller
 		if ($paymentTypeId > 0)
 		{
 			$paymentType = $em->getRepository('PaymentDataAccessBundle:PaymentType')->find($paymentTypeId);
-		} else {
+		} 
+		else 
+		{
 			$paymentType = new PaymentType();
 			$title = "Crear";
 		}
 		 
 		$paymentTypeForm = $this->createForm(new PaymentTypeEditType(), $paymentType);
 		 
-		if ($request->getMethod() == 'POST') {
+		if ($request->getMethod() == 'POST') 
+		{
 			$band = $request->request->get('band', 0);
 			if ($band != 0)
 			{
 				$paymentTypeForm->bind($request);
 				if ($paymentTypeForm->isValid())
 				{
+					$paymentTypeType = $em->getRepository('PaymentDataAccessBundle:PaymentTypeType')->find($paymentType->getPaymentTypeType()->getId());
+					$paymentType->setPaymentTypeType($paymentTypeType);
 					$em->persist($paymentType);
 					$em->flush();
 					$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');

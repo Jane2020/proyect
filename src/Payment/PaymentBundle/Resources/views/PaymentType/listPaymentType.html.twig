@@ -116,9 +116,11 @@ loadEvents();
 
                             </th>
                             <th class="title_check">
-                                Tipo de Pago
+                                Nombre del Tipo de Pago
                             </th>
-
+ 							<th class="title_check">
+                                Tipo
+                            </th>
                             <th class="title">
                                 Descripci&oacute;n
                             </th>
@@ -139,6 +141,9 @@ loadEvents();
                             <td class="content_table" >
 		{{ item.name }}
                                 </td>
+                                   <td class="content_table" >
+		{{ item.paymentTypeType.name }}
+                                </td>
                                 <td class="content_table">
 		{{ item.description }}
                                     </td >	
@@ -157,7 +162,7 @@ loadEvents();
                                             <tr>
 	{% if  total==0 %}
                                                     <td colspan="6" align="center" class="content_table_left">
-                                                        No existen usuarios a mostrar
+                                                        No existen Tipos de Pagos a mostrar
                                                     </td>
 	{% endif %}
 

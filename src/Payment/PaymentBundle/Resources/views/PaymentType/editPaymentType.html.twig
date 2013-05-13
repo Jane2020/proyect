@@ -31,8 +31,13 @@ loadEvents();
 </div>
 <div id="contentRight">
 <table id="tableEditUser">
+<tr>
 <td class="title" valign="top">{{ form_label(form.name) }}</td>
 <td>{{ form_widget(form.name, { 'attr': {'class': 'required'} }) }} </td>
+</tr>
+<tr>
+<td class="title" valign="top">{{ form_label(form.paymentTypeType) }}</td>
+<td>{{ form_widget(form.paymentTypeType, { 'attr': {'class': 'required'} }) }} </td>
 </tr>
 <tr>
 <td class="title" valign="top">{{ form_label(form.description) }}</td>
