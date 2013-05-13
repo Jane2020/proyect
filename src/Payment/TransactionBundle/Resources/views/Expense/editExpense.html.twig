@@ -1,0 +1,88 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block title %}{{ title }} Gasto - {{ parent() }} {% endblock %}
+{% block javascripts %}
+ {{ parent() }}
+ <script type="text/javascript" src="{{ asset('bundles/paymenttransaction/js/expenseEdit.js') }}"></script>
+<script type="text/javascript">
+loadEvents();
+</script>
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}
+
+{% block content %}
+{{ title }} Gastos
+<form action="{{ path('_editExpense') }}" method="post" {{ form_enctype(form) }} id="expenseEdit" name="expenseEdit">
+<div id="contentLeft">
+ {% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="flash-message">
+     {% autoescape false %}
+        {{ flashMessage|trans({}, 'FOSUserBundle') }}
+     {% endautoescape %}
+    </div><br>
+{% endfor %}
+
+{{ app.session.flashbag.set('message', '')}}
+
+{{ form_errors(form.expenseName) }}
+{{ form_errors(form.expenseRuc) }}
+{{ form_errors(form.expenseDate) }}
+{{ form_errors(form.expenseNumber) }}
+{{ form_errors(form.expenseIva) }}
+{{ form_errors(form.expenseAddress) }}
+{{ form_errors(form.expenseValue) }}
+{{ form_errors(form.expensePhone) }}
+{{ form_errors(form.expenseDescription) }}
+{{ form_errors(form) }}
+&nbsp;
+</div>
+<div id="contentRight">
+<table id="tableEditUser">
+<td class="title" valign="top">{{ form_label(form.expenseNumber) }}</td>
+<td>{{ form_widget(form.expenseNumber, { 'attr': {'class': 'required'} }) }} </td>
+</tr>
+<tr>
+<td class="title" valign="top">{{ form_label(form.expenseRuc) }}</td>
+<td>{{ form_widget(form.expenseRuc, { 'attr': {'class': 'required'} }) }} </td>
+</tr>  
+<tr>
+<td class="title" valign="top">{{ form_label(form.expenseDate) }}</td>
+<td>{{ form_widget(form.expenseDate, { 'attr': {'class': 'required', 'readOnly': 'true'} }) }} </td>
+</tr>
+<tr>
+<td class="title" valign="top">{{ form_label(form.expenseName) }}</td>
+<td>{{ form_widget(form.expenseName, { 'attr': {'class': 'required'}}) }} </td>
+</tr>
+<tr>
+<td class="title" valign="top">{{ form_label(form.expenseAddress) }}</td>
+<td>{{ form_widget(form.expenseAddress, { 'attr': {'class': 'required'} }) }}  </td>
+</tr>
+<tr>
+<td class="title" valign="top">{{ form_label(form.expensePhone) }}</td>
+<td>{{ form_widget(form.expensePhone) }}  </td>
+</tr>
+<tr>
+<td class="title" valign="top">{{ form_label(form.expenseIva) }}</td>
+<td>{{ form_widget(form.expenseIva, { 'attr': {'class': 'required'}}) }}  </td>
+</tr>
+<tr>
+<td class="title" valign="top">{{ form_label(form.expenseValue) }}</td>
+<td>{{ form_widget(form.expenseValue, { 'attr': {'class': 'required'}}) }}  </td>
+</tr>
+<tr>
+<td class="title" valign="top">{{ form_label(form.expenseDescription) }}</td>
+<td>{{ form_widget(form.expenseDescription, { 'attr': {'class': 'required', 'cols': 30}}) }}  </td>
+</tr>
+<tr>
+
+<td height="50px;" align="right" valign="bottom">
+ <input type="submit" value="Guardar" name="btsend" id="button_enter"/>
+ <input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listExpense') }}'"/>
+</td>
+</tr>
+</table>
+<input type="hidden" name="band" value="1">
+<input type="hidden" name="cid" value="{{ cid }}">
+{{ form_rest(form) }}
+</form>
+</div>
+{% endblock %}
