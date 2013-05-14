@@ -1,6 +1,6 @@
 _listManagerial:
     pattern:  /gestion-de-directivas/listado
-    defaults: { _controller: PaymentManagerialBundle:Managerial:listManagerial }
+    defaults: { _controller: PaymentManagerialBundle:Managerial:listManagerial}
 _activeManagerial:
     pattern:  /gestion-de-directivas/activacion
     defaults: { _controller: PaymentManagerialBundle:Managerial:activeManagerial }

@@ -3,6 +3,7 @@
 namespace Payment\DataAccessBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Account
@@ -16,16 +17,35 @@ class Account
 
     /**
      * @var integer
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el Número de Cuenta."
+     * )
+     * 
+     * @Assert\Regex(
+     *     pattern = "/^[0-9\_\-]+$/",
+     *     message = "Por favor ingrese correctamente el Número de Cuenta."
+     * )
      */
     private $accountNumber;
 
     /**
      * @var string
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el Número de Medidor."
+     * )
+     * 
+     * @Assert\Regex(
+     *     pattern = "/^[0-9\_\-]+$/",
+     *     message = "Por favor ingrese correctamente el Número de Medidor."
+     * )
      */
     private $meterNumber;
 
     /**
      * @var \Payment\DataAccessBundle\Entity\Member
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el Nombre del Miembro."
+     * )
      */
     private $member;
 
@@ -258,8 +278,12 @@ class Account
     {
         return $this->isActive;
     }
+    
     /**
      * @var \Payment\DataAccessBundle\Entity\AccountType
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el tipo de cuenta."
+     * )
      */
     private $accountType;
 

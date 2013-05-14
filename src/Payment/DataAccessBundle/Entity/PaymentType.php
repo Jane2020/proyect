@@ -171,8 +171,10 @@ class PaymentType
     {
         return $this->isActive;
     }
+    
     /**
      * @var \Payment\DataAccessBundle\Entity\PaymentTypeType
+     * 
      * @Assert\NotBlank(
      *   message = "Por favor ingrese el tipo."
      * )

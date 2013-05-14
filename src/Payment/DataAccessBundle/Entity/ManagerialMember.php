@@ -3,6 +3,7 @@
 namespace Payment\DataAccessBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ManagerialMember
@@ -31,16 +32,25 @@ class ManagerialMember
 
     /**
      * @var \Payment\DataAccessBundle\Entity\Charge
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el cargo."
+     * )
      */
     private $charge;
 
     /**
      * @var \Payment\DataAccessBundle\Entity\Managerial
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese la Directiva."
+     * )
      */
     private $managerial;
 
     /**
      * @var \Payment\DataAccessBundle\Entity\Member
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el nombre."
+     * ) 
      */
     private $member;
 
