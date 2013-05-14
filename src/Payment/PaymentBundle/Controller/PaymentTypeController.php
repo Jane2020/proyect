@@ -108,7 +108,6 @@ class PaymentTypeController extends Controller
 					$em->persist($paymentType);
 					$em->flush();
 					$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
-	
 					return $this->redirect($this->generateUrl('_listPaymentType'));
 				}
 			}

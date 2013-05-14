@@ -3,6 +3,7 @@
 namespace Payment\DataAccessBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * PaymentType
@@ -16,16 +17,38 @@ class PaymentType
 
     /**
      * @var string
+     * 
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el nombre."
+     * )
+     * 
+     * @Assert\Regex(
+     *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.]+$/",
+     *     message = "Valor del nombre es incorrecto."
+     * )
      */
+    
     private $name;
 
     /**
      * @var string
+     * 
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese la descripción."
+     * )
+     * 
+     * @Assert\Regex(
+     *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\,\=]+$/",
+     *     message = "Valor del descripción es incorrecto."
+     * )
      */
     private $description;
 
     /**
      * @var float
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el valor de pago."
+     * )
      */
     private $cost;
 
@@ -150,6 +173,10 @@ class PaymentType
     }
     /**
      * @var \Payment\DataAccessBundle\Entity\PaymentTypeType
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el tipo."
+     * )
+     *      
      */
     private $paymentTypeType;
 

@@ -11,14 +11,14 @@
 
 {% block content %}
 <br>
-{% for flashMessage in app.session.flashbag.get('message') %}
+{% for message in validationArray %}
 <div class="flash-message">
     {% autoescape false %}
-        {{ flashMessage|trans({}, 'FOSUserBundle') }}
+        {{ message }}
     {% endautoescape %}
 </div><br>
 {% endfor %}
-{{ app.session.flashbag.set('message', '')}}
+
 
 <form action="" method="post" id='configurationForm' name="configurationForm">
 <table id="tableListUser" >
