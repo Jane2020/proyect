@@ -10,6 +10,7 @@ _editManagerial:
 _deleteManagerial:
     pattern:  /gestion-de-directivas/eliminacion
     defaults: { _controller: PaymentManagerialBundle:Managerial:deleteManagerial }
+    
 _listManagerialMember:
     pattern:  /gestion-de-miembros-directivas/listado
     defaults: { _controller: PaymentManagerialBundle:ManagerialMember:listManagerialMember }  
