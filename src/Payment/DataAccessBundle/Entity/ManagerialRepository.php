@@ -19,7 +19,7 @@ class ManagerialRepository extends EntityRepository
 			$queryBuilder->add('select', $queryBuilder->expr()->count('m.id'));
 		} else {
 			$queryBuilder->add('select', 'm');
-			$queryBuilder->orderBy('m.name');
+			$queryBuilder->orderBy('m.id','DESC');
 			$queryBuilder->setFirstResult($offset);
 			$queryBuilder->setMaxResults($limit);
 		}
