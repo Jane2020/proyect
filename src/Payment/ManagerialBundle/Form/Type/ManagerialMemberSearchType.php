@@ -15,6 +15,6 @@ class ManagerialMemberSearchType extends AbstractType
 	
 	public function getName()
 	{
-		return 'managerialSearch';
+		return 'managerialMemberSearch';
 	}
 }

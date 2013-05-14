@@ -19,7 +19,7 @@ function setValidations(){
         event: "blur", 
         rules: {
             'paymentTypeSearch[name]': { 
-                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\@\/]+$/ 
+                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\/]+$/ 
             }
         },
         messages: {
@@ -37,7 +37,7 @@ function setValidations(){
 }
 
 function setValidationsEdit(){
-    $("#finesTypeEdit").validate({
+    $("#paymentTypeEdit").validate({
         event: "blur", 
         rules: {
             'paymentTypeEdit[name]': {        		

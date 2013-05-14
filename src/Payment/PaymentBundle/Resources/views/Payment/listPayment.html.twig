@@ -51,7 +51,10 @@ loadEvents();
     	    <div id="button_edit"></div>Editar</a>
         </td>
         <td style="text-align: center"><a href="{{ path('_editPayment') }}">
-        	<div id="button_new"></div>Nuevo</a>
+        	<div id="button_new"></div>Nuevo1</a>
+        </td>
+        <td style="text-align: center"><a href="{{ path('_editPayment') }}">
+        	<div id="button_new"></div>Nuevo2</a>
         </td>
         <td style="text-align: center">
 			<a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos un elemento para eliminar');}else{if(confirm('Está seguro que desea eliminar el item seleccionado?')){ dialogOpenRef('{{ path('deleteItem') }}');}}">

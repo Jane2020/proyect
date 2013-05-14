@@ -111,19 +111,20 @@ class DefaultController extends Controller
     	$em = $this->getDoctrine()->getManager();
     	$validationArray = array();
     	$parameters = $this->getDoctrine()->getRepository('PaymentDataAccessBundle:Parameter')->findBy(array(), array('order' => 'asc'));
+    	foreach ($parameters as $item)
+    	{
+    		$parameter = $request->request->get($item->getKey());
+    		$name= $item->getName();
+    		$validation = $this->validationParameters($parameter, $item->getRexType());
+    		$item->setValue(trim($parameter));
+    		if ($validation == false)
+    		{
+    			$validationArray[] = 'Por favor ingrese correctamente el '.$name;
+    		}
+    	}
+    	
     	if ($request->getMethod() == 'POST')
     	{
-    		foreach ($parameters as $item)
-    		{
-    			$parameter = $request->request->get($item->getKey());
-    			$name= $item->getName();
-    			$validation = $this->validationParameters($parameter, $item->getRexType());
-    			$item->setValue(trim($parameter));
-    			if ($validation == false)
-    			{
-    				$validationArray[] = 'Por favor ingrese correctamente '.$parameter;	
-    			}    			
-    		}
     		if (!$validationArray)
     		{
     			foreach ($parameters as $item)
@@ -134,7 +135,7 @@ class DefaultController extends Controller
     			$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
     			return $this->render("PaymentApplicationBundle:Default:welcome.html.twig");
     		}
-    	}    		   	
+    	}  
     	return $this->render("PaymentApplicationBundle:Configuration:configurationItem.html.twig", array('parameters' => $parameters, 'validationArray' => $validationArray));
     }
     

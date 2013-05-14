@@ -22,7 +22,7 @@ class Managerial
      * )
      * 
      * @Assert\Regex(
-     *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\@\/]+$/",
+     *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\/]+$/",
      *     message = "Valor de nombre es incorrecto."
      * )
      */

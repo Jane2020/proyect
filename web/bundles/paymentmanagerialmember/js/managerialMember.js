@@ -19,12 +19,12 @@ function setValidations(){
         event: "blur", 
         rules: {
             'managerialMemberSearch[name]': { 
-                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\@\/]+$/ 
+                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\/]+$/ 
             }
         },
         messages: {
             'managerialMemberSearch[name]': { 
-                regex: 'Por favor ingrese letras (a-z), números (0-9) ó (-),(_),(@)' 
+                regex: 'Por favor ingrese letras (a-z), números (0-9) ó (-),(_)' 
             }        		
         },
         debug: true,
