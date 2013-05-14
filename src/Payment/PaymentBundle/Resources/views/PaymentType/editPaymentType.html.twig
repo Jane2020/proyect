@@ -3,8 +3,8 @@
 {% block javascripts %}
  {{ parent() }}
  <script type="text/javascript" src="{{ asset('bundles/paymentpayment/js/paymentType.js') }}"></script>
-<script type="text/javascript">
-loadEvents();
+ <script type="text/javascript">
+	loadEvents();
 </script>
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}
@@ -41,11 +41,11 @@ loadEvents();
 </tr>
 <tr>
 <td class="title" valign="top">{{ form_label(form.description) }}</td>
-<td>{{ form_widget(form.description, { 'attr': {'row': '15', 'cols':'30'} }) }} </td>
+<td>{{ form_widget(form.description, { 'attr': {'row': '15', 'cols':'30', 'class': 'required'} }) }} </td>
 </tr>  
 <tr>
 <td class="title" valign="top">{{ form_label(form.cost) }}</td>
-<td>{{ form_widget(form.cost) }} </td>
+<td>{{ form_widget(form.cost, { 'attr': {'class': 'required'} })}} </td>
 </tr>
 <tr>
 <td class="title" valign="top">{{ form_label(form.isActive) }}</td>
