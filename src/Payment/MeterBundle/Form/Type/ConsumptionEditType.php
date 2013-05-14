@@ -50,11 +50,11 @@ class ConsumptionEditType extends AbstractType
 		$queryBuilder = $this->em->createQueryBuilder('c');
 		$queryBuilder->add('select', 'c');
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:Consumption c');
-		$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p', 'WITH', 'p.id = 1');
-		$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p1', 'WITH', 'p1.id = 2');
+		$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p', 'WITH', "p.key = 'date_start_consumption'");
+		$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p1', 'WITH', "p1.key = 'date_end_consumption'");
 		$queryBuilder->Where('c.isDeleted = 0');
 		$queryBuilder->andWhere('c.systemDate >= p.value');
-		$queryBuilder->andWhere('c.systemDate <= p1.value');
+		$queryBuilder->andWhere("c.systemDate <= DATE_ADD(p1.value,1,'day')");
 		$query = $queryBuilder->getQuery();
 		$results = $query->getResult();
 		$data = array();
@@ -73,9 +73,13 @@ class ConsumptionEditType extends AbstractType
 		$qb = $this->em->createQueryBuilder('a');
 		$qb->add('select', 'a');
 		$qb->add('from', 'PaymentDataAccessBundle:Account a');
-	 	$qb->where('a.isActive = 1')
-		->andWhere($qb->expr()->notIn('a.id', $this->accounts))
-		->orderBy('a.accountNumber', 'ASC');
+	 	$qb->where('a.isActive = 1');
+	 	if (count($this->accounts) > 0)
+	 	{
+	 		$qb->andWhere($qb->expr()->notIn('a.id', $this->accounts));
+	 	}
+		
+		$qb->orderBy('a.accountNumber', 'ASC');
 		return $qb;		
 	}
 }

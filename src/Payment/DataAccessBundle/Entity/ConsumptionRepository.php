@@ -31,12 +31,12 @@ class ConsumptionRepository extends EntityRepository
 			$queryBuilder->andWhere('c.account = ?1');
 			$queryBuilder->setParameter(1, $consumptionSelect);	
 		}
-		if ($operator)
+		if (!$operator)
 		{
-			$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p', 'WITH', 'p.id = 1');
-			$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p1', 'WITH', 'p1.id = 2');
+			$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p', 'WITH', "p.key = 'date_start_consumption'");
+			$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p1', 'WITH', "p1.key = 'date_end_consumption'");
 			$queryBuilder->andWhere('c.systemDate >= p.value');
-			$queryBuilder->andWhere('c.systemDate <= p1.value');
+			$queryBuilder->andWhere("c.systemDate <= DATE_ADD(p1.value,1,'day')");
 		}	
 
 		$query = $queryBuilder->getQuery();
