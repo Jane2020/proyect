@@ -79,14 +79,24 @@
  {	
 	 if (checkDocumentNumber() == true)
      {
+		 document.getElementById("memberEdit_documentNumber").style.borderColor = '';
+		 document.getElementById("errorDocumentNumber").style = "display: none;";
 		 document.memberEdit.submit();
      }
 	 else
 	 {
-     	alert('Por favor verifique que número de cédula es correcto.');
+		document.getElementById("memberEdit_documentNumber").style.borderColor = 'red';
+		document.getElementById("errorDocumentNumber").innerHTML = 'Número de Cédula Incorrecto.';	
+		document.getElementById("errorDocumentNumber").style = "display: block;";
      }
  }
- 
+
+ function changeColor()
+ {
+	 document.getElementById("memberEdit_documentNumber").style.borderColor = '';
+	 document.getElementById("errorDocumentNumber").innerHTML = '';	
+	 document.getElementById("errorDocumentNumber").style = "display: none;";
+ }
  
 </script>
 {% endblock %}
@@ -119,7 +129,10 @@
 	<table id="tableEditUser">
 		<tr>
 			<td class="title" valign="top">{{ form_label(form.documentNumber) }}</td>
-			<td>{{ form_widget(form.documentNumber, { 'attr': {'class': 'required'} }) }} </td>
+			<td>
+				{{ form_widget(form.documentNumber, { 'attr': {'class': 'required', 'onclick':'changeColor()'} }) }}
+				<div id="errorDocumentNumber" class="error"></div> 
+			</td>						
 		</tr>
 		<tr>
 			<td class="title" valign="top">{{ form_label(form.name) }}</td>
