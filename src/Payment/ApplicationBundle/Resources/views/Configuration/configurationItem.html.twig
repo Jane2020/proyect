@@ -2,10 +2,6 @@
 {% block title %}Usuarios - {{ parent() }} {% endblock %}
 {% block javascripts %}
 	{{ parent() }}
-<script type="text/javascript" src="{{ asset('bundles/paymentconfiguration/js/configuration.js') }}"></script>
-<script type="text/javascript">
-  loadEvents(); 
-</script>
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}	
 
@@ -18,7 +14,6 @@
     {% endautoescape %}
 </div><br>
 {% endfor %}
-
 
 <form action="" method="post" id='configurationForm' name="configurationForm">
 <table id="tableListUser" >
@@ -47,7 +42,8 @@
         </td>   
          <td class="content_table" >
          {% if (item.typeField == 'input') %}
-         		<input type="text" name="{{ item.key }}" value="{{ item.value }}">
+         		<input type="text" name="{{ item.key }}" value="{{ item.value }}" id="{{ item.key }}" required="required">
+         		<div id="error"></div>
          {% endif %}			
 		 {% if (item.typeField == 'date') %}
 		 	<script type="text/javascript">
@@ -57,7 +53,8 @@
 	 			});
   				loadEvents();
 			</script>
-		 	<input type="text" name="{{ item.key }}" value="{{ item.value }}" id="{{ item.key }}" readonly="readonly">
+		 	<input type="text" name="{{ item.key }}" value="{{ item.value }}" id="{{ item.key }}" readonly="readonly" id="{{ item.key }}">
+		 	<div id="error"></div>
 		 {% endif %}	
         </td>                              
    </tr>
@@ -68,9 +65,9 @@
 	</td>	
 </tr>
 <tr>
-	<td align="center" colspan="2">
-		<input type="submit" name="save" value="Guardar">
-		<input type="button" name="save" value="Cancelar">
+	<td height="50px;" align="right" valign="bottom">
+ 		<input type="submit" value="Guardar" name="btsend" id="button_enter"/>
+ 		<input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('configurationItem') }}'"/>
 	</td>
 </tr>
 </table>

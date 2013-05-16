@@ -37,7 +37,7 @@
 
 {% block content %}
 {{ title }} Pago
-<form action="{{ path('_editPayment') }}" method="post" {{ form_enctype(form) }} id="paymentEdit" name="paymentEdit">
+<form action="" method="post" {{ form_enctype(form) }} id="paymentEdit" name="paymentEdit">
 <div id="contentLeft">
  {% for flashMessage in app.session.flashbag.get('message') %}
     <div class="flash-message">
@@ -55,7 +55,16 @@
 </div>
 <div id="contentRight">
 	<table id="tableEditUser">
-		{% include 'PaymentApplicationBundle:Default:fieldInclude.html.twig' %}
+		{% if id == 2 %}
+			{% set required = 0 %}
+		 	{% include 'PaymentApplicationBundle:Finder:finder.html.twig' %}
+		<tr>
+			<td>{{ form_widget(form.account, { 'attr': {'class': 'required'} }) }} </td>
+		</tr>
+		{% endif %}
+		{% if id == 1 %}
+			{% include 'PaymentApplicationBundle:Default:fieldInclude.html.twig' %}
+		{% endif %}	
 		<tr>
 			<td class="title" valign="top">{{ form_label(form.paymentType) }}</td>
 			<td>{{ form_widget(form.paymentType, { 'attr': {'class': 'required'} }) }} </td>

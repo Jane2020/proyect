@@ -10,6 +10,7 @@ _editPaymentType:
 _deletePaymentType:
     pattern:  /gestion-de-tipo-pagos/eliminacion
     defaults: { _controller: PaymentPaymentBundle:PaymentType:deletePaymentType }
+    
 _listPayment:
     pattern:  /gestion-de-pagos/listado
     defaults: { _controller: PaymentPaymentBundle:Payment:listPayment }
@@ -17,7 +18,7 @@ _activePayment:
     pattern:  /gestion-de-pagos/activacion
     defaults: { _controller: PaymentPaymentBundle:Payment:activePayment }
 _editPayment:
-    pattern:  /gestion-de-pagos/edicion
+    pattern:  /gestion-de-pagos/edicion/{id}
     defaults: { _controller: PaymentPaymentBundle:Payment:editPayment }
 _deletePayment:
     pattern:  /gestion-de-pagos/eliminacion

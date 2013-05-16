@@ -110,21 +110,38 @@ class DefaultController extends Controller
     {
     	$em = $this->getDoctrine()->getManager();
     	$validationArray = array();
+    	$inputValue = null;
+    	$rexValue = null;
+    	$nameValue = null;
     	$parameters = $this->getDoctrine()->getRepository('PaymentDataAccessBundle:Parameter')->findBy(array(), array('order' => 'asc'));
+    	$countParameter = count($parameters);
+    	$i=1;
     	foreach ($parameters as $item)
     	{
-    		$parameter = $request->request->get($item->getKey());
-    		$name= $item->getName();
-    		$validation = $this->validationParameters($parameter, $item->getRexType());
-    		$item->setValue(trim($parameter));
-    		if ($validation == false)
+    		$inputValue = $inputValue.$item->getKey();
+    		$rexValue = $rexValue."".$item->getRexType()."";
+    		$nameValue = $nameValue.$item->getValue();
+    		if ($i < $countParameter)
     		{
-    			$validationArray[] = 'Por favor ingrese correctamente el '.$name;
+    			$inputValue = $inputValue.',';
+    			$rexValue = $rexValue.';';
+    			$nameValue = $nameValue.',';
     		}
+    		$i++;
     	}
-    	
     	if ($request->getMethod() == 'POST')
     	{
+    		foreach ($parameters as $item)
+    		{
+    			$parameter = $request->request->get($item->getKey());
+    			$name= $item->getName();
+    			$validation = $this->validationParameters($parameter, $item->getRexType());
+    			$item->setValue(trim($parameter));
+    			if ($validation == false)
+    			{
+    				$validationArray[] = 'Por favor ingrese correctamente el '.$name;
+    			}
+    		}    		 
     		if (!$validationArray)
     		{
     			foreach ($parameters as $item)
@@ -136,7 +153,7 @@ class DefaultController extends Controller
     			return $this->render("PaymentApplicationBundle:Default:welcome.html.twig");
     		}
     	}  
-    	return $this->render("PaymentApplicationBundle:Configuration:configurationItem.html.twig", array('parameters' => $parameters, 'validationArray' => $validationArray));
+    	return $this->render("PaymentApplicationBundle:Configuration:configurationItem.html.twig", array('parameters' => $parameters, 'validationArray' => $validationArray, 'inputValue'=>$inputValue, 'rexValue' => $rexValue, 'nameValue' => $nameValue));
     }
     
     /**

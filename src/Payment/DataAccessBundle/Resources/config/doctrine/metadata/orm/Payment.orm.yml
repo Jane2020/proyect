@@ -25,6 +25,10 @@ Payment:
             length: 256
             fixed: false
             nullable: true
+        isPayment:
+            type: boolean
+            nullable: true
+            column: is_payment
     manyToOne:
         account:
             targetEntity: Account

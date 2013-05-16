@@ -35,6 +35,10 @@ Payment\DataAccessBundle\Entity\Consumption:
             type: boolean
             nullable: true
             column: is_deleted
+        isPayment:
+            type: boolean
+            nullable: true
+            column: is_payment
     manyToOne:
         account:
             targetEntity: Account

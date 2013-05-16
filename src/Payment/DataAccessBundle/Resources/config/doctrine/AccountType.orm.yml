@@ -1,5 +1,6 @@
 Payment\DataAccessBundle\Entity\AccountType:
     type: entity
+    repositoryClass: Payment\DataAccessBundle\Entity\AccountTypeRepository
     table: account_type
     fields:
         id:

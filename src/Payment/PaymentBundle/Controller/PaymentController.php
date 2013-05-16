@@ -58,7 +58,7 @@ class PaymentController extends Controller
 	 * @Template()
 	 * Secure(roles="ROLE_ADMIN")
 	 */
-	public function editPaymentAction(Request $request)
+	public function editPaymentAction($id, Request $request)
 	{
 		$title = "Editar";
 		$paymentId = $request->request->get('cid', 0);
@@ -68,22 +68,34 @@ class PaymentController extends Controller
 		}
 			
 		$em = $this->getDoctrine()->getManager();
+		$accountId = 0;
 		if ($paymentId > 0)
 		{
 			$payment = $em->getRepository('PaymentDataAccessBundle:Payment')->find($paymentId);
+			$id = $payment->getPaymentType()->getPaymentTypeType()->getId();
 			if ($payment->getPaymentDate())
 			{
 				$payment->setPaymentDate($payment->getPaymentDate()->format('Y-m-d'));
 			}
-			$payment->setMemberId($payment->getMember()->getId());
-			$payment->setMemberName($payment->getMember()->getName().' '.$payment->getMember()->getLastname());
+			//Cuenta - Rubro
+			if ($id == 2)
+			{
+				$accountId = $payment->getAccount()->getId();								
+			}
+			//Miembro -Inasistencia
+			if ($id == 1)
+			{	
+				$payment->setMemberId($payment->getMember()->getId());
+				$payment->setMemberName($payment->getMember()->getName().' '.$payment->getMember()->getLastname());
+			}				
 		} 
 		else 
 		{
 			$payment = new Payment();
-			$title = "Crear";
+			$title = "Crear";			
 		}
-		$paymentForm = $this->createForm(new PaymentEditType(), $payment);
+		
+		$paymentForm = $this->createForm(new PaymentEditType($em, $accountId, $id), $payment);
 		if ($request->getMethod() == 'POST') 
 		{
 			$band = $request->request->get('band', 0);
@@ -95,19 +107,21 @@ class PaymentController extends Controller
 					$payment->setPaymentDate(new \DateTime($payment->getPaymentDate()));
 					$user = $this->get('security.context')->getToken()->getUser();
 					$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
-					$member = $em->getRepository('PaymentDataAccessBundle:Member')->find($payment->getMemberId());
+					if ($id == 1)
+					{
+						$member = $em->getRepository('PaymentDataAccessBundle:Member')->find($payment->getMemberId());
+						$payment->setMember($member);
+					}
 					$payment->setSystemUser($userData);
-					$payment->setMember($member);	
 					$payment->setIsDeleted(0);				
 					$em->persist($payment);
 					$em->flush();
 					$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
-	
 					return $this->redirect($this->generateUrl('_listPayment'));
 				}
 			}
 		}
-		return array('form' => $paymentForm->createView(), 'title' => $title, 'cid'=>$paymentId);
+		return array('form' => $paymentForm->createView(), 'title' => $title, 'cid'=>$paymentId, 'id' => $id);
 	}
 
 	

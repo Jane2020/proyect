@@ -113,17 +113,79 @@ class MemberController extends Controller
 				$memberForm->bind($request);
 				if ($memberForm->isValid()) 
 				{
-					$member->setBirthDate(new \DateTime($member->getBirthDate()));
-					$em->persist($member);
-					$em->flush();
-					$this->get('session')->getFlashBag()->add('message','El Item ha sido almacenado &eacute;xitosamente.');
-					return $this->redirect($this->generateUrl('_listMember'));
-				}
+					if ($this->validationDocumentNumber($member->getDocumentNumber()))
+					{	
+						$member->setBirthDate(new \DateTime($member->getBirthDate()));
+						$em->persist($member);
+						$em->flush();
+						$this->get('session')->getFlashBag()->add('message','El Item ha sido almacenado &eacute;xitosamente.');
+						return $this->redirect($this->generateUrl('_listMember'));
+					}
+					else
+					{
+						$this->get('session')->getFlashBag()->add('message','Número de Cédula Incorrecto.');
+					}
+				}				
 			}
 		}
 		return array('form' => $memberForm->createView(), 'title' => $title,'cid' => $memberId);
 	}
 
+	/**
+	 * Obtiene la validación de la cédula de identidad
+	 * 
+	 * @param string $documentNumber
+	 */
+	private function validationDocumentNumber($documentNumber)
+	{
+		$provinceNumber = 24;
+		if ((strlen($documentNumber) != 10) && (preg_match("/^[0-9]{10}$", $document_number)))
+		{
+			return false;
+		}
+		$province = substr($documentNumber, 0, 2);
+		if (!(($province > 0) && ($province <= $provinceNumber)))
+		{
+			return false;
+		}
+		$d = str_split($documentNumber);
+		$imp = 0;
+		$par = 0;
+		$len = count($d);
+		for ($i = 0; $i < $len; $i += 2)
+		{
+			$d[$i] = (($d[$i] * 2) > 9) ? (($d[$i] * 2) - 9) : ($d[$i] * 2);
+			$imp = $imp + $d[$i];
+		}
+		
+		//sumamos los digitos de posición par
+		for ($i = 1; $i < ($len - 1); $i += 2)
+		{
+			$d[$i] = $d[$i] * 1;
+			$par = $par + $d[$i];
+		}
+		//Sumamos los dos resultados
+		$suma = $imp + $par;
+		 
+		//Restamos de la decena superior
+		$d10=$suma/10;
+		$d10=floor($d10);
+		$d10=($d10+1)*10;
+		$d10=($d10-$suma);
+		 
+		//Si es diez el décimo dígito es cero
+		$d10 = ($d10 == 10) ? 0 : $d10;
+		
+		if ($d10 == $d[9])
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}		
+	}
+	
 	private function actionToMember(Request $request, $active = true) 
 	{
 		$memberId = $request->request->get('cid', 0);
