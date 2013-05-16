@@ -320,7 +320,6 @@ class Payment
      * Set memberName
      *
      * @param string $memberName
-     * @return Account
      */
     public function setMemberName($memberName)
     {
@@ -364,5 +363,33 @@ class Payment
     public function getAccount()
     {
         return $this->account;
+    }
+    /**
+     * @var boolean
+     */
+    private $isPayment;
+
+
+    /**
+     * Set isPayment
+     *
+     * @param boolean $isPayment
+     * @return Payment
+     */
+    public function setIsPayment($isPayment)
+    {
+        $this->isPayment = $isPayment;
+    
+        return $this;
+    }
+
+    /**
+     * Get isPayment
+     *
+     * @return boolean 
+     */
+    public function getIsPayment()
+    {
+        return $this->isPayment;
     }
 }

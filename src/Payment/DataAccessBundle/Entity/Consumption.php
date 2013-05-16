@@ -529,4 +529,32 @@ class Consumption
     {
     	$this->id = $id;
     }
+    /**
+     * @var boolean
+     */
+    private $isPayment;
+
+
+    /**
+     * Set isPayment
+     *
+     * @param boolean $isPayment
+     * @return Consumption
+     */
+    public function setIsPayment($isPayment)
+    {
+        $this->isPayment = $isPayment;
+    
+        return $this;
+    }
+
+    /**
+     * Get isPayment
+     *
+     * @return boolean 
+     */
+    public function getIsPayment()
+    {
+        return $this->isPayment;
+    }
 }

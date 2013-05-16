@@ -47,15 +47,18 @@ class PaymentRepository extends EntityRepository
 		if ($count)
 		{
 			$queryBuilder->add('select', $queryBuilder->expr()->count('p.id'));
-		} else {
-			$queryBuilder->select(array('p', 'me', 'pt'));
+		} 
+		else 
+		{
+			$queryBuilder->select(array('p', 'me', 'pt', 'a'));
 			$queryBuilder->orderBy('p.paymentDate');
 			$queryBuilder->setFirstResult($offset);
 			$queryBuilder->setMaxResults($limit);
 		}
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:Payment p');
 		$queryBuilder->innerJoin('p.paymentType', 'pt');
-		$queryBuilder->innerJoin('p.member', 'me');
+		$queryBuilder->leftJoin('p.member', 'me');
+		$queryBuilder->leftJoin('p.account', 'a');
 		$queryBuilder->where($queryBuilder->expr()->eq('p.isDeleted', '0'));
 		
 		if ($paymentText != null)
@@ -63,10 +66,9 @@ class PaymentRepository extends EntityRepository
 			$paymentText = str_replace(' ', '%', $paymentText);
 			$paymentText = '%' . strtolower($paymentText) . '%';
 			$queryBuilder->andWhere(
-					$queryBuilder->expr()->like($queryBuilder->expr()->lower('me.name'), '?1')
-			);
-			$queryBuilder->setParameter(1, $paymentText);
-		
+					$queryBuilder->expr()->like($queryBuilder->expr()->lower('me.name'), '?1')					
+			);			
+			$queryBuilder->setParameter(1, $paymentText);			
 		}
 		$query = $queryBuilder->getQuery();
 		$result = $query->getResult();
