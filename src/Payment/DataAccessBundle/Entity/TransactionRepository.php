@@ -12,4 +12,40 @@ use Doctrine\ORM\EntityRepository;
  */
 class TransactionRepository extends EntityRepository
 {
+	public function getItemsToCollection($account)
+	{
+		$ids = array(3,4,5,6,7,8);
+		$consuptions = $this->getItems($account, 'Consumption', true);
+		$payment = $this->getItems($account->getMember(), 'Payment', false);
+		$parameter = $this->getConfiguration($ids);
+	}
+	
+	private function getItems($entity,$table,$isConsumtion)
+	{
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('t');
+		$queryBuilder->add('select', 't');
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:'.$table.' t');		
+		$queryBuilder->Where('t.isDeleted = 0');
+		$queryBuilder->Where('t.isPayment = 0');
+		if ($isConsumtion) {
+			$queryBuilder->andWhere('t.account = ?1');				
+		} else {
+			$queryBuilder->andWhere('t.member = ?1');			
+		}
+		$queryBuilder->setParameter(1, $entity);
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;
+	}
+	
+	private function getConfiguration($ids)
+	{
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('p');
+		$queryBuilder->add('select', 'c');
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Paramter p');
+		$queryBuilder->Where($queryBuilder->expr()->in('c.id', $ids));	
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;
+	} 
 }

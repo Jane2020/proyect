@@ -1,0 +1,50 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block title %}Cobro - {{ parent() }} {% endblock %}
+{% block javascripts %}
+ {{ parent() }}
+
+<script type="text/javascript">
+  var link = '_deleteConsumption';
+  </script>
+ <script type="text/javascript" src="{{ asset('bundles/paymentapplication/js/deleteConfirmation.js') }}"></script>
+{% endblock %}	
+
+{% block content %}
+    <br>    
+    {% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="flash-message">
+    {% autoescape false %}
+        {{ flashMessage|trans({}, 'FOSUserBundle') }}
+    {% endautoescape %}
+    </div><br>
+{% endfor %}
+
+{{ app.session.flashbag.set('message', '')}}
+
+<form action="{{ path('_itemsCollection') }}" method="post" {{ form_enctype(form) }} id='collectionSearch' name="collectionSearch">
+	{{ form_errors(form) }}
+                <table class="tableSearch">
+                    <tr>
+                    {% set required = 1 %}
+                    {% include 'PaymentApplicationBundle:Finder:finder.html.twig' %}
+                        <td valign="top">
+                                <input type="submit" name="btsend" id="button_search" value='Buscar' />                                
+                            </td>
+                        </tr> 
+                        <tr>
+                          <td colspan="3">{{ form_errors(form.account) }}</td></tr>
+                    </table>
+{{ form_rest(form) }}
+                </form>
+  {% if (band) %}              
+<table>
+<tr><td> Nombre:</td><td colspan="3">{{ account.member.name }} {{ account.member.lastName }}</td></tr>     
+<tr><td> Direccion:</td><td colspan="3">{{ account.member.address }}</td></tr>   
+<tr><td> Telefono:</td><td>{{ account.member.phone }}</td><td> Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
+<tr><td> Número de Cuenta:</td><td>{{ account.accountNumber }}</td><td> Número de Medidor:</td><td>{{ account.meterNumber }}</td></tr>  
+</tr>              
+</table>
+
+{% endif %}
+
+{% endblock %}	
