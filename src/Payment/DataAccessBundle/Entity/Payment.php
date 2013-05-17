@@ -3,6 +3,7 @@
 namespace Payment\DataAccessBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Payment
@@ -16,11 +17,17 @@ class Payment
 
     /**
      * @var float
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese la Valor de Pago."
+     * )
      */
     private $cost;
 
     /**
      * @var \DateTime
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese la Fecha de Pago."
+     * )
      */
     private $paymentDate;
 
@@ -51,6 +58,9 @@ class Payment
 
     /**
      * @var \Payment\DataAccessBundle\Entity\PaymentType
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el Tipo de Pago."
+     * )
      */
     private $paymentType;
     
