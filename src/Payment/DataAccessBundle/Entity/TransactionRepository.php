@@ -12,12 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class TransactionRepository extends EntityRepository
 {
-	public function getItemsToCollection($account)
-	{
-		$ids = array(3,4,5,6,7,8);
-		$consuptions = $this->getItems($account, 'Consumption', true);
-		$payment = $this->getItems($account->getMember(), 'Payment', false);
-		$parameter = $this->getConfiguration($ids);
+	private $recidivism = 'recidivism_cost';
+	private $basisCost = 'basic_cost_water';
+	private $excess = 'excess_cost'; 
+	private $maxConsumption = 'maximum_consumption_milliliters'; 
+	private $sewarage = 'basic_cost_sewerage'; 
+	private $typeId = 2; // multas
+	
+	public function getItemsToCollection($user,$account,$save = false)
+	{			
+		$parameter = $this->getConfiguration();		
+		$items = $this->getDatasToView($user,$account, $parameter,$save);
+		return $items;
 	}
 	
 	private function getItems($entity,$table,$isConsumtion)
@@ -27,25 +33,153 @@ class TransactionRepository extends EntityRepository
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:'.$table.' t');		
 		$queryBuilder->Where('t.isDeleted = 0');
 		$queryBuilder->Where('t.isPayment = 0');
-		if ($isConsumtion) {
-			$queryBuilder->andWhere('t.account = ?1');				
-		} else {
-			$queryBuilder->andWhere('t.member = ?1');			
-		}
+		$queryBuilder->andWhere('t.account = ?1');
+		if (!$isConsumtion) {
+			$queryBuilder->orWhere('t.member = ?2');
+			$queryBuilder->setParameter(2, $entity->getMember());
+		} 
 		$queryBuilder->setParameter(1, $entity);
 		$query = $queryBuilder->getQuery();
 		$result = $query->getResult();
 		return $result;
 	}
 	
-	private function getConfiguration($ids)
+	private function getConfiguration()
 	{
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder('p');
-		$queryBuilder->add('select', 'c');
-		$queryBuilder->add('from', 'PaymentDataAccessBundle:Paramter p');
-		$queryBuilder->Where($queryBuilder->expr()->in('c.id', $ids));	
+		$queryBuilder->add('select', 'p');
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Parameter p');
+		$queryBuilder->Where('p.isActive = 1');	
 		$query = $queryBuilder->getQuery();
-		$result = $query->getResult();
+		$results = $query->getResult();
+		$result = array();
+		foreach ($results as $item)
+		{
+			$result[$item->getKey()] = array('value' => $item->getValue(), 'label' => $item->getName());
+		}
 		return $result;
 	} 
+	
+	private function getDatasToView($user,$account, $parameter,$save)
+	{
+		$items = array();
+		$itemsAgregate = array();
+		$consuptions = $this->getItems($account, 'Consumption', true);
+		$total = 0;
+		///  registro de consumo
+		if(count($consuptions) > 0)
+		{
+			$month = array('01' => 'Enero', '02' => 'Febrero', '03' => 'Marzo', '04' => 'Abril', '05' => 'Mayo', '06' => 'Junio', '07' => 'Julio', '08' => 'Agosto', '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre');
+			$date = $month[date('m')].' '.date('Y');
+			$items[] = array('date' => $date, 'cost' => $parameter[$this->basisCost]['value'],'motive' => $parameter[$this->basisCost]['label']);
+			$itemsAgregate[] = array('date' => $date, 'cost' => $parameter[$this->basisCost]['value'],'motive' => $parameter[$this->basisCost]['label'],'type' => 1,'amount' => 1, 'unitCost' => $parameter[$this->basisCost]['value']);
+			$total = $total + $parameter[$this->basisCost]['value'];
+			if ($consuptions[0]->getConsumptionValue() > $parameter[$this->maxConsumption]['value'])
+			{
+				$value = $consuptions[0]->getConsumptionValue() - $parameter[$this->maxConsumption]['value'];
+				$cost = $value * $parameter[$this->excess]['value'];
+				$items[] = array('date' => $date, 'cost' => $cost,'motive' => $parameter[$this->excess]['label'].' ('.$value.'m3 x '.$parameter[$this->excess]['value'].' c/m3)');
+				$itemsAgregate[] = array('date' => $date, 'cost' => $cost,'motive' => $parameter[$this->excess]['label'].' ('.$value.'m3 x '.$parameter[$this->excess]['value'].' c/m3)','type' => 3,'amount' => $value, 'unitCost' => $parameter[$this->excess]['value']);
+				$total = $total + $cost;
+			}		
+			$items[] = array('date' => $date, 'cost' => $parameter[$this->sewarage]['value'],'motive' => $parameter[$this->sewarage]['label']);
+			$itemsAgregate[] = array('date' => $date, 'cost' => $parameter[$this->sewarage]['value'],'motive' => $parameter[$this->sewarage]['label'],'type' => 2,'amount' => 1,'unitCost' => $parameter[$this->sewarage]['value']);
+			$total = $total + $parameter[$this->sewarage]['value'];
+		} else {
+			return null;
+		}
+		
+		$payments = $this->getItems($account, 'Payment', false);
+		$cont = array();
+		$type = 0;
+		foreach ($payments as $item)
+		{
+			$motive =  $item->getPaymentType()->getName();
+			$items[] = array('date' => $item->getPaymentDate()->format('Y-m-d'), 'cost' => $item->getCost(),'motive' => $motive);
+			$total = $total + $item->getCost();
+			$typeId = $item->getPaymentType()->getPaymentTypeType()->getId();
+			$paymentId = $item->getPaymentType()->getId();
+			if ($typeId == $this->typeId)
+			{
+				if ($type != $paymentId)
+				{
+					$type = $item->getPaymentType()->getPaymentTypeType()->getId();
+					if (!array_key_exists($type, $cont))
+					{
+						$cont[$type] = array('cont' => -1, 'motive' => $motive, 'date' => $item->getPaymentDate()->format('Y-m-d'));
+					}
+					$cont[$type]['cont'] = $cont[$type]['cont'] + 1;
+				}					
+			}		
+		}
+
+		foreach ($cont as $item)
+		{
+			if($item['cont'] > 0)
+			{
+				for ($i= 0; $i < $item['cont']; $i++)
+				{
+					$items[] = array('date' => $item['date'], 'cost' => $parameter[$this->recidivism]['value'],'motive' => $parameter[$this->recidivism]['label'].' '.$item['motive']);
+					$itemsAgregate[] = array('date' => $item['date'], 'cost' => $parameter[$this->recidivism]['value'],'motive' => $parameter[$this->recidivism]['label'].' '.$item['motive'],'type' => 5,'amount' => 1,'unitCost' => $parameter[$this->recidivism]['value']);
+					$total = $total + $parameter[$this->recidivism]['value'];
+				}
+			}
+		}
+		if ($save)
+		{
+			$this->saveItems($user,$payments,$consuptions[0],$itemsAgregate, $total);
+		}
+		return $items;
+			
+	}
+	
+	private function saveItems($user,$payments,$consumption,$itemsAgregate,$total)
+	{
+		$em = $this->getEntityManager();
+		$managerial = $em->getRepository('PaymentDataAccessBundle:Managerial')->findOneBy(array('isActive' => 1),array('id' => 'DESC'));
+		$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
+		$transactionType = $em->getRepository('PaymentDataAccessBundle:TransactionType')->find(1);
+		$transaction = new Transaction();
+		$transaction->setTotalValue($total);
+		$transaction->setSystemDate(new \DateTime());
+		$transaction->setManagerial($managerial);
+		$transaction->setSystemUser($userData);
+		$transaction->setTransactionType($transactionType);
+		$em->persist($transaction);
+		$em->flush();
+		
+		foreach ($itemsAgregate as $item)
+		{
+			$type = $em->getRepository('PaymentDataAccessBundle:IncomeType')->find($item['type']);
+			$income = new Income();
+			$income->setIncomeType($type);
+			$income->setTransaction($transaction);
+			$income->setConsumption($consumption);
+			$income->setSystemUser($userData);
+			$income->setAmount($item['amount']);
+			$income->setBasicServiceUnitCost($item['unitCost']);
+			$em->persist($income);
+			$em->flush();
+		}
+		
+		$consumption->setIsPayment(1);
+		$em->persist($consumption);
+		$em->flush();
+		$type = $em->getRepository('PaymentDataAccessBundle:IncomeType')->find(4); 
+		foreach ($payments as $item)
+		{
+			$income = new Income();
+			$income->setIncomeType($type);
+			$income->setTransaction($transaction);
+			$income->setPayment($item);
+			$income->setSystemUser($userData);
+			$income->setAmount(1);
+			$income->setBasicServiceUnitCost($item->getCost());
+			$em->persist($income);
+			$em->flush();			
+			$item->setIsPayment(1);
+			$em->persist($item);
+			$em->flush();
+		}
+	}
 }

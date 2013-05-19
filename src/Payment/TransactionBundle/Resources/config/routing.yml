@@ -11,3 +11,6 @@ _deleteExpense:
 _itemsCollection:
     pattern:  /gestion-de-Cobros/cobro-mensualidades
     defaults: { _controller: PaymentTransactionBundle:Collection:itemsCollection }  
+_printCollection:
+    pattern:  /gestion-de-Cobros/imprimir/{accountId}
+    defaults: { _controller: PaymentTransactionBundle:Collection:printCollection } 
