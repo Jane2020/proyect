@@ -1,0 +1,42 @@
+<script type="text/javascript">
+function printService()
+{
+	document.getElementById("print").style.visibility='hidden' ;
+	window.print();
+	document.getElementById("print").style.visibility='visible';
+}
+
+window.onbeforeunload = confirmExit;
+function confirmExit()
+{
+  return "Seguro que desea salir de esta pagina, por favor verifiue si ya imprimio el comprobante de pago";
+}
+
+</script>
+<table  align="right" id="print">
+  <tr>
+    <td><a href='javascript:printService();' >Imprimir</a></td>
+     <td><a href='javascript:window.close();' >Cerrar</a></td>
+  </tr>
+</table>
+
+<table>
+<tr><td> Nombre:</td><td colspan="3">{{ account.member.name }} {{ account.member.lastName }}</td></tr>     
+<tr><td> Direccion:</td><td colspan="3">{{ account.member.address }}</td></tr>   
+<tr><td> Telefono:</td><td>{{ account.member.phone }}</td><td> Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
+<tr><td> Número de Cuenta:</td><td>{{ account.accountNumber }}</td><td> Número de Medidor:</td><td>{{ account.meterNumber }}</td></tr>  
+</tr>              
+</table>
+<br>
+<table>
+<tr><th>Fecha</th><th>Motivo</th><th>Valor</th></tr>
+{% set total = 0 %}
+{% for item in items %}
+	<tr>
+	<td> {{ item.date }}</td>
+	<td> {{ item.motive }}</td>
+	<td> {{ item.cost | number_format(2) }} {% set total = total + item.cost %}</td>
+	</tr>
+{% endfor %}
+<tr><td></td><td><b>Total</b></td><td><b>{{ total | number_format(2) }}</b></td></tr>
+</table>

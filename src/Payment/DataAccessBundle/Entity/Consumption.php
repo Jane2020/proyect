@@ -41,6 +41,10 @@ class Consumption
 
     /**
      * @var \Payment\DataAccessBundle\Entity\Account
+     * 
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el número de cuenta."
+     * )
      */
     private $account;
 

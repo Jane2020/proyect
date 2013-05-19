@@ -6,4 +6,11 @@ _editExpense:
     defaults: { _controller: PaymentTransactionBundle:Expense:editExpense }
 _deleteExpense:
     pattern:  /gestion-de-gastos/eliminacion
-    defaults: { _controller: PaymentTransactionBundle:Expense:deleteExpense }  
+    defaults: { _controller: PaymentTransactionBundle:Expense:deleteExpense }
+    
+_itemsCollection:
+    pattern:  /gestion-de-Cobros/cobro-mensualidades
+    defaults: { _controller: PaymentTransactionBundle:Collection:itemsCollection }  
+_printCollection:
+    pattern:  /gestion-de-Cobros/imprimir/{accountId}
+    defaults: { _controller: PaymentTransactionBundle:Collection:printCollection } 
