@@ -8,6 +8,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class MeterEditType extends AbstractType
 {
+	
+	private $em;
+	
+	public function __construct($entityManager)
+	{
+		$this->em = $entityManager;
+	}
+	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('id','hidden');
@@ -20,6 +28,7 @@ class MeterEditType extends AbstractType
 		$builder->add('accountType', 'entity',
 				array(
 						'class' => 'PaymentDataAccessBundle:AccountType',
+						'query_builder' => $this->getQueryBuilder(),
 						'label' => 'Tipo de Cuenta',
 						'empty_value' => 'Seleccione',
 						'required' => false,
@@ -31,5 +40,15 @@ class MeterEditType extends AbstractType
 	public function getName()
 	{
 		return 'meterEdit';
+	}
+	
+	private function getQueryBuilder()
+	{
+		$qb = $this->em->createQueryBuilder('p');
+		$qb->add('select', 'p');
+		$qb->add('from', 'PaymentDataAccessBundle:AccountType p');
+		$qb->andwhere($qb->expr()->eq('p.isActive', '1'));
+		$qb->orderBy('p.name', 'ASC');
+		return $qb;
 	}
 }

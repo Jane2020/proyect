@@ -139,7 +139,7 @@ class MeterController extends Controller
     		$title = "Creación";
     	}
 
-    	$accountForm = $this->createForm(new MeterEditType(), $account);
+    	$accountForm = $this->createForm(new MeterEditType($em), $account);
     	if ($request->getMethod() == 'POST')
     	{
     		$band = $request->request->get('band', 0);
