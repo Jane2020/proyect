@@ -18,7 +18,7 @@ class ExpenseController extends Controller
    const LIMIT_PAGINATOR = 20;
 	/**
 	 * @Template()
-	 * @Secure(roles="ROLE_ADMIN")
+	 * @Secure(roles="ROLE_TREASURER,ROLE_SECRETARY")
 	 */
 	public function listExpenseAction(Request $request)
 	{
@@ -56,7 +56,7 @@ class ExpenseController extends Controller
 	}
 	
 	/**
-	 * Secure(roles="ROLE_ADMIN")
+	 * Secure(roles="ROLE_TREASURER,ROLE_SECRETARY")
 	 */
 	public function deleteExpenseAction(Request $request)
 	{
@@ -105,7 +105,7 @@ class ExpenseController extends Controller
 	
 	/**
 	 * @Template()
-	 * Secure(roles="ROLE_ADMIN")
+	 * Secure(roles="ROLE_TREASURER,ROLE_SECRETARY")
 	 */
 	public function editExpenseAction(Request $request)
 	{

@@ -19,7 +19,7 @@ class MemberController extends Controller
 
 	/**
 	 * @Template()
-	 * @Secure(roles="ROLE_ADMIN")
+	 * @Secure(roles="ROLE_SECRETARY")
 	 */
 	public function listMemberAction(Request $request)
 	{
@@ -65,14 +65,14 @@ class MemberController extends Controller
 	}
 
 	/**
-	 * Secure(roles="ROLE_ADMIN")
+	 * Secure(roles="ROLE_SECRETARY")
 	 */
 	public function deleteMemberAction(Request $request) {
 		return $this->actionToMember($request, false);
 	}
 
 	/**
-	 * Secure(roles="ROLE_ADMIN")
+	 * Secure(roles="ROLE_SECRETARY")
 	 */
 	public function activeMemberAction(Request $request) 
 	{
@@ -81,7 +81,7 @@ class MemberController extends Controller
 
 	/**
 	 * @Template()
-	 * Secure(roles="ROLE_ADMIN")
+	 * Secure(roles="ROLE_SECRETARY")
 	 */
 	public function editMemberAction(Request $request) 
 	{

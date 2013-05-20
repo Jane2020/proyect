@@ -9,8 +9,8 @@ _deleteExpense:
     defaults: { _controller: PaymentTransactionBundle:Expense:deleteExpense }
     
 _itemsCollection:
-    pattern:  /gestion-de-Cobros/cobro-mensualidades
+    pattern:  /gestion-de-cobros/cobro-mensualidades
     defaults: { _controller: PaymentTransactionBundle:Collection:itemsCollection }  
 _printCollection:
-    pattern:  /gestion-de-Cobros/imprimir/{accountId}
+    pattern:  /gestion-de-cobros/imprimir/{accountId}
     defaults: { _controller: PaymentTransactionBundle:Collection:printCollection } 

@@ -20,7 +20,7 @@ class PaymentController extends Controller
 	
 	/**
 	 * @Template()
-	 * @Secure(roles="ROLE_ADMIN")
+	 * @Secure(roles="ROLE_SECRETARY")
 	 */
 	public function listPaymentAction(Request $request)
 	{
@@ -56,7 +56,7 @@ class PaymentController extends Controller
 	
 	/**
 	 * @Template()
-	 * Secure(roles="ROLE_ADMIN")
+	 * Secure(roles="ROLE_SECRETARY")
 	 */
 	public function editPaymentAction($id, Request $request)
 	{
@@ -160,7 +160,7 @@ class PaymentController extends Controller
 	}
 	
 	/**
-	 * Secure(roles="ROLE_ADMIN")
+	 * Secure(roles="ROLE_SECRETARY")
 	 */
 	public function deletePaymentAction(Request $request)
 	{
