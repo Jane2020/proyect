@@ -43,10 +43,6 @@ function setValidationsEdit(){
             'paymentEdit[paymentType]': {        		
             	required:true 
             },
-            'paymentEdit[cost]': {    
-            	required:true,
-                regex: /^(-)?\d+(\.\d\d)?$/
-            },
             'paymentEdit[paymentDate]': {
             	required:true                
             }
@@ -55,10 +51,6 @@ function setValidationsEdit(){
             'paymentEdit[paymentType]': { 
             	require:'Por favor ingrese el Tipo de Pago.'
             } ,
-            'paymentEdit[cost]': { 
-            	require:'Por favor ingrese el Valor de Pago.',
-                regex: 'Por favor ingrese una cantidad válida.' 
-            },
             'paymentEdit[paymentDate]': { 
             	require:'Por favor ingrese la Fecha de Pago.'              
             } ,

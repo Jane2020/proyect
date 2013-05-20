@@ -17,9 +17,6 @@ class Payment
 
     /**
      * @var float
-     * @Assert\NotBlank(
-     *   message = "Por favor ingrese la Valor de Pago."
-     * )
      */
     private $cost;
 

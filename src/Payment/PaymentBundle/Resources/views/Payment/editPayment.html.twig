@@ -49,7 +49,6 @@
 
 	{{ app.session.flashbag.set('message', '')}}
 	{{ form_errors(form.paymentType) }}
-	{{ form_errors(form.cost) }}
 	{{ form_errors(form) }}
 &nbsp;
 </div>
@@ -68,10 +67,6 @@
 		<tr>
 			<td class="title" valign="top">{{ form_label(form.paymentType) }}</td>
 			<td>{{ form_widget(form.paymentType, { 'attr': {'class': 'required'} }) }} </td>
-		</tr>
-		<tr>
-			<td class="title" valign="top">{{ form_label(form.cost) }}</td>
-			<td>{{ form_widget(form.cost, { 'attr': {'class': 'required'} }) }} </td>
 		</tr>
 		<tr>
 			<td class="title" valign="top">{{ form_label(form.paymentDate) }}</td>

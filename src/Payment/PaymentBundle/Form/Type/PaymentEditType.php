@@ -46,7 +46,7 @@ class PaymentEditType extends AbstractType
 				'required' => false,
 		));
 		
-		$builder->add('cost','text',  array('label'=>'Valor del Pago:', 'required'=>false, 'max_length'=>8));
+		//$builder->add('cost','text',  array('label'=>'Valor del Pago:', 'required'=>false, 'max_length'=>8));
 		$builder->add('paymentDate','text',  array('label'=>'Fecha de Pago:', 'required'=>false, 'max_length'=>10));				
 	}
 

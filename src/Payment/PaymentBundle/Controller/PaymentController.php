@@ -122,6 +122,7 @@ class PaymentController extends Controller
 							$member = $em->getRepository('PaymentDataAccessBundle:Member')->find($payment->getMemberId());
 							$payment->setMember($member);
 						}
+						$payment->setCost($payment->getPaymentType()->getCost());
 						$payment->setSystemUser($userData);
 						$payment->setIsDeleted(0);				
 						$em->persist($payment);
