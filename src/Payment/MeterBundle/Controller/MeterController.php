@@ -21,7 +21,7 @@ class MeterController extends Controller
 	
 	/**
 	 * @Template()
-	 * @Secure(roles="ROLE_ADMIN")
+	 * @Secure(roles="ROLE_SECRETARY")
 	 */
     public function listMeterAction(Request $request)
     {
@@ -56,7 +56,7 @@ class MeterController extends Controller
     }
 
     /**
-     * Secure(roles="ROLE_ADMIN")
+     * Secure(roles="ROLE_SECRETARY")
      */
     public function deleteMeterAction(Request $request)
     {
@@ -64,7 +64,7 @@ class MeterController extends Controller
     }
     
     /**
-     * Secure(roles="ROLE_ADMIN")
+     * Secure(roles="ROLE_SECRETARY")
      */
     public function activeMeterAction(Request $request)
     {
@@ -116,7 +116,7 @@ class MeterController extends Controller
     
     /**
      * @Template()
-     * Secure(roles="ROLE_ADMIN")
+     * Secure(roles="ROLE_SECRETARY")
      */
     public function editMeterAction(Request $request)
     {

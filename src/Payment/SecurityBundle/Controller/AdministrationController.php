@@ -214,7 +214,7 @@ class AdministrationController extends Controller {
      * @return array de roles
      */
     private function getRoles() {
-        return array('ROLE_ADMIN' => 'Administrador', 'ROLE_SECRETARY' => 'Secretario', 'ROLE_CONDUCTOR' => 'Cobrador', 'ROLE_OPERATOR' => 'Operador');
+        return array('ROLE_ADMIN' => 'Administrador', 'ROLE_SECRETARY' => 'Secretario', 'ROLE_TREASURER' => 'Tesorero', 'ROLE_OPERATOR' => 'Operador');
     }
 
     /**

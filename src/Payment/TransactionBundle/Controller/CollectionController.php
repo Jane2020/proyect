@@ -13,7 +13,7 @@ class CollectionController extends Controller
 {
 	/**
 	 * @Template()
-	 * @Secure(roles="ROLE_ADMIN")
+	 * @Secure(roles="ROLE_TREASURER")
 	 */
 	public function itemsCollectionAction(Request $request)
 	{
@@ -41,7 +41,7 @@ class CollectionController extends Controller
 	
 	/**
 	 * @Template()
-	 * @Secure(roles="ROLE_ADMIN")
+	 * @Secure(roles="ROLE_TREASURER")
 	 */
 	public function printCollectionAction($accountId)
 	{

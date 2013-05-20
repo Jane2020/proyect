@@ -17,7 +17,7 @@ class ConsumptionController extends Controller
 	const LIMIT_PAGINATOR = 20;
 	/**
 	 * @Template()
-	 * @Secure(roles="ROLE_ADMIN")
+	 * @Secure(roles="ROLE_OPERATOR")
 	 */
 	public function listConsumptionAction(Request $request)
 	{
@@ -56,7 +56,7 @@ class ConsumptionController extends Controller
 	}
 	
 	/**
-	 * Secure(roles="ROLE_ADMIN")
+	 * Secure(roles="ROLE_OPERATOR")
 	 */
 	public function deleteConsumptionAction(Request $request)
 	{
@@ -88,7 +88,7 @@ class ConsumptionController extends Controller
 	
 	/**
 	 * @Template()
-	 * Secure(roles="ROLE_ADMIN")
+	 * Secure(roles="ROLE_OPERATOR")
 	 */
 	public function editConsumptionAction(Request $request)
 	{
