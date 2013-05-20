@@ -170,19 +170,23 @@ class DefaultController extends Controller
     	
     	foreach ($parameters as $item)
     	{
-    			$ruler.= "'".$item->getKey()."':{ required:true, ";
-    			$message.= "'".$item->getKey()."':{ require:'Por favor ingrese el/la ".$item->getName()."',";
-    			if ($i < $countParameter)
-    			{
-    				$ruler.= "regex: /".$item->getRexType()."/},";
-    				$message.=" regex: 'Por favor ingrese correctamente ".$item->getName()."'},";
-    				$i++;
-    			}
-    			else
-    			{
-    				$ruler.= "regex: /".$item->getRexType()."/}},";
-    				$message.=" regex: 'Por favor ingrese correctamente ".$item->getName()."'},},";
-    			}
+    		if ($item->getTypeField() == 'date')
+    		{
+    			$dateArray[] = $item->getKey();
+    		}
+    		$ruler.= "'".$item->getKey()."':{ required:true, ";
+    		$message.= "'".$item->getKey()."':{ require:'Por favor ingrese el/la ".$item->getName()."',";
+    		if ($i < $countParameter)
+    		{
+    			$ruler.= "regex: /".$item->getRexType()."/},";
+    			$message.=" regex: 'Por favor ingrese correctamente ".$item->getName()."'},";
+    			$i++;
+    		}
+    		else
+    		{
+    			$ruler.= "regex: /".$item->getRexType()."/}},";
+    			$message.=" regex: 'Por favor ingrese correctamente ".$item->getName()."'},},";
+    		}
     	}
     	
     	$js.= $ruler.$message;
@@ -192,7 +196,31 @@ class DefaultController extends Controller
             	form.submit();
  			    		}
     				});
-				}";    		
+				}";  
+
+    	$i = 0;
+    	$date = null;
+    	while ($i < count($dateArray))
+    	{
+    		$date .=  " $(function() {
+    
+    				$('#".$dateArray[$i]."' ).datepicker({
+    		dateFormat: 'yy-mm-dd',
+    		onSelect: function( selectedDate ) {
+    			$( '#".$dateArray[$i+1]."' ).datepicker( 'option', 'minDate', selectedDate );
+    		}
+    		});
+    
+    		$( '#".$dateArray[$i+1]."' ).datepicker({
+    		dateFormat: 'yy-mm-dd',
+    		onSelect: function( selectedDate ) {
+    			$( '#".$dateArray[$i]."' ).datepicker( 'option', 'maxDate', selectedDate );
+    		}
+    		});
+    		});";
+    		$i = $i + 2;
+    	}
+    	$js.= $date;
     	return $js;
     }
     
