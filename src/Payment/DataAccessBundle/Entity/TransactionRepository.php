@@ -136,50 +136,60 @@ class TransactionRepository extends EntityRepository
 	private function saveItems($user,$payments,$consumption,$itemsAgregate,$total)
 	{
 		$em = $this->getEntityManager();
-		$managerial = $em->getRepository('PaymentDataAccessBundle:Managerial')->findOneBy(array('isActive' => 1),array('id' => 'DESC'));
-		$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
-		$transactionType = $em->getRepository('PaymentDataAccessBundle:TransactionType')->find(1);
-		$transaction = new Transaction();
-		$transaction->setTotalValue($total);
-		$transaction->setSystemDate(new \DateTime());
-		$transaction->setManagerial($managerial);
-		$transaction->setSystemUser($userData);
-		$transaction->setTransactionType($transactionType);
-		$em->persist($transaction);
-		$em->flush();
-		
-		foreach ($itemsAgregate as $item)
-		{
-			$type = $em->getRepository('PaymentDataAccessBundle:IncomeType')->find($item['type']);
-			$income = new Income();
-			$income->setIncomeType($type);
-			$income->setTransaction($transaction);
-			$income->setConsumption($consumption);
-			$income->setSystemUser($userData);
-			$income->setAmount($item['amount']);
-			$income->setBasicServiceUnitCost($item['unitCost']);
-			$em->persist($income);
+		$em->getConnection()->beginTransaction();
+		try 
+		{		
+			$managerial = $em->getRepository('PaymentDataAccessBundle:Managerial')->findOneBy(array('isActive' => 1),array('id' => 'DESC'));
+			$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
+			$transactionType = $em->getRepository('PaymentDataAccessBundle:TransactionType')->find(1);
+			$transaction = new Transaction();
+			$transaction->setTotalValue($total);
+			$transaction->setSystemDate(new \DateTime());
+			$transaction->setManagerial($managerial);
+			$transaction->setSystemUser($userData);
+			$transaction->setTransactionType($transactionType);
+			$em->persist($transaction);
 			$em->flush();
-		}
-		
-		$consumption->setIsPayment(1);
-		$em->persist($consumption);
-		$em->flush();
-		$type = $em->getRepository('PaymentDataAccessBundle:IncomeType')->find(4); 
-		foreach ($payments as $item)
-		{
-			$income = new Income();
-			$income->setIncomeType($type);
-			$income->setTransaction($transaction);
-			$income->setPayment($item);
-			$income->setSystemUser($userData);
-			$income->setAmount(1);
-			$income->setBasicServiceUnitCost($item->getCost());
-			$em->persist($income);
-			$em->flush();			
-			$item->setIsPayment(1);
-			$em->persist($item);
+			
+			foreach ($itemsAgregate as $item)
+			{
+				$type = $em->getRepository('PaymentDataAccessBundle:IncomeType')->find($item['type']);
+				$income = new Income();
+				$income->setIncomeType($type);
+				$income->setTransaction($transaction);
+				$income->setConsumption($consumption);
+				$income->setSystemUser($userData);
+				$income->setAmount($item['amount']);
+				$income->setBasicServiceUnitCost($item['unitCost']);
+				$em->persist($income);
+				$em->flush();
+			}
+			
+			$consumption->setIsPayment(1);
+			$em->persist($consumption);
 			$em->flush();
+			$type = $em->getRepository('PaymentDataAccessBundle:IncomeType')->find(4); 
+			foreach ($payments as $item)
+			{
+				$income = new Income();
+				$income->setIncomeType($type);
+				$income->setTransaction($transaction);
+				$income->setPayment($item);
+				$income->setSystemUser($userData);
+				$income->setAmount(1);
+				$income->setBasicServiceUnitCost($item->getCost());
+				$em->persist($income);
+				$em->flush();			
+				$item->setIsPayment(1);
+				$em->persist($item);
+				$em->flush();
+			}
+		$em->getConnection()->commit();
+		
+		} catch (Exception $e) {
+			$em->getConnection()->rollback();
+			$em->close();
+			throw $e->getMessage();
 		}
 	}
 }
