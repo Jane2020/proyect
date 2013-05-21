@@ -12,4 +12,32 @@ use Doctrine\ORM\EntityRepository;
  */
 class ParameterRepository extends EntityRepository
 {
+	public function isEnabled($firstKey, $endKey, $rolAdmin)
+	{
+		if ($rolAdmin)
+		{
+			return true;
+		}
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('p');
+		$queryBuilder->add('select', 'p');
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Parameter p');
+		$queryBuilder->Where('p.isActive = 1');	
+		$queryBuilder->andWhere($queryBuilder->expr()->orX(
+				'p.key = ?1',
+				'p.key = ?2'));
+		$queryBuilder->setParameter(1, $firstKey);
+		$queryBuilder->setParameter(2, $endKey);
+		$query = $queryBuilder->getQuery();
+		$results = $query->getResult();
+		foreach ($results as $item)
+		{
+			$date[$item->getKey()] = $item->getValue();
+		}
+		$enabled = false;
+		if((date('Y-m-d') >= $date[$firstKey])&&(date('Y-m-d') <= $date[$endKey]))
+		{
+			$enabled = true;	
+		}
+		return $enabled;
+	}
 }
