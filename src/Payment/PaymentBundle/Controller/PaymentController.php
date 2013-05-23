@@ -84,7 +84,7 @@ class PaymentController extends Controller
 			}
 			//Miembro -Inasistencia
 			if ($id == 1)
-			{	
+			{
 				$payment->setMemberId($payment->getMember()->getId());
 				$payment->setMemberName($payment->getMember()->getName().' '.$payment->getMember()->getLastname());
 			}				

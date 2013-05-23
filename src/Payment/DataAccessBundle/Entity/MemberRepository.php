@@ -66,4 +66,36 @@ class MemberRepository extends EntityRepository
 		$result = $query->getResult();
 		return $result;
 	}	
+	
+	public function findMemberByParameterToList($memberName, $offset, $limit, $count = true)
+	{
+		
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('m');
+		if ($count)
+		{
+			$queryBuilder->add('select', $queryBuilder->expr()->count('m.id'));
+		}
+		else
+		{
+			$queryBuilder->add('select', 'm');
+			$queryBuilder->orderBy('m.name');
+			$queryBuilder->setFirstResult($offset);
+			$queryBuilder->setMaxResults($limit);
+		}
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Member m');
+		$queryBuilder->where($queryBuilder->expr()->eq('m.isActive', '1'));
+		
+		if ($memberName != null)
+		{
+			$memberName = str_replace(' ', '%', $memberName);
+			$memberName = '%' . strtolower($memberName) . '%';
+			$queryBuilder->andwhere($queryBuilder->expr()->orX(
+						$queryBuilder->expr()->like($queryBuilder->expr()->lower('m.name'), '?1'),
+						$queryBuilder->expr()->like($queryBuilder->expr()->lower('m.lastname'), '?1')));
+			$queryBuilder->setParameter(1, $memberName);
+		}
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;
+	}	
 }
