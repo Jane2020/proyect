@@ -21,6 +21,10 @@ class ConsumptionController extends Controller
 	 */
 	public function listConsumptionAction(Request $request)
 	{
+		if(!$this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Parameter')->isEnabled('date_start_consumption','date_end_consumption',$this->get('security.context')->isGranted('ROLE_ADMIN')))
+		{
+			throw $this->createNotFoundException('Esta funcionalidad esta desabilitada, por favor consulte con el Administrador del sistema.');
+		}
 		$consumptionEntity = new ConsumptionSearch();
 		$limit = self::LIMIT_PAGINATOR;
 		$offset = 0;

@@ -17,6 +17,10 @@ class CollectionController extends Controller
 	 */
 	public function itemsCollectionAction(Request $request)
 	{
+		if(!$this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Parameter')->isEnabled('date_start_collection','date_end_collection',$this->get('security.context')->isGranted('ROLE_ADMIN')))
+		{
+			throw $this->createNotFoundException('Esta funcionalidad esta desabilitada, por favor consulte con el Administrador del sistema.');
+		} 
 		$collectionSearch = new CollectionSearch();	
 		$account = null;
 		$items = null;
