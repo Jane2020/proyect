@@ -1,0 +1,158 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block javascripts %}
+ {{ parent() }}
+<script type="text/javascript" src="{{ asset('bundles/paymentreport/js/reportMember.js') }}"></script>
+<script type="text/javascript">
+function printService()
+{
+	document.getElementById("print").style.visibility='hidden' ;
+	document.getElementById("print").style.position = 'absolute';
+	document.getElementById("botonera").style.visibility='hidden' ;
+	document.getElementById("botonera").style.position = 'absolute';
+	document.getElementById("topline").style.visibility='hidden';
+	document.getElementById("topline").style.position = 'absolute';
+	document.getElementById("copyright").style.visibility='hidden';
+	document.getElementById("copyright").style.position = 'absolute';
+	document.getElementById("searchButton").style.visibility='hidden';
+	document.getElementById("searchButton").style.position = 'absolute';
+	if ({{ total }} > 10)
+	{
+		document.getElementById("paginator").style.visibility='hidden';
+		document.getElementById("paginator").style.position = 'absolute';
+	}
+	window.print();
+	document.getElementById("print").style.visibility='visible';
+	document.getElementById("print").style.position = 'relative';
+	document.getElementById("botonera").style.visibility='visible';
+	document.getElementById("botonera").style.position = 'relative';
+	document.getElementById("topline").style.visibility='visible' ;
+	document.getElementById("topline").style.position = 'relative';
+	document.getElementById("copyright").style.visibility='visible' ;
+	document.getElementById("copyright").style.position = 'relative';
+	document.getElementById("searchButton").style.visibility='visible';
+	document.getElementById("searchButton").style.position = 'relative';
+	if ({{ total }} > 10)
+	{
+		document.getElementById("paginator").style.visibility='visible';
+		document.getElementById("paginator").style.position = 'relative';
+	}				
+}
+</script>
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}	
+{% block content %}
+<table width="350" border="0" align="right" style="padding:5px;" id="print">
+	<tr>
+	    <td style="text-align: center">
+	     	<a href='javascript:printService();' >Imprimir</a>	    	
+        </td>
+    </tr>    
+</table>
+<br><br><br>
+ {% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="flash-message">
+    {% autoescape false %}
+        {{ flashMessage|trans({}, 'FOSUserBundle') }}
+    {% endautoescape %}
+    </div><br>
+{% endfor %}
+
+{{ app.session.flashbag.set('message', '')}}
+
+<form action="{{ path('_listExpense') }}" method="post" {{ form_enctype(form) }} id='expenseSearch' name="expenseSearch">
+	{{ form_errors(form) }}
+	<table class="tableSearch">
+    	<tr>
+        	<td class="titleSearch" valign="top">
+        		{{ form_label(form.expenseRuc) }}
+        	</td>
+            <td valign="top" >
+            	{{ form_widget(form.expenseRuc) }}
+            </td>
+            <td class="titleSearch" valign="top">
+            	{{ form_label(form.expenseName) }}
+            </td>
+            <td valign="top" >
+            	{{ form_widget(form.expenseName) }}
+            </td>
+            <td class="titleSearch" valign="top">
+            	{{ form_label(form.expenseDate) }}
+            </td>
+            <td valign="top" >
+            	{{ form_widget(form.expenseDate,{ 'attr': {'readOnly': 'true'} }) }}
+            </td>
+            <td valign="top">
+				{{ form_widget(form.offset, { 'attr': {'value': '0'} }) }}  
+				{{ form_widget(form.limit, { 'attr': {'value': limit } }) }}  
+				<div id ="searchButton">
+                	<input type="submit" name="btsend" id="button_search" value='Buscar' />
+                	&nbsp;
+                	<input type="button" name="button" id="button_search" value='Resetear' onclick="document.expenseSearch.expenseSearch_expenseRuc.value = ''; document.expenseSearch.expenseSearch_expenseName.value = '';document.expenseSearch.expenseSearch_expenseDate.value = '';document.expenseSearch.submit();"/>
+                </div>	
+			</td>
+		</tr> 
+        <tr>
+        	<td></td><td>{{ form_errors(form.expenseRuc) }}</td>
+            <td></td><td>{{ form_errors(form.expenseName) }}</td>
+            <td></td><td>{{ form_errors(form.expenseDate) }}</td><td><br></td>
+ 		</tr>
+	</table>
+	{{ form_rest(form) }}
+</form>
+<form id='form_check' name='form_check' action='' method='post'>
+	<table id="tableListUser" >
+    	<tr>
+        	<th class="title_check">
+            	# Ruc
+            </th>
+            <th class="title">
+	            Nombre
+            </th>
+    	    <th class="title">
+                Fecha
+            </th>
+            <th class="title">
+                Descripción
+            </th>   
+            <th class="title">
+                Valor
+            </th>                       
+        </tr>
+		{% for item in expense %}
+        <tr>
+             <td class="content_table" >
+				{{ item.expenseRuc }}
+             </td>
+             <td class="content_table" >
+				{{ item.expenseName }}
+             </td>
+             <td class="content_table" >
+				{{ item.expenseDate | date("Y-m-d") }}
+             </td>
+             <td class="content_table" >
+				{{ item.expenseDescription }}
+             </td>
+             <td class="content_table" >
+				{{ item.expenseValue | number_format(2)}}
+             </td>
+        </tr>
+		{% endfor %}
+		{% if  total==0 %}
+		<tr>
+			<td colspan="6" align="center" class="content_table_left">
+            	No existen gastos a mostrar
+            </td>
+        </tr>    
+		{% endif %}
+	</table>
+{% if total>10 %}
+    <table id="paginator" width="100%">
+	    <tr>
+    	    <td align="center">
+				{% include 'PaymentApplicationBundle:Paginator:paginator.html.twig' %}
+            </td>	
+        </tr>
+     </table>
+{% endif %}
+</form>
+{% endblock %}
