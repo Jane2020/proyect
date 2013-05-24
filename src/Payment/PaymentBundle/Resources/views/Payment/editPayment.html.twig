@@ -73,6 +73,10 @@
 			<td>{{ form_widget(form.paymentDate, { 'attr': {'class': 'required', 'readOnly': 'true'} }) }}  </td>
 		</tr>
 		<tr>
+			<td class="title" valign="top">{{ form_label(form.isRecidivism) }}</td>
+			<td>{{ form_widget(form.isRecidivism) }}  </td>
+		</tr>		
+		<tr>
 			<td height="50px;" align="right" valign="bottom">
  				<input type="submit" value="Guardar" name="btsend" id="button_enter"/>
  				<input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listPayment') }}'"/>
