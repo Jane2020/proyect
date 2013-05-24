@@ -42,7 +42,7 @@ class MemberAssistanceSearch
 	
 	
 	/**
-	 * Set name
+	 * Set paymentType
 	 *
 	 * @param string $paymentType
 	 */
