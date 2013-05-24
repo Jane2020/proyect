@@ -427,4 +427,9 @@ class Payment
     {
         return $this->isRecidivism;
     }
+    
+    public function __construct(){
+    	$this->isDeleted = 0;
+    	$this->isPayment = 0;
+    }
 }

@@ -17,7 +17,6 @@ class TransactionRepository extends EntityRepository
 	private $excess = 'excess_cost'; 
 	private $maxConsumption = 'maximum_consumption_milliliters'; 
 	private $sewarage = 'basic_cost_sewerage'; 
-	private $typeId = 2; // multas
 	
 	public function getItemsToCollection($user,$account,$save = false)
 	{			
@@ -69,22 +68,27 @@ class TransactionRepository extends EntityRepository
 		///  registro de consumo
 		if(count($consuptions) > 0)
 		{
+			// Registro basico
 			$month = array('01' => 'Enero', '02' => 'Febrero', '03' => 'Marzo', '04' => 'Abril', '05' => 'Mayo', '06' => 'Junio', '07' => 'Julio', '08' => 'Agosto', '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre');
 			$date = $month[date('m')].' '.date('Y');
-			$items[] = array('date' => $date, 'cost' => $parameter[$this->basisCost]['value'],'motive' => $parameter[$this->basisCost]['label']);
-			$itemsAgregate[] = array('date' => $date, 'cost' => $parameter[$this->basisCost]['value'],'motive' => $parameter[$this->basisCost]['label'],'type' => 1,'amount' => 1, 'unitCost' => $parameter[$this->basisCost]['value']);
+			$items[] = array('date' => $date, 'cost' => $parameter[$this->basisCost]['value'],'motive' => $parameter[$this->basisCost]['label'],'type' => 1,'amount' => 1, 'unitCost' => $parameter[$this->basisCost]['value']);
 			$total = $total + $parameter[$this->basisCost]['value'];
 			if ($consuptions[0]->getConsumptionValue() > $parameter[$this->maxConsumption]['value'])
 			{
+				// Registro Excedente
 				$value = $consuptions[0]->getConsumptionValue() - $parameter[$this->maxConsumption]['value'];
 				$cost = $value * $parameter[$this->excess]['value'];
-				$items[] = array('date' => $date, 'cost' => $cost,'motive' => $parameter[$this->excess]['label'].' ('.$value.'m3 x '.$parameter[$this->excess]['value'].' c/m3)');
-				$itemsAgregate[] = array('date' => $date, 'cost' => $cost,'motive' => $parameter[$this->excess]['label'].' ('.$value.'m3 x '.$parameter[$this->excess]['value'].' c/m3)','type' => 3,'amount' => $value, 'unitCost' => $parameter[$this->excess]['value']);
+				$items[] = array('date' => $date, 'cost' => $cost,'motive' => $parameter[$this->excess]['label'].' ('.$value.'m3 x '.$parameter[$this->excess]['value'].' c/m3)','type' => 3,'amount' => $value, 'unitCost' => $parameter[$this->excess]['value']);
 				$total = $total + $cost;
-			}		
-			$items[] = array('date' => $date, 'cost' => $parameter[$this->sewarage]['value'],'motive' => $parameter[$this->sewarage]['label']);
-			$itemsAgregate[] = array('date' => $date, 'cost' => $parameter[$this->sewarage]['value'],'motive' => $parameter[$this->sewarage]['label'],'type' => 2,'amount' => 1,'unitCost' => $parameter[$this->sewarage]['value']);
-			$total = $total + $parameter[$this->sewarage]['value'];
+			}	
+				
+			if ($account->getSewerage())
+			{
+				// Registro costo de alcantarillado
+				$items[] = array('date' => $date, 'cost' => $parameter[$this->sewarage]['value'],'motive' => $parameter[$this->sewarage]['label'],'type' => 2,'amount' => 1,'unitCost' => $parameter[$this->sewarage]['value']);
+				$total = $total + $parameter[$this->sewarage]['value'];
+			}
+
 		} else {
 			return null;
 		}
@@ -95,45 +99,24 @@ class TransactionRepository extends EntityRepository
 		foreach ($payments as $item)
 		{
 			$motive =  $item->getPaymentType()->getName();
-			$items[] = array('date' => $item->getPaymentDate()->format('Y-m-d'), 'cost' => $item->getCost(),'motive' => $motive);
+			$items[] = array('date' => $item->getPaymentDate()->format('Y-m-d'), 'cost' => $item->getCost(),'motive' => $motive,'type' => 4,'amount' => 1,'unitCost' => $item->getCost(), 'entity' => $item);
 			$total = $total + $item->getCost();
-			$typeId = $item->getPaymentType()->getPaymentTypeType()->getId();
-			$paymentId = $item->getPaymentType()->getId();
-			if ($typeId == $this->typeId)
+			
+			if($item->getIsRecidivism())
 			{
-				if ($type != $paymentId)
-				{
-					$type = $item->getPaymentType()->getPaymentTypeType()->getId();
-					if (!array_key_exists($type, $cont))
-					{
-						$cont[$type] = array('cont' => -1, 'motive' => $motive, 'date' => $item->getPaymentDate()->format('Y-m-d'));
-					}
-					$cont[$type]['cont'] = $cont[$type]['cont'] + 1;
-				}					
-			}		
+				$items[] = array('date' => $item->getPaymentDate()->format('Y-m-d'), 'cost' => $parameter[$this->recidivism]['value'],'motive' => $parameter[$this->recidivism]['label'].' '.$motive,'type' => 5,'amount' => 1,'unitCost' => $parameter[$this->recidivism]['value'], 'entity' => $item);
+				$total = $total + $parameter[$this->recidivism]['value'];
+			}			
 		}
 
-		foreach ($cont as $item)
-		{
-			if($item['cont'] > 0)
-			{
-				for ($i= 0; $i < $item['cont']; $i++)
-				{
-					$items[] = array('date' => $item['date'], 'cost' => $parameter[$this->recidivism]['value'],'motive' => $parameter[$this->recidivism]['label'].' '.$item['motive']);
-					$itemsAgregate[] = array('date' => $item['date'], 'cost' => $parameter[$this->recidivism]['value'],'motive' => $parameter[$this->recidivism]['label'].' '.$item['motive'],'type' => 5,'amount' => 1,'unitCost' => $parameter[$this->recidivism]['value']);
-					$total = $total + $parameter[$this->recidivism]['value'];
-				}
-			}
-		}
 		if ($save)
 		{
-			$this->saveItems($user,$payments,$consuptions[0],$itemsAgregate, $total);
+			$this->saveItems($user,$payments,$consuptions[0],$items, $total);
 		}
-		return $items;
-			
+		return $items;			
 	}
 	
-	private function saveItems($user,$payments,$consumption,$itemsAgregate,$total)
+	private function saveItems($user,$payments,$consumption,$items,$total)
 	{
 		$em = $this->getEntityManager();
 		$em->getConnection()->beginTransaction();
@@ -151,35 +134,32 @@ class TransactionRepository extends EntityRepository
 			$em->persist($transaction);
 			$em->flush();
 			
-			foreach ($itemsAgregate as $item)
+			foreach ($items as $item)
 			{
 				$type = $em->getRepository('PaymentDataAccessBundle:IncomeType')->find($item['type']);
 				$income = new Income();
 				$income->setIncomeType($type);
 				$income->setTransaction($transaction);
-				$income->setConsumption($consumption);
+				if ($item['type'] > 3)
+				{
+					$income->setPayment($item['entity']);
+				} else {
+					$income->setConsumption($consumption);
+				}				
 				$income->setSystemUser($userData);
 				$income->setAmount($item['amount']);
 				$income->setBasicServiceUnitCost($item['unitCost']);
 				$em->persist($income);
 				$em->flush();
+							
 			}
-			
+			// Marcacion de pagos Cancelados
 			$consumption->setIsPayment(1);
 			$em->persist($consumption);
 			$em->flush();
-			$type = $em->getRepository('PaymentDataAccessBundle:IncomeType')->find(4); 
+
 			foreach ($payments as $item)
-			{
-				$income = new Income();
-				$income->setIncomeType($type);
-				$income->setTransaction($transaction);
-				$income->setPayment($item);
-				$income->setSystemUser($userData);
-				$income->setAmount(1);
-				$income->setBasicServiceUnitCost($item->getCost());
-				$em->persist($income);
-				$em->flush();			
+			{		
 				$item->setIsPayment(1);
 				$em->persist($item);
 				$em->flush();
