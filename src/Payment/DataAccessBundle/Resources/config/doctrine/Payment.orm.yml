@@ -1,6 +1,5 @@
 Payment\DataAccessBundle\Entity\Payment:
     type: entity
-    repositoryClass: Payment\DataAccessBundle\Entity\PaymentRepository
     table: payment
     fields:
         id:
@@ -30,6 +29,10 @@ Payment\DataAccessBundle\Entity\Payment:
             type: boolean
             nullable: true
             column: is_payment
+        isRecidivism:
+            type: boolean
+            nullable: true
+            column: is_recidivism
     manyToOne:
         account:
             targetEntity: Account
