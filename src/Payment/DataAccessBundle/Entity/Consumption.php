@@ -561,4 +561,9 @@ class Consumption
     {
         return $this->isPayment;
     }
+    
+    public function __construct()
+    {
+    	$this->isPayment = 0;
+    }
 }

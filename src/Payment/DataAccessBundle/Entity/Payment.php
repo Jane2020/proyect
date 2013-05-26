@@ -399,4 +399,37 @@ class Payment
     {
         return $this->isPayment;
     }
+    /**
+     * @var boolean
+     */
+    private $isRecidivism;
+
+
+    /**
+     * Set isRecidivism
+     *
+     * @param boolean $isRecidivism
+     * @return Payment
+     */
+    public function setIsRecidivism($isRecidivism)
+    {
+        $this->isRecidivism = $isRecidivism;
+    
+        return $this;
+    }
+
+    /**
+     * Get isRecidivism
+     *
+     * @return boolean 
+     */
+    public function getIsRecidivism()
+    {
+        return $this->isRecidivism;
+    }
+    
+    public function __construct(){
+    	$this->isDeleted = 0;
+    	$this->isPayment = 0;
+    }
 }
