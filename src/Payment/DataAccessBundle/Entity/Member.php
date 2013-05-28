@@ -86,6 +86,10 @@ class Member
     /**
      * @var string
      * 
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el número de teléfono."
+     * ) 
+     *
      * @Assert\Regex(
      *     pattern = "/^(?:\+)?\d{9}$/",
      *     message = "Por favor ingrese 9 dígitos." 
@@ -95,6 +99,10 @@ class Member
 
     /**
      * @var string
+     * 
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el número de celular."
+     * ) 
      * 
      * @Assert\Regex(
      *     pattern = "/^(?:\+)?\d{10}$/",
