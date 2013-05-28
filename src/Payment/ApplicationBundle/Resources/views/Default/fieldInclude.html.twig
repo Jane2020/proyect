@@ -4,6 +4,6 @@
 	</td>
 	<td>
 		{{ form_widget(form.memberName, { 'attr': {'class': 'required', 'readonly':'readonly'} }) }} 
-		<a class="modal" href="{{ path('modal',{'formName': form.name})}}">Buscar</a>		
+		<a class="modal" href="{{ path('modal',{'formName': form.vars.name})}}">Buscar</a>		
 	</td>
 </tr>

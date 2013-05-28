@@ -1,3 +1,7 @@
+payment_report:
+    resource: "@PaymentReportBundle/Resources/config/routing.yml"
+    prefix:   /
+
 payment_transaction:
     resource: "@PaymentTransactionBundle/Resources/config/routing.yml"
     prefix:   /

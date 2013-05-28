@@ -1,0 +1,135 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block javascripts %}
+ {{ parent() }}
+<script type="text/javascript" src="{{ asset('bundles/paymenttransaction/js/expenseSearch.js') }}"></script>
+<script type="text/javascript">
+function printService()
+{
+	document.getElementById("print").style.visibility='hidden' ;
+	document.getElementById("print").style.position = 'absolute';
+	document.getElementById("botonera").style.visibility='hidden' ;
+	document.getElementById("botonera").style.position = 'absolute';
+	document.getElementById("topline").style.visibility='hidden';
+	document.getElementById("topline").style.position = 'absolute';
+	document.getElementById("copyright").style.visibility='hidden';
+	document.getElementById("copyright").style.position = 'absolute';
+	document.getElementById("searchButton").style.visibility='hidden';
+	document.getElementById("searchButton").style.position = 'absolute';
+	if ({{ total }} > 10)
+	{
+		document.getElementById("paginator").style.visibility='hidden';
+		document.getElementById("paginator").style.position = 'absolute';
+	}
+	window.print();
+	document.getElementById("print").style.visibility='visible';
+	document.getElementById("print").style.position = 'relative';
+	document.getElementById("botonera").style.visibility='visible';
+	document.getElementById("botonera").style.position = 'relative';
+	document.getElementById("topline").style.visibility='visible' ;
+	document.getElementById("topline").style.position = 'relative';
+	document.getElementById("copyright").style.visibility='visible' ;
+	document.getElementById("copyright").style.position = 'relative';
+	document.getElementById("searchButton").style.visibility='visible';
+	document.getElementById("searchButton").style.position = 'relative';
+	if ({{ total }} > 10)
+	{
+		document.getElementById("paginator").style.visibility='visible';
+		document.getElementById("paginator").style.position = 'relative';
+	}				
+}
+</script>
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}	
+{% block content %}
+<table width="350" border="0" align="right" style="padding:5px;" id="print">
+	<tr>
+	    <td style="text-align: center">
+	     	<a href='javascript:printService();' >Imprimir</a>	    	
+        </td>
+    </tr>    
+</table>
+<br><br><br>
+{% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="flash-message">
+{% autoescape false %}
+    {{ flashMessage|trans({}, 'FOSUserBundle') }}
+{% endautoescape %}
+    </div><br>
+{% endfor %}
+{{ app.session.flashbag.set('message', '')}}
+<form action="{{ path('reportMember') }}" method="post" {{ form_enctype(form) }} id='memberSearch' name="memberSearch">
+	{{ form_errors(form) }}
+    <table class="tableSearch">
+    	<tr>
+    	    <td class="titleSearch">{{ form_label(form.order) }}</td>
+    	    <td>{{ form_widget(form.order) }}</td>
+    	    <td class="titleSearch">{{ form_label(form.to) }}</td>
+    	    <td>{{ form_widget(form.to) }}</td>
+    	     <td class="titleSearch">{{ form_label(form.from) }}</td>
+    	    <td>{{ form_widget(form.from) }}</td>
+    	    <td valign="top">
+				{{ form_widget(form.offset, { 'attr': {'value': '0'} }) }}  
+				{{ form_widget(form.limit, { 'attr': {'value': limit } }) }}  
+				<div id = "searchButton">
+                	<input type="submit" name="btsend" id="button_search" value='Buscar' id="btsend"/>            
+                </div>
+            </td>            
+		</tr> 
+        <tr>
+        	<td colspan="3"><div class="error"></div></td>
+        </tr>
+        <tr>
+        	<td></td><td>{{ form_errors(form.order) }}</td><td><br></td>
+       	</tr>
+	</table>
+{{ form_rest(form) }}
+</form>
+<div id = "print">
+<form id='form_check' name='form_check' action='' method='post'>
+	<table id="tableListUser" >
+    	<tr>
+        	<th class="title">
+                Cédula de Identidad
+            </th>   
+            <th class="title_check">
+        	    Nombre del Miembro
+            </th>
+            <th class="title">
+              	Número Celular
+            </th>        
+    	</tr>
+		{% set i = 1 %}
+		{% for item in members %}
+        <tr>
+         	<td class="content_table" >
+				{{ item.documentNumber }}
+            </td>
+ 			<td class="content_table" >
+				{{ item.name}} {{ item.lastname}}
+            </td>   
+            <td class="content_table" >
+				{{ item.celularPhone}}
+            </td>                                          
+         </tr>
+		{% set i = i +1 %}
+		{% endfor %}
+         <tr>
+		{% if  total==0 %}
+        	<td colspan="3" align="center" class="content_table_left">
+            	No existen items a mostrar
+            </td>
+		{% endif %}
+        </tr>
+</table>
+{% if total>10 %}
+<table id="paginator">
+	<tr>
+    	<td align="center">
+			{% include 'PaymentApplicationBundle:Paginator:paginator.html.twig' %}
+        </td>	
+	</tr>
+</table>
+</div>
+{% endif %}	
+</form>
+{% endblock %}

@@ -42,12 +42,11 @@ class PaymentEditType extends AbstractType
 				'query_builder' => $this->getQueryBuilderPaymentType(),
 				'property' => 'name',
 				'empty_value' => 'Seleccione',
-				'label' => 'Tipo de Pago:',
+				'label' => 'Tipo de Infracción:',
 				'required' => false,
 		));
-		
-		$builder->add('cost','text',  array('label'=>'Valor del Pago:', 'required'=>false, 'max_length'=>8));
-		$builder->add('paymentDate','text',  array('label'=>'Fecha de Pago:', 'required'=>false, 'max_length'=>10));				
+		$builder->add('paymentDate','text',  array('label'=>'Fecha de Infracción:', 'required'=>false, 'max_length'=>10));
+		$builder->add('isRecidivism','checkbox',  array('label'=>'Reincidencia en Infracción: ', 'required'=>false,));
 	}
 
 	private function getAccounts($accountId)
@@ -95,6 +94,7 @@ class PaymentEditType extends AbstractType
 		$qb->add('from', 'PaymentDataAccessBundle:PaymentType p');
 		$qb->innerJoin('p.paymentTypeType', 'pt');
 		$qb->where($qb->expr()->eq('pt.id', '?1'));
+		$qb->andwhere($qb->expr()->eq('p.isActive', '1'));
 		$qb->setParameter(1,$this->id);
 		$qb->orderBy('p.name', 'ASC');
 		return $qb;		

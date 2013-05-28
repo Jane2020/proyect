@@ -12,12 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class TransactionRepository extends EntityRepository
 {
-	public function getItemsToCollection($account)
-	{
-		$ids = array(3,4,5,6,7,8);
-		$consuptions = $this->getItems($account, 'Consumption', true);
-		$payment = $this->getItems($account->getMember(), 'Payment', false);
-		$parameter = $this->getConfiguration($ids);
+	private $recidivism = 'recidivism_cost';
+	private $basisCost = 'basic_cost_water';
+	private $excess = 'excess_cost'; 
+	private $maxConsumption = 'maximum_consumption_milliliters'; 
+	private $sewarage = 'basic_cost_sewerage'; 
+	
+	public function getItemsToCollection($user,$account,$save = false)
+	{			
+		$parameter = $this->getConfiguration();		
+		$items = $this->getDatasToView($user,$account, $parameter,$save);
+		return $items;
 	}
 	
 	private function getItems($entity,$table,$isConsumtion)
@@ -27,10 +32,14 @@ class TransactionRepository extends EntityRepository
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:'.$table.' t');		
 		$queryBuilder->Where('t.isDeleted = 0');
 		$queryBuilder->Where('t.isPayment = 0');
-		if ($isConsumtion) {
-			$queryBuilder->andWhere('t.account = ?1');				
+		
+		if (!$isConsumtion) {
+			$queryBuilder->andWhere($queryBuilder->expr()->orX(
+					('t.member = ?2'),
+					('t.account = ?1')));
+			$queryBuilder->setParameter(2, $entity->getMember());
 		} else {
-			$queryBuilder->andWhere('t.member = ?1');			
+			$queryBuilder->andWhere('t.account = ?1');
 		}
 		$queryBuilder->setParameter(1, $entity);
 		$query = $queryBuilder->getQuery();
@@ -38,14 +47,138 @@ class TransactionRepository extends EntityRepository
 		return $result;
 	}
 	
-	private function getConfiguration($ids)
+	private function getConfiguration()
 	{
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder('p');
-		$queryBuilder->add('select', 'c');
-		$queryBuilder->add('from', 'PaymentDataAccessBundle:Paramter p');
-		$queryBuilder->Where($queryBuilder->expr()->in('c.id', $ids));	
+		$queryBuilder->add('select', 'p');
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Parameter p');
+		$queryBuilder->Where('p.isActive = 1');	
 		$query = $queryBuilder->getQuery();
-		$result = $query->getResult();
+		$results = $query->getResult();
+		$result = array();
+		foreach ($results as $item)
+		{
+			$result[$item->getKey()] = array('value' => $item->getValue(), 'label' => $item->getName());
+		}
 		return $result;
 	} 
+	
+	private function getDatasToView($user,$account, $parameter,$save)
+	{
+		$items = array();
+		$itemsAgregate = array();
+		$consuptions = $this->getItems($account, 'Consumption', true);
+		$total = 0;
+		///  registro de consumo
+		if(count($consuptions) > 0)
+		{
+			foreach ($consuptions as $item)
+			{
+				// Registro basico
+				$month = array('01' => 'Enero', '02' => 'Febrero', '03' => 'Marzo', '04' => 'Abril', '05' => 'Mayo', '06' => 'Junio', '07' => 'Julio', '08' => 'Agosto', '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre');
+				$date = $month[date('m')].' '.date('Y');
+				$items[] = array('date' => $date, 'cost' => $parameter[$this->basisCost]['value'],'motive' => $parameter[$this->basisCost]['label'],'type' => 1,'amount' => 1, 'unitCost' => $parameter[$this->basisCost]['value'],'entity' => $item);
+				$total = $total + $parameter[$this->basisCost]['value'];
+				if ($item->getConsumptionValue() > $parameter[$this->maxConsumption]['value'])
+				{
+					// Registro Excedente
+					$value = $item->getConsumptionValue() - $parameter[$this->maxConsumption]['value'];
+					$cost = $value * $parameter[$this->excess]['value'];
+					$items[] = array('date' => $date, 'cost' => $cost,'motive' => $parameter[$this->excess]['label'].' ('.$value.'m3 x '.$parameter[$this->excess]['value'].' c/m3)','type' => 3,'amount' => $value, 'unitCost' => $parameter[$this->excess]['value'],'entity' => $item);
+					$total = $total + $cost;
+				}
+				
+				if ($account->getSewerage())
+				{
+					// Registro costo de alcantarillado
+					$items[] = array('date' => $date, 'cost' => $parameter[$this->sewarage]['value'],'motive' => $parameter[$this->sewarage]['label'],'type' => 2,'amount' => 1,'unitCost' => $parameter[$this->sewarage]['value'],'entity' => $item);
+					$total = $total + $parameter[$this->sewarage]['value'];
+				}
+			}
+
+		} else {
+			return null;
+		}
+		
+		$payments = $this->getItems($account, 'Payment', false);
+		$cont = array();
+		$type = 0;
+		foreach ($payments as $item)
+		{
+			$motive =  $item->getPaymentType()->getName();
+			$items[] = array('date' => $item->getPaymentDate()->format('Y-m-d'), 'cost' => $item->getCost(),'motive' => $motive,'type' => 4,'amount' => 1,'unitCost' => $item->getCost(), 'entity' => $item);
+			$total = $total + $item->getCost();
+			
+			if($item->getIsRecidivism())
+			{
+				$items[] = array('date' => $item->getPaymentDate()->format('Y-m-d'), 'cost' => $parameter[$this->recidivism]['value'],'motive' => $parameter[$this->recidivism]['label'].' '.$motive,'type' => 5,'amount' => 1,'unitCost' => $parameter[$this->recidivism]['value'], 'entity' => $item);
+				$total = $total + $parameter[$this->recidivism]['value'];
+			}			
+		}
+
+		if ($save)
+		{
+			$this->saveItems($user,$payments,$consuptions,$items, $total);
+		}
+		return $items;			
+	}
+	
+	private function saveItems($user,$payments,$consumptions,$items,$total)
+	{
+		$em = $this->getEntityManager();
+		$em->getConnection()->beginTransaction();
+		try 
+		{		
+			$managerial = $em->getRepository('PaymentDataAccessBundle:Managerial')->findOneBy(array('isActive' => 1),array('id' => 'DESC'));
+			$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
+			$transactionType = $em->getRepository('PaymentDataAccessBundle:TransactionType')->find(1);
+			$transaction = new Transaction();
+			$transaction->setTotalValue($total);
+			$transaction->setSystemDate(new \DateTime());
+			$transaction->setManagerial($managerial);
+			$transaction->setSystemUser($userData);
+			$transaction->setTransactionType($transactionType);
+			$em->persist($transaction);
+			$em->flush();
+			
+			foreach ($items as $item)
+			{
+				$type = $em->getRepository('PaymentDataAccessBundle:IncomeType')->find($item['type']);
+				$income = new Income();
+				$income->setIncomeType($type);
+				$income->setTransaction($transaction);
+				if ($item['type'] > 3)
+				{
+					$income->setPayment($item['entity']);
+				} else {
+					$income->setConsumption($item['entity']);
+				}				
+				$income->setSystemUser($userData);
+				$income->setAmount($item['amount']);
+				$income->setBasicServiceUnitCost($item['unitCost']);
+				$em->persist($income);
+				$em->flush();
+							
+			}
+			// Marcacion de pagos Cancelados
+			foreach ($consumptions as $item)
+			{
+				$item->setIsPayment(1);
+				$em->persist($item);
+				$em->flush();
+			}
+			foreach ($payments as $item)
+			{		
+				$item->setIsPayment(1);
+				$em->persist($item);
+				$em->flush();
+			}
+		$em->getConnection()->commit();
+		
+		} catch (Exception $e) {
+			$em->getConnection()->rollback();
+			$em->close();
+			throw $e->getMessage();
+		}
+	}
 }

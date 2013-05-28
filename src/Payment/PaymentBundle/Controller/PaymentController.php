@@ -20,7 +20,7 @@ class PaymentController extends Controller
 	
 	/**
 	 * @Template()
-	 * @Secure(roles="ROLE_ADMIN")
+	 * @Secure(roles="ROLE_SECRETARY")
 	 */
 	public function listPaymentAction(Request $request)
 	{
@@ -56,7 +56,7 @@ class PaymentController extends Controller
 	
 	/**
 	 * @Template()
-	 * Secure(roles="ROLE_ADMIN")
+	 * Secure(roles="ROLE_SECRETARY")
 	 */
 	public function editPaymentAction($id, Request $request)
 	{
@@ -84,7 +84,7 @@ class PaymentController extends Controller
 			}
 			//Miembro -Inasistencia
 			if ($id == 1)
-			{	
+			{
 				$payment->setMemberId($payment->getMember()->getId());
 				$payment->setMemberName($payment->getMember()->getName().' '.$payment->getMember()->getLastname());
 			}				
@@ -104,29 +104,63 @@ class PaymentController extends Controller
 				$paymentForm->bind($request);
 				if ($paymentForm->isValid())
 				{
-					$payment->setPaymentDate(new \DateTime($payment->getPaymentDate()));
-					$user = $this->get('security.context')->getToken()->getUser();
-					$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
-					if ($id == 1)
+					if ($payment->getMemberId())
 					{
-						$member = $em->getRepository('PaymentDataAccessBundle:Member')->find($payment->getMemberId());
-						$payment->setMember($member);
+						$validation = $this->validationParameter($payment->getMemberId());
 					}
-					$payment->setSystemUser($userData);
-					$payment->setIsDeleted(0);				
-					$em->persist($payment);
-					$em->flush();
-					$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
-					return $this->redirect($this->generateUrl('_listPayment'));
+					else	
+					{
+						$validation = $this->validationParameter($payment->getAccount());
+					}
+					if ($validation)
+					{
+						$payment->setPaymentDate(new \DateTime($payment->getPaymentDate()));
+						$user = $this->get('security.context')->getToken()->getUser();
+						$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
+						if ($id == 1)
+						{
+							$member = $em->getRepository('PaymentDataAccessBundle:Member')->find($payment->getMemberId());
+							$payment->setMember($member);
+						}
+						$payment->setCost($payment->getPaymentType()->getCost());
+						$payment->setSystemUser($userData);
+						$payment->setIsDeleted(0);				
+						$em->persist($payment);
+						$em->flush();
+						$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
+						return $this->redirect($this->generateUrl('_listPayment'));
+					}
+					else
+					{
+						if($id == 1)
+						{
+							$this->get('session')->getFlashBag()->add('message', 'Por favor ingrese el nombre del miembro.');
+						}
+						else
+						{
+							$this->get('session')->getFlashBag()->add('message', 'Por favor ingrese el número de conexión.');
+						}
+					}
 				}
 			}
 		}
 		return array('form' => $paymentForm->createView(), 'title' => $title, 'cid'=>$paymentId, 'id' => $id);
 	}
-
+    
+	/**
+	 * Función que valida su el campo es nulo.
+	 */
+	private function validationParameter($parameter)
+	{
+		if ($parameter)
+		{
+			return true;			
+		}
+		return false;
+	}
 	
 	/**
-	 * Secure(roles="ROLE_ADMIN")
+	 * Secure(roles="ROLE_SECRETARY")
 	 */
 	public function deletePaymentAction(Request $request)
 	{
@@ -155,7 +189,6 @@ class PaymentController extends Controller
 			$message = "El item ha sido Eliminado &eacute;xitosamente.";
 		}
 		$this->get('session')->getFlashBag()->add('message', $message);
-		return $this->redirect($this->generateUrl('_listPayment'));
-	
+		return $this->redirect($this->generateUrl('_listPayment'));	
 	}
 }

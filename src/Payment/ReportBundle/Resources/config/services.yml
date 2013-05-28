@@ -1,0 +1,7 @@
+parameters:
+#    payment_report.example.class: Payment\ReportBundle\Example
+
+services:
+#    payment_report.example:
+#        class: %payment_report.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -3,6 +3,13 @@
 {% block javascripts %}
 	{{ parent() }}
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+<script type="text/javascript">
+jQuery.noConflict();
+{% autoescape false %}
+	{{ validation }}
+{% endautoescape %}	
+	loadEvents();	
+ </script>
 {% endblock %}	
 
 {% block content %}
@@ -14,7 +21,6 @@
     {% endautoescape %}
 </div><br>
 {% endfor %}
-
 <form action="" method="post" id='configurationForm' name="configurationForm">
 <table id="tableListUser" >
 <tr>
@@ -42,8 +48,7 @@
         </td>   
          <td class="content_table" >
          {% if (item.typeField == 'input') %}
-         		<input type="text" name="{{ item.key }}" value="{{ item.value }}" id="{{ item.key }}" required="required">
-         		<div id="error"></div>
+         		<input type="text" name="{{ item.key }}" value="{{ item.value }}" id="{{ item.key }}" required="required">         		
          {% endif %}			
 		 {% if (item.typeField == 'date') %}
 		 	<script type="text/javascript">

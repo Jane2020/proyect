@@ -17,10 +17,14 @@ class ConsumptionController extends Controller
 	const LIMIT_PAGINATOR = 20;
 	/**
 	 * @Template()
-	 * @Secure(roles="ROLE_ADMIN")
+	 * @Secure(roles="ROLE_OPERATOR")
 	 */
 	public function listConsumptionAction(Request $request)
 	{
+		if(!$this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Parameter')->isEnabled('date_start_consumption','date_end_consumption',$this->get('security.context')->isGranted('ROLE_ADMIN')))
+		{
+			throw $this->createNotFoundException('Esta funcionalidad esta desabilitada, por favor consulte con el Administrador del sistema.');
+		}
 		$consumptionEntity = new ConsumptionSearch();
 		$limit = self::LIMIT_PAGINATOR;
 		$offset = 0;
@@ -56,7 +60,7 @@ class ConsumptionController extends Controller
 	}
 	
 	/**
-	 * Secure(roles="ROLE_ADMIN")
+	 * Secure(roles="ROLE_OPERATOR")
 	 */
 	public function deleteConsumptionAction(Request $request)
 	{
@@ -88,7 +92,7 @@ class ConsumptionController extends Controller
 	
 	/**
 	 * @Template()
-	 * Secure(roles="ROLE_ADMIN")
+	 * Secure(roles="ROLE_OPERATOR")
 	 */
 	public function editConsumptionAction(Request $request)
 	{

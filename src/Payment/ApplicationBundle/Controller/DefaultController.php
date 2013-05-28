@@ -110,25 +110,9 @@ class DefaultController extends Controller
     {
     	$em = $this->getDoctrine()->getManager();
     	$validationArray = array();
-    	$inputValue = null;
-    	$rexValue = null;
-    	$nameValue = null;
     	$parameters = $this->getDoctrine()->getRepository('PaymentDataAccessBundle:Parameter')->findBy(array(), array('order' => 'asc'));
-    	$countParameter = count($parameters);
+    	$validation = $this->validationJavascript($parameters);    	
     	$i=1;
-    	foreach ($parameters as $item)
-    	{
-    		$inputValue = $inputValue.$item->getKey();
-    		$rexValue = $rexValue."".$item->getRexType()."";
-    		$nameValue = $nameValue.$item->getValue();
-    		if ($i < $countParameter)
-    		{
-    			$inputValue = $inputValue.',';
-    			$rexValue = $rexValue.';';
-    			$nameValue = $nameValue.',';
-    		}
-    		$i++;
-    	}
     	if ($request->getMethod() == 'POST')
     	{
     		foreach ($parameters as $item)
@@ -153,7 +137,91 @@ class DefaultController extends Controller
     			return $this->render("PaymentApplicationBundle:Default:welcome.html.twig");
     		}
     	}  
-    	return $this->render("PaymentApplicationBundle:Configuration:configurationItem.html.twig", array('parameters' => $parameters, 'validationArray' => $validationArray, 'inputValue'=>$inputValue, 'rexValue' => $rexValue, 'nameValue' => $nameValue));
+    	return $this->render("PaymentApplicationBundle:Configuration:configurationItem.html.twig", array('parameters' => $parameters, 'validationArray' => $validationArray, 'validation' =>$validation));
+    }
+    
+    /**
+     * Función que realiza la validación javascript 
+     */
+    private function validationJavascript($parameters)
+    {
+    	$ruler = '';
+    	$message = ' messages: {';
+    	$countParameter = count($parameters);
+    	$i = 1;
+    	$js = "	var doc = $(document);
+			 	doc.ready(loadEvents);
+				$.validator.addMethod( 
+    				'regex', 
+    				function(value, element, regexp) { 
+        			return this.optional(element) || regexp.test(value); 
+    				}, 
+    				'Please check your input.' 
+    				); 
+
+				function loadEvents(){		
+   					setValidationsEdit();
+				}
+				
+    		 function setValidationsEdit(){
+    		 $('#configurationForm').validate({
+        		event: 'blur', 
+        			rules: {";
+    	
+    	foreach ($parameters as $item)
+    	{
+    		if ($item->getTypeField() == 'date')
+    		{
+    			$dateArray[] = $item->getKey();
+    		}
+    		$ruler.= "'".$item->getKey()."':{ required:true, ";
+    		$message.= "'".$item->getKey()."':{ require:'Por favor ingrese el/la ".$item->getName()."',";
+    		if ($i < $countParameter)
+    		{
+    			$ruler.= "regex: /".$item->getRexType()."/},";
+    			$message.=" regex: 'Por favor ingrese correctamente ".$item->getName()."'},";
+    			$i++;
+    		}
+    		else
+    		{
+    			$ruler.= "regex: /".$item->getRexType()."/}},";
+    			$message.=" regex: 'Por favor ingrese correctamente ".$item->getName()."'},},";
+    		}
+    	}
+    	
+    	$js.= $ruler.$message;
+    	$js.= " debug: true,
+        		errorElement: 'div',
+        		submitHandler: function(form){
+            	form.submit();
+ 			    		}
+    				});
+				}";  
+
+    	$i = 0;
+    	$date = null;
+    	while ($i < count($dateArray))
+    	{
+    		$date .=  " $(function() {
+    
+    				$('#".$dateArray[$i]."' ).datepicker({
+    		dateFormat: 'yy-mm-dd',
+    		onSelect: function( selectedDate ) {
+    			$( '#".$dateArray[$i+1]."' ).datepicker( 'option', 'minDate', selectedDate );
+    		}
+    		});
+    
+    		$( '#".$dateArray[$i+1]."' ).datepicker({
+    		dateFormat: 'yy-mm-dd',
+    		onSelect: function( selectedDate ) {
+    			$( '#".$dateArray[$i]."' ).datepicker( 'option', 'maxDate', selectedDate );
+    		}
+    		});
+    		});";
+    		$i = $i + 2;
+    	}
+    	$js.= $date;
+    	return $js;
     }
     
     /**

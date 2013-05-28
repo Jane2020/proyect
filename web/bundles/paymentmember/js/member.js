@@ -73,10 +73,12 @@ function setValidationsEdit(){
             'memberEdit[address]': {        		
             	regex: /^[a-zA-Z0-9ÁÉÍÓÚÑáéíóúñ\s\,\.\:\;\-\#]+$/
             }, 
-            'memberEdit[phone]': {        		
+            'memberEdit[phone]': {      
+            	required:true,
             	regex: /^(?:\+)?\d{9}$/ 
             }, 
-            'memberEdit[celularPhone]': {        		
+            'memberEdit[celularPhone]': {
+            	required:true,
             	regex: /^(?:\+)?\d{10}$/ 
             }
         },
@@ -103,9 +105,11 @@ function setValidationsEdit(){
                 regex: 'Valor de la dirección es incorrecta.' 
             } ,
             'memberEdit[phone]': { 
+            	require:'Por favor ingrese el número de teléfono.',
                 regex: 'Por favor ingrese 9 dígitos.'  
             } ,
             'memberEdit[celularPhone]': { 
+            	require:'Por favor ingrese el número de celular.',
                 regex: 'Por favor ingrese 10 dígitos.'
             } ,
         },

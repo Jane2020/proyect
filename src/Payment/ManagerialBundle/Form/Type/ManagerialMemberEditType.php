@@ -6,6 +6,12 @@ use Doctrine\ORM\EntityRepository;
 
 class ManagerialMemberEditType extends AbstractType
 {
+	private $em;
+	
+	public function __construct($entityManager)
+	{
+		$this->em = $entityManager;
+	}
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('id','hidden');
@@ -14,15 +20,18 @@ class ManagerialMemberEditType extends AbstractType
 		$builder->add('charge', 'entity',
 				array(
 						'class' => 'PaymentDataAccessBundle:Charge',
+						'query_builder' => $this->getQueryBuilderCharge(),
 						'label' => 'Cargo',
 						'empty_value' => 'Seleccione',
 						'required' => false,
 						'property' => 'name',
 				)
 		);
+		
 		$builder->add('managerial', 'entity',
 				array(
 						'class' => 'PaymentDataAccessBundle:Managerial',
+						'query_builder' => $this->getQueryBuilderManagerial(),
 						'label' => 'Directiva:',
 						'empty_value' => 'Seleccione',
 						'required' => false,
@@ -35,5 +44,25 @@ class ManagerialMemberEditType extends AbstractType
 	public function getName()
 	{
 		return 'managerialMemberEdit';
+	}
+	
+	private function getQueryBuilderCharge()
+	{
+		$qb = $this->em->createQueryBuilder('p');
+		$qb->add('select', 'p');
+		$qb->add('from', 'PaymentDataAccessBundle:Charge p');
+		$qb->andwhere($qb->expr()->eq('p.isActive', '1'));
+		$qb->orderBy('p.name', 'ASC');
+		return $qb;
+	}
+	
+	private function getQueryBuilderManagerial()
+	{
+		$qb = $this->em->createQueryBuilder('p');
+		$qb->add('select', 'p');
+		$qb->add('from', 'PaymentDataAccessBundle:Managerial p');
+		$qb->andwhere($qb->expr()->eq('p.isActive', '1'));
+		$qb->orderBy('p.name', 'ASC');
+		return $qb;
 	}
 }

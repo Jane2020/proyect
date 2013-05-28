@@ -1,0 +1,11 @@
+reportMemberAssistance:
+    pattern:  /reporte-de-inasistencia-miembros
+    defaults: { _controller: PaymentReportBundle:Report:reportMemberAssistance}
+
+reportMember:
+    pattern:  /reporte-de-miembros
+    defaults: { _controller: PaymentReportBundle:Report:reportMember}    
+
+reportExpensesAndCollections:
+    pattern:  /reporte-de-gastos-y-cobros
+    defaults: { _controller: PaymentReportBundle:Report:reportExpensesAndCollections}                    

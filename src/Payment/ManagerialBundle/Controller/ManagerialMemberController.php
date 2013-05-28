@@ -137,7 +137,7 @@ class ManagerialMemberController  extends Controller
 			$managerialMember = new ManagerialMember();
 			$title = "Crear";
 		}
-		$managerialMemberForm = $this->createForm(new ManagerialMemberEditType(), $managerialMember);
+		$managerialMemberForm = $this->createForm(new ManagerialMemberEditType($em), $managerialMember);
 		if ($request->getMethod() == 'POST') 
 		{
 			$band = $request->request->get('band', 0);

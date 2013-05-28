@@ -31,7 +31,7 @@ class ConsumptionRepository extends EntityRepository
 			$queryBuilder->andWhere('c.account = ?1');
 			$queryBuilder->setParameter(1, $consumptionSelect);	
 		}
-		if (!$operator)
+		if ($operator)
 		{
 			$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p', 'WITH', "p.key = 'date_start_consumption'");
 			$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p1', 'WITH', "p1.key = 'date_end_consumption'");

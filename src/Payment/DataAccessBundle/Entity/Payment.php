@@ -3,6 +3,7 @@
 namespace Payment\DataAccessBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Payment
@@ -21,6 +22,9 @@ class Payment
 
     /**
      * @var \DateTime
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese la Fecha de Pago."
+     * )
      */
     private $paymentDate;
 
@@ -51,6 +55,9 @@ class Payment
 
     /**
      * @var \Payment\DataAccessBundle\Entity\PaymentType
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el Tipo de Pago."
+     * )
      */
     private $paymentType;
     
@@ -391,5 +398,38 @@ class Payment
     public function getIsPayment()
     {
         return $this->isPayment;
+    }
+    /**
+     * @var boolean
+     */
+    private $isRecidivism;
+
+
+    /**
+     * Set isRecidivism
+     *
+     * @param boolean $isRecidivism
+     * @return Payment
+     */
+    public function setIsRecidivism($isRecidivism)
+    {
+        $this->isRecidivism = $isRecidivism;
+    
+        return $this;
+    }
+
+    /**
+     * Get isRecidivism
+     *
+     * @return boolean 
+     */
+    public function getIsRecidivism()
+    {
+        return $this->isRecidivism;
+    }
+    
+    public function __construct(){
+    	$this->isDeleted = 0;
+    	$this->isPayment = 0;
     }
 }

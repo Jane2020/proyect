@@ -40,25 +40,19 @@ function setValidationsEdit(){
     $("#paymentEdit").validate({
         event: "blur", 
         rules: {
-            'paymentEdit[name]': {        		
-                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\@\/]+$/ 
+            'paymentEdit[paymentType]': {        		
+            	required:true 
             },
-            'paymentEdit[description]': {        		
-                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\@\/]+$/ 
-            },
-            'paymentEdit[cost]': {        		
-                regex: /^(-)?\d+(\.\d\d)?$/
-            },            
+            'paymentEdit[paymentDate]': {
+            	required:true                
+            }
         },
         messages: {
-            'paymentEdit[description]': { 
-                regex: 'Por favor ingrese letras (a-z), números (0-9) ó (-),(_),(@)' 
+            'paymentEdit[paymentType]': { 
+            	require:'Por favor ingrese el Tipo de Pago.'
             } ,
-            'paymentEdit[name]': { 
-                regex: 'Por favor ingrese letras (a-z), números (0-9) ó (-),(_),(@)' 
-            },
-            'paymentEdit[cost]': { 
-                regex: 'Por favor ingrese una cantidad valida.' 
+            'paymentEdit[paymentDate]': { 
+            	require:'Por favor ingrese la Fecha de Pago.'              
             } ,
         },
         debug: true,
