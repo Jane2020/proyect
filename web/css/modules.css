@@ -21,7 +21,7 @@ div.wrapper{
 	}
 
 h1{
-	color: #FFFFFF;
+	color: #737373;
     font-family: "ArmataRegular","Trebuchet MS",Arial,Helvetica,sans-serif;
     font-size: 13px;
     font-weight: normal;
@@ -34,16 +34,14 @@ h1{
 .col0{
 	color:#999999; 
 	background-color:#333333;
-	height:209px;
+	height:150px;
 	background-repeat:repeat-x;
 	background-image: url(../images/back_h.jpg);	
 	}
 
 
 #formulario{
-	background-image: url("../images/back_4_h.jpg");
-    border-radius: 8px 8px 8px 8px;
-    box-shadow: 0 6px 19px #000000;
+	
     height: 212px;
     margin: -30px auto 0;
     position: inherit;
@@ -53,10 +51,13 @@ h1{
 /* ----------------------------------------------Header-------------------------------------*/
 
 #header{
-	padding:10px 0 20px;
+	padding:25px 0 0;
+	background-image:url(../images/header.jpg);
+	background-repeat: no-repeat; 
+	/*padding:10px 0 20px;*/
 	/*z-index:1000;*/
 	width: 960px;
-	height: 172px;
+	height: 135px;
 	position:relative;
 	margin:0 auto 0;
 	display:block;
@@ -71,16 +72,40 @@ h1{
 	}
 
 #logo{
-	background-image:url(../images/header.png);
+	/*background-image:url(../images/header.jpg);*/
+	width:225px;
+	height:78px;
+	background-repeat: no-repeat;
+	margin: 0 auto;
+	}
+	
+#body_int{
+	
+	background-image:url(../images/body_int.jpg);
+	margin: 30px auto 0;
 	width:960px;
-	height:209px;
+	height:387px;
+	position: relative;
+	}
+
+#body_int #formulario{
+	/*background-color: #c71209;*/
+	background: -moz-linear-gradient(center top , #E5E5E5 2%, #BABABA 5%, #EBEBEB 29%) repeat scroll 0 0 transparent;
+    background-color: #EBEBEB;
+    border: 2px solid #AFAFAF;
+    border-radius: 8px 8px 8px 8px;
+
 	}
 
 #header #logo{
 	display:block;
-	margin-top:7px;
+	margin-top:0px;
+	/*margin-top:7px;*/
 	overflow:hidden;
 	/*margin:auto;*/
+	background-image:url(../images/logo_sicoap.png);
+	
+	
 	}
 
 
@@ -113,7 +138,7 @@ h1{
 	background-image: url("../images/back_1_h.jpg");
     display: block;
     float: left;
-    height: 175px;
+    height: 387px;
     position: relative;
     width: 100%;
 	}
@@ -123,9 +148,10 @@ h1{
 
 #footer{
 	background-image: url("../images/back_2_h.jpg");
-    height: 173px;
-    margin-top: 175px;
+    height: 58px;
+    /*margin-top: 175px;*/
     position: inherit;
+    clear: left;
 	}
 
 /* ----------------------------------------------Copyright-------------------------------------*/
@@ -182,17 +208,26 @@ h1{
 
 label
 {
-text-align: right;
-display: block
+text-align: left;
+display: block;
+
+}
+
+
+label .error
+{
+font-size: 10px;
 }
 
 
 .texto-menu
 {
-	background: none repeat scroll 0 0 #700002;
-    border: 1px solid #D12C2C;
-    box-shadow: 3px 3px 5px #410001 inset;
-    color: #CCBDBD;
+	background: none repeat scroll 0 0 #909090;
+	background-image: url("../images/image_input.jpg");
+	background-repeat: repeat-x;
+    border: 1px solid #ffffff;
+    box-shadow: 1px 3px 4px #FFFFFF ;
+    color: #ffffff;
     margin-bottom: 10px;
     padding: 5px;
     width: 130px;
@@ -222,26 +257,29 @@ padding: 2px 6px
 	}
 	
 #caja{
-	padding-top: 18px;}
+	padding-top: 2px;}
 	
 #button_enter{
-	background-color: #8F0507;
-    background-image: url("../images/button_enter.png");
+	/*background-color: #8F0507;*/
+    background-image: url("../images/button_login.png");
     border: 0 none;
     color: #FFFFFF;
-    height: 29px;
+    height: 27px;
     margin-left: 167px;
-    width: 80px;
+    width: 96px;
 	font: font-family: "ArmataRegular","Trebuchet MS",Arial,Helvetica,sans-serif;
 	color:#FFF;
 	font-weight:normal;
-	margin-top:10px;
+	margin-top:5px;
 	
 	}
 
 #texto_gris a{
-	color:#FFF;
+	color:#909090;
 	font-family:font: font-family: "ArmataRegular","Trebuchet MS",Arial,Helvetica,sans-serif;
 	font-size:10px;
-	font-weight:normal;}
+	font-weight:normal;
+	padding-right: 18px;
+	
+	}
 	
