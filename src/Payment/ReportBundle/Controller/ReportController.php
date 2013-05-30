@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Payment\ApplicationBundle\Libraries\Paginator\Paginator;
 use Payment\ReportBundle\Form\Type\MemberSearchType;
 use Payment\ReportBundle\Entity\MemberSearch;
-use Payment\TransactionBundle\Entity\ExpenseSearch;
-use Payment\TransactionBundle\Form\Type\ExpenseSearchType;
+use Payment\ReportBundle\Entity\ExpensesSearch;
+use Payment\ReportBundle\Form\Type\ExpensivesSearchType;
 
 
 class ReportController extends Controller
@@ -71,18 +71,24 @@ class ReportController extends Controller
     	$memberEntity = new MemberSearch();
     	$limit = self::LIMIT_PAGINATOR;
     	$offset = 0;
-    	$memberText = null;
+    	$orderOption = null;
+    	$to = null;
+    	$from = null;
+    	
     	$em = $this->getDoctrine()->getManager();
-    	$memberForm = $this->createForm(new MemberSearchType($em), $memberEntity);
+    	$numberMember = $this->getNumberMember();
+    	$memberForm = $this->createForm(new MemberSearchType($numberMember), $memberEntity);
     	if ($request->getMethod() == 'POST')
     	{
     		$memberForm->bind($request);
     		$datas = $memberForm->getData();
     		if ($memberForm->isValid())
     		{
-    			$memberText = $datas->getName();
-    			$offset = $datas->getOffset();
-    			$limit = $datas->getLimit();
+    			$orderOption = $datas->getOrder();
+    			$to = $datas->getTo();
+    			$from = $datas->getFrom();
+    			$offset = $datas->getOffset();    			
+    			$limit = $datas->getLimit();    			
     		}
     	}
     	$offsetItem = $offset;
@@ -91,35 +97,46 @@ class ReportController extends Controller
     		$offsetItem = $offsetItem - 1;
     	}
     	$offsetItem = $offsetItem * $limit;
-    	$total = $em->getRepository('PaymentDataAccessBundle:Member')->findMemberByParameterToList($memberText, $offsetItem, $limit);
-    	$total = $total[0][1];
-    	$members = $em->getRepository('PaymentDataAccessBundle:Member')->findMemberByParameterToList($memberText, $offsetItem, $limit, false);
+    	$total = $em->getRepository('PaymentDataAccessBundle:Member')->findMemberByParameterToList($this, $orderOption, $to, $from, $offsetItem, $limit);
+    	$total = $total[0]['total'];
+    	$members = $em->getRepository('PaymentDataAccessBundle:Member')->findMemberByParameterToList($this, $orderOption, $to, $from, $offsetItem, $limit, false);
     	$paginator = new Paginator($memberForm->getName(), $total, $offset, $limit);
     	return array('form' => $memberForm->createView(), 'limit' => $limit, 'total' => $total, 'members' => $members, 'paginator' => $paginator);
+    }
+    
+    
+    private function getNumberMember()
+    {
+    	$member = array();
+    	$conec = $this->get('database_connection');
+    	$result =  $conec->fetchAll("SELECT @curRank := @curRank + 1 AS rank FROM member, (SELECT @curRank := 0) r where member.is_active = 1");
+    	foreach ($result as $item)
+    	{
+    		$member[$item['rank']] = $item['rank'];
+    	}    	
+    	return $member;
     }
     
     /**
      * @Template()
      * @Secure(roles="ROLE_ADMIN")
      */
-    public function reportExpensesAndCollectionsAction(Request $request)
+    public function reportExpensesAction(Request $request)
     {
-    	$expenseEntity = new ExpenseSearch();
+    	$expenseEntity = new ExpensesSearch();
+    	$startDate = null;
+    	$endDate = null;
     	$limit = self::LIMIT_PAGINATOR;
-    	$offset = 0;
-    	$expenseDate = null;
-    	$expenseName = null;
-    	$expenseRuc = null;
-    	$expenseForm = $this->createForm(new ExpenseSearchType(), $expenseEntity);
+    	$offset = 0;    	
+    	$expenseForm = $this->createForm(new ExpensivesSearchType(), $expenseEntity);
     	if ($request->getMethod() == 'POST') 
     	{
     		$expenseForm->bind($request);
     		$datas = $expenseForm->getData();
     		if ($expenseForm->isValid()) 
     		{
-    			$expenseDate = $datas->getExpenseDate();
-    			$expenseName = $datas->getExpenseName();
-    			$expenseRuc = $datas->getExpenseRuc();
+    			$startDate = $datas->getStartDate();
+    			$endDate = $datas->getEndDate();
     			$offset = $datas->getOffset();
     			$limit = $datas->getLimit();
     		}
@@ -131,9 +148,9 @@ class ReportController extends Controller
     	}
     	$offsetItem = $offsetItem * $limit;
     	
-    	$total = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Expense')->findExpenseByFilters($expenseDate,$expenseName,$expenseRuc, $offsetItem, $limit);
+    	$total = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Expense')->findExpensesByFilters($startDate, $endDate, $offsetItem, $limit);
     	$total = $total[0][1];
-    	$expense = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Expense')->findExpenseByFilters($expenseDate,$expenseName,$expenseRuc, $offsetItem, $limit, false);
+    	$expense = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Expense')->findExpensesByFilters($startDate, $endDate, $offsetItem, $limit, false);
     	$paginator = new Paginator($expenseForm->getName(), $total, $offset, $limit);
     	return array('form' => $expenseForm->createView(), 'limit' => $limit, 'total' => $total, 'expense' => $expense, 'paginator' => $paginator);    	 
     }

@@ -67,35 +67,72 @@ class MemberRepository extends EntityRepository
 		return $result;
 	}	
 	
-	public function findMemberByParameterToList($memberName, $offset, $limit, $count = true)
+	public function findMemberByParameterToList($controller, $orderOption, $to, $from, $offset, $limit, $count = true)
 	{
-		
-		$queryBuilder = $this->getEntityManager()->createQueryBuilder('m');
-		if ($count)
+		if (!$to)
 		{
-			$queryBuilder->add('select', $queryBuilder->expr()->count('m.id'));
+			$to = $offset;			
+		}
+		if (!$from)
+		{
+			$from = $limit;
+		}
+/*		else
+		{
+			$from++;
+		}*/
+			
+		$conec = $controller->get("database_connection");
+		if ($orderOption == 1)
+		{
+			$memberId = " distinct(member.id), ";
+			$order = " member.is_active = 1  order by member.lastname ";			
 		}
 		else
 		{
-			$queryBuilder->add('select', 'm');
-			$queryBuilder->orderBy('m.name');
+			$memberId = "";
+			$order = " account.is_active = 1 order by account.account_number ";			
+		}
+		
+		if ($count == true)	
+		{
+			$sql = "select count(*) as total from (select". $memberId." member.document_number, member.name, member.lastname, member.address, account.account_number ";
+		}
+		else
+		{
+			$sql = "select * from (select". $memberId." member.document_number, member.name, member.lastname, member.address, account.account_number ";		
+		}
+		$sql.= "from account
+				inner join member on member.id = account.member_id
+				where".$order." limit ".$to.",".$from.") as val limit ". $offset.",".$limit;
+		
+		$result =  $conec->fetchAll($sql);
+		return $result;
+		
+		/*$queryBuilder = $this->getEntityManager()->createQueryBuilder('a');
+		if ($count)
+		{
+			$queryBuilder->add('select', $queryBuilder->expr()->count('a.id'));
+		}
+		else
+		{
+			$queryBuilder->select(array('a', 'm'));
+			if ($orderOption == 1)
+			{
+				$queryBuilder->orderBy('m.lastname');
+			}
+			if ($orderOption == 2)
+			{
+				$queryBuilder->orderBy('a.accountNumber');
+			}
 			$queryBuilder->setFirstResult($offset);
 			$queryBuilder->setMaxResults($limit);
 		}
-		$queryBuilder->add('from', 'PaymentDataAccessBundle:Member m');
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Account a');
+		$queryBuilder->leftJoin('a.member', 'm');
 		$queryBuilder->where($queryBuilder->expr()->eq('m.isActive', '1'));
-		
-		if ($memberName != null)
-		{
-			$memberName = str_replace(' ', '%', $memberName);
-			$memberName = '%' . strtolower($memberName) . '%';
-			$queryBuilder->andwhere($queryBuilder->expr()->orX(
-						$queryBuilder->expr()->like($queryBuilder->expr()->lower('m.name'), '?1'),
-						$queryBuilder->expr()->like($queryBuilder->expr()->lower('m.lastname'), '?1')));
-			$queryBuilder->setParameter(1, $memberName);
-		}
 		$query = $queryBuilder->getQuery();
 		$result = $query->getResult();
-		return $result;
+		return $result;*/
 	}	
 }

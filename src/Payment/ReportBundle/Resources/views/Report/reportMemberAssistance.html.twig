@@ -135,7 +135,10 @@ function clearForm()
     	<tr>
         	<th class="title">
                 Nombre del Miembro
-            </th>   
+            </th>
+            <th class="title">
+                Tipo de Infracción
+            </th>     
             <th class="title">
                Fecha de Registro
             </th>        
@@ -150,7 +153,10 @@ function clearForm()
 			    {% if (item.account) %}
 			    	{{ item.account.member.name}} {{ item.account.member.lastname}}			    	
 				{% endif %}	
-            </td>   
+            </td> 
+            <td class="content_table" >
+            	{{ item.paymentType.name}} 
+            </td>
             <td class="content_table" >
 				{{ item.paymentDate|date('Y-m-d')}}
             </td>                                          

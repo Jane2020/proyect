@@ -43,9 +43,6 @@ class Account
 
     /**
      * @var \Payment\DataAccessBundle\Entity\Member
-     * @Assert\NotBlank(
-     *   message = "Por favor ingrese el Nombre del Miembro."
-     * )
      */
     private $member;
 

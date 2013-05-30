@@ -3,9 +3,6 @@
 {% block javascripts %}
  {{ parent() }}
  <script type="text/javascript" src="{{ asset('bundles/paymentmember/js/member.js') }}"></script>
- <script type="text/javascript">
-	loadEvents();
- </script>
  <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
  <script type="text/javascript">
  $(function() 
@@ -97,7 +94,7 @@
 	 document.getElementById("errorDocumentNumber").innerHTML = '';	
 	 document.getElementById("errorDocumentNumber").style = "display: none;";
  }
- 
+loadEvents(); 
 </script>
 {% endblock %}
 
@@ -144,7 +141,7 @@
 		</tr>
 		<tr>
 			<td class="title" valign="top">{{ form_label(form.birthDate) }}</td>
-			<td>{{ form_widget(form.birthDate)}} </td>			
+			<td>{{ form_widget(form.birthDate,  { 'attr': {'readOnly': 'true'} })}} </td>			
 		</tr>  
 		<tr>
 			<td class="title" valign="top">{{ form_label(form.address) }}</td>
@@ -156,11 +153,11 @@
 		</tr>
 		<tr>
 			<td class="title" valign="top">{{ form_label(form.phone) }}</td>
-			<td>{{ form_widget(form.phone) }} </td>
+			<td>{{ form_widget(form.phone, { 'attr': {'class': 'required'} }) }} </td>
 		</tr>
 		<tr>
 			<td class="title" valign="top">{{ form_label(form.celularPhone) }}</td>
-			<td>{{ form_widget(form.celularPhone) }} </td>
+			<td>{{ form_widget(form.celularPhone, { 'attr': {'class': 'required'} }) }} </td>
 		</tr>
 		<tr>
 			<td class="title" valign="top">{{ form_label(form.isActive) }}</td>

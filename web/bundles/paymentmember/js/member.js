@@ -11,7 +11,7 @@ $.validator.addMethod(
 
 function loadEvents(){	
 	setValidations(); 
-    setValidationsEdit();
+	setValidationsEdit();
 }
 
 function setValidations(){
@@ -74,7 +74,6 @@ function setValidationsEdit(){
             	regex: /^[a-zA-Z0-9ÁÉÍÓÚÑáéíóúñ\s\,\.\:\;\-\#]+$/
             }, 
             'memberEdit[phone]': {      
-            	required:true,
             	regex: /^(?:\+)?\d{9}$/ 
             }, 
             'memberEdit[celularPhone]': {
@@ -105,7 +104,6 @@ function setValidationsEdit(){
                 regex: 'Valor de la dirección es incorrecta.' 
             } ,
             'memberEdit[phone]': { 
-            	require:'Por favor ingrese el número de teléfono.',
                 regex: 'Por favor ingrese 9 dígitos.'  
             } ,
             'memberEdit[celularPhone]': { 

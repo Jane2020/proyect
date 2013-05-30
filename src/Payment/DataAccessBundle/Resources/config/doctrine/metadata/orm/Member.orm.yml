@@ -43,7 +43,7 @@ Member:
             type: string
             length: 10
             fixed: false
-            nullable: false
+            nullable: true
         celularPhone:
             type: string
             length: 10

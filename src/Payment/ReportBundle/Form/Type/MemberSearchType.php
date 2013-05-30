@@ -8,11 +8,11 @@ use Doctrine\ORM\EntityRepository;
 
 class MemberSearchType extends AbstractType
 {
-	private $em;
+	private $numberMember;
 	
-	public function __construct($entityManager)
+	public function __construct($numberMember)
 	{
-		$this->em = $entityManager;
+		$this->numberMember = $numberMember;
 	}
 	
 	public function buildForm(FormBuilderInterface $builder, array $options)
@@ -22,15 +22,15 @@ class MemberSearchType extends AbstractType
 				'label' => 'Orden:'
 		));
 		$builder->add('to', 'choice', array(
-						'choices'   => $this->getQueryBuilder(),
+						'choices'   => $this->numberMember,
 						'label' => 'Desde:',
 						'empty_value' => 'Seleccione',
 						'required' => false						
 				)
 		);
 		
-		$builder->add('to', 'choice', array(
-				'choices'   => $this->getQueryBuilder(),
+		$builder->add('from', 'choice', array(
+				'choices'   => $this->numberMember,
 				'label' => 'Hasta:',
 				'empty_value' => 'Seleccione',
 				'required' => false		
@@ -43,20 +43,5 @@ class MemberSearchType extends AbstractType
 	public function getName()
 	{
 		return 'memberSearch';
-	}	
-	
-	private function getQueryBuilder()
-	{
-		$member = null;
-		$result = $em->createQuery("SELECT @curRank := @curRank + 1 AS rank
-									FROM member m, (SELECT @curRank := 0) r
-								 where m.isActive = 1");
-		print_r($result);
-		exit();
-		foreach ($result as $item)
-		{
-			$member[$item] = $item;
-		}
-		return $member;
 	}
 }

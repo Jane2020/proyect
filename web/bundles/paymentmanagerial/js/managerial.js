@@ -75,6 +75,18 @@ function setValidationsEdit(){
     });
 }
 
+$(function() 
+		 {
+			$( "#managerialEdit_startDate" ).datepicker({dateFormat: "yy-mm-dd",  changeMonth: true,
+				changeYear: true});
+		 });
+
+$(function() 
+		 {
+			$( "#managerialEdit_endDate" ).datepicker({dateFormat: "yy-mm-dd",  changeMonth: true,
+				changeYear: true});
+		 });
+
 $(function() {
 	
 	$( "#managerialEdit_startDate" ).datepicker({ 
@@ -91,8 +103,6 @@ $(function() {
 	     }
 		 });	
 });
-
-
 
 $(document).ready(function(){
 	$("#managerialEdit_ruc").keyup(function(){

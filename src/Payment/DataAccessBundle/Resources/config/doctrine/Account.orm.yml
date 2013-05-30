@@ -1,6 +1,6 @@
 Payment\DataAccessBundle\Entity\Account:
     type: entity
-    repositoryClass: Payment\DataAccessBundle\Entity\AccountRepository
+    repositoryClass: Payment\DataAccessBundle\Entity\AccountRepository    
     table: account
     fields:
         id:
@@ -26,7 +26,8 @@ Payment\DataAccessBundle\Entity\Account:
             nullable: false
             column: is_active
         sewerage:
-            type: boolean
+            type: integer
+            unsigned: false
             nullable: true
     manyToOne:
         member:
