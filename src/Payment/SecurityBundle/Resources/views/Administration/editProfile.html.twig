@@ -12,7 +12,7 @@ loadEvents();
 {% endblock %}
 
 {% block content %}
-
+<div id="title_image">Editar Perfil</div>
     <form action="{{ path('_editProfile') }}" method="post" {{ form_enctype(form) }} id="userEdit">
 <div id="contentLeft">
  {% for flashMessage in app.session.flashbag.get('message') %}
@@ -53,7 +53,8 @@ loadEvents();
                             </tr>
 {% endfor %}
                             <tr>
-                                <td height="50px;" align="right" valign="bottom">
+                            <td></td>
+                                <td>
                                     <input type="submit" value="Guardar" name="btsend" id="button_enter"/>
                                     <input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('home') }}'"/>
  {{ form_rest(form) }}

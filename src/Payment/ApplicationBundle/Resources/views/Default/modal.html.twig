@@ -9,6 +9,7 @@
 		loadEvents();
 	</script>	  	
   	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+  	<link rel="stylesheet" type="text/css" href="{{ asset('css/modules.css') }}" />
 {% endblock %}		
 {% block content %}
 <form action="" method="post" {{ form_enctype(form) }} id='memberTypeSearch' name="memberTypeSearch">
@@ -30,7 +31,7 @@
             </td>
             <td>
             	<a href="" onclick ="parent.cerrarFancyboxYRedirigeAUrl('{{ url('_editMember') }}')">
-            		<button>Nuevo</button>
+            		<button id="button_search" >Nuevo</button>
            		</a>            	 
             </td>
 	    </tr> 

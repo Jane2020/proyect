@@ -27,7 +27,7 @@ class DefaultController extends Controller
 		$user = $this->get('security.context');
 		if ($user->isGranted('ROLE_USER'))
 		{
-			return array();
+			return array('user' => $user->getToken()->getUser()->getUsername());
 		}
 	
 		return $this->redirect($this->generateUrl('_login'));
@@ -83,7 +83,7 @@ class DefaultController extends Controller
 	public function generalMenuAction(Request $request)
 	{
 		$rol = $this->get('security.context')->getToken()->getUser()->getRoles();
-		$rol = trim($rol[0]);
+		//$rol = trim($rol[0]);
 		$parentMenu = $this->getDoctrine()->getRepository('PaymentDataAccessBundle:NavigationItem')->getMenus(0, $rol);
 		return array('parentMenu'=>$parentMenu);
 	}

@@ -17,7 +17,7 @@
 		<link  href="{{asset('css/modules.css')}}" rel="stylesheet" type="text/css" media="screen" ></link>
 		<link  href="{{asset('css/layout.css')}}" rel="stylesheet" type="text/css" media="screen" ></link>
         {% endblock %}
-        <title></title>
+        <title>{% block title %} Sicoap {% endblock %}</title>
     </head>
     <body>
      	<body id="top">
@@ -32,7 +32,7 @@
     <div id="search">
     </div>
     <br class="clear" />
-    	{% include 'PaymentApplicationBundle::profileMenu.html.twig' %}
+    	{# include 'PaymentApplicationBundle::profileMenu.html.twig' 	#}
   </div>
 </div>
 <div id="contentAll">

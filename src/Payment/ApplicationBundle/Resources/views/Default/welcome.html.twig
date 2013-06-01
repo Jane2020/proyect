@@ -2,5 +2,10 @@
 
 {% block title %}Inicio - {{ parent() }} {% endblock %}
 {% block content %}
-<div id="title_image">Bienvenido ..</div>
+<div id="title_image">Bienvenido {{ user }}</div>
+
+<div style="text-align: center;">
+<img src="{{asset('images/header_content.jpg')}}" />
+</div>
+
 {% endblock %}

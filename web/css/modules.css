@@ -438,12 +438,14 @@ padding: 2px 6px
     width: auto;    
 }
 
-#menu_sup a, #paginator a, .modal{
+#menu_sup a, #paginator a, .modal, .content_table a{
  color: #335e75;
- text-decoration: none;   
+ text-decoration: none;  
+ font-size: 12px;
+ font-weight: bold; 
 }
 
-#menu_sup a:hover, #paginator a:hover, .modal:hover{
+#menu_sup a:hover, #paginator a:hover, .modal:hover, .content_table a:hover{
  color: #a6a6a6;
  text-decoration: none;   
 }

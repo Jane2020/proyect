@@ -23,14 +23,19 @@ class NavigationItemRepository extends EntityRepository
 	 */
 	public function getMenus($parentId, $rol)
 	{
-		$rol = '%'.$rol.'%';
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder('n');
 		$queryBuilder->add('select', 'n');
 		$queryBuilder->orderBy('n.ordering');
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:NavigationItem n');
-		$queryBuilder->andWhere($queryBuilder->expr()->eq('n.isActive', '1'),
-						$queryBuilder->expr()->like('n.roles', '?2'));
-		$queryBuilder->setParameter(2, $rol);
+		$queryBuilder->andWhere($queryBuilder->expr()->eq('n.isActive', '1'));
+		$j = 2;				
+		foreach ($rol as $item)
+		{
+			$queryBuilder->orWhere($queryBuilder->expr()->like('n.roles', '?'.$j));
+			$queryBuilder->setParameter($j, $item);
+			$j++;
+		}
+		
 		$query = $queryBuilder->getQuery();
 		$result = $query->getResult();
 		return $result;
