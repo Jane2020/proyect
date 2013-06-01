@@ -522,3 +522,21 @@ padding: 2px 6px
     width: auto;
     
 }
+
+#url_b_content{
+	background-image: url("../images/img_inicio.png");
+    background-repeat: no-repeat;
+    float: left;
+    height: 70px;
+    margin: 20px;
+    padding: 24px 0 0 83px;
+    font-weight: bold;
+    width: auto;
+    color: #1862a1;
+	
+   
+}
+
+#botonera{
+	float:left;
+}
