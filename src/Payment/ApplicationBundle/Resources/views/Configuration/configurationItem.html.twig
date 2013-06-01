@@ -52,15 +52,45 @@ jQuery.noConflict();
          {% endif %}			
 		 {% if (item.typeField == 'date') %}
 		 	<script type="text/javascript">
-		 		$(function() 
-				{
-					$( "#"+"{{ item.key }}" ).datepicker({dateFormat: "yy-mm-dd",  changeMonth: true, changeYear: true});
-	 			});
-  				loadEvents();
+		 	jQuery.noConflict();
+		 	 $(function()
+		 			{
+		 			$( "#{{ item.key}}").datepicker({dateFormat: "yy-mm-dd", changeMonth: true,
+		 			changeYear: true});
+		 			}); 		 					 	 		
 			</script>
 		 	<input type="text" name="{{ item.key }}" value="{{ item.value }}" id="{{ item.key }}" readonly="readonly" id="{{ item.key }}">
 		 	<div id="error"></div>
-		 {% endif %}	
+		 {% endif %}
+		 {% if (item.typeField == 'select') %}
+		 	<select name="{{ item.key }}">
+		 		{% if (item.key == 'hours_start') or (item.key == 'hours_end')%}
+					{% for i in 0..24 %}
+						{% if (item.value == i) %}
+    						<option value="{{ i }}" selected="selected">{{ i }}</option>
+    					{% else %}	
+    						<option value="{{ i }}">{{ i }}</option>
+    					{% endif %}	
+					{% endfor %}
+				 {% endif %}	
+				 {% if (item.key == 'minutes_start') or (item.key == 'minutes_end')%}
+				 	{% for i in 0..60 %}
+				 		{% set val = null %}
+				 		{% if (i < 10) %}
+				 			{% set val = '0' %}
+				 		{% else %}	
+				 			{% set val = '' %}
+				 		{% endif %}
+				 		
+				 		{% if (item.value == i) %}
+				 			<option value="{{ i }}" selected="selected">{{ val~i }}</option>
+    					{% else %}	
+    						<option value="{{ i }}">{{ val~i }}</option>
+    					{% endif %}		
+					{% endfor %}
+				 {% endif %}	
+		 	</select>	
+		 {% endif %}		
         </td>                              
    </tr>
 {% endfor %}

@@ -29,6 +29,10 @@ Payment:
             type: boolean
             nullable: true
             column: is_payment
+        isRecidivism:
+            type: boolean
+            nullable: true
+            column: is_recidivism
     manyToOne:
         account:
             targetEntity: Account

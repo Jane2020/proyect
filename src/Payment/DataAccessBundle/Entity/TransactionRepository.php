@@ -84,19 +84,23 @@ class TransactionRepository extends EntityRepository
 					// Registro Excedente
 					$value = $item->getConsumptionValue() - $parameter[$this->maxConsumption]['value'];
 					$cost = $value * $parameter[$this->excess]['value'];
-					$items[] = array('date' => $date, 'cost' => $cost,'motive' => $parameter[$this->excess]['label'].' ('.$value.'m3 x '.$parameter[$this->excess]['value'].' c/m3)','type' => 3,'amount' => $value, 'unitCost' => $parameter[$this->excess]['value'],'entity' => $item);
+					$items[] = array('date' => $date, 'cost' => $cost,'motive' => $parameter[$this->excess]['label'].' ( '.$value.'m3 x '.$parameter[$this->excess]['value'].' c/m3)','type' => 3,'amount' => $value, 'unitCost' => $parameter[$this->excess]['value'],'entity' => $item);
 					$total = $total + $cost;
 				}
 				
 				if ($account->getSewerage())
 				{
 					// Registro costo de alcantarillado
-					$items[] = array('date' => $date, 'cost' => $parameter[$this->sewarage]['value'],'motive' => $parameter[$this->sewarage]['label'],'type' => 2,'amount' => 1,'unitCost' => $parameter[$this->sewarage]['value'],'entity' => $item);
-					$total = $total + $parameter[$this->sewarage]['value'];
+					$sewerageAccount = $account->getSewerage();
+					$totalSewerage = $parameter[$this->sewarage]['value'] * $sewerageAccount;
+					$items[] = array('date' => $date, 'cost' => $totalSewerage,'motive' => $parameter[$this->sewarage]['label'].' ( '.$sewerageAccount.' x '.$parameter[$this->sewarage]['value'].' c/u)','type' => 2,'amount' => $sewerageAccount,'unitCost' => ($parameter[$this->sewarage]['value']),'entity' => $item);
+					$total = $total + ($parameter[$this->sewarage]['value'] * $sewerageAccount);
 				}
 			}
 
-		} else {
+		} 
+		else 
+		{
 			return null;
 		}
 		

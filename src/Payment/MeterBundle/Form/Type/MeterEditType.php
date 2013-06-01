@@ -10,10 +10,12 @@ class MeterEditType extends AbstractType
 {
 	
 	private $em;
+	private $sewerageArray;
 	
-	public function __construct($entityManager)
+	public function __construct($entityManager, $sewerageArray)
 	{
 		$this->em = $entityManager;
+		$this->sewerageArray = $sewerageArray;
 	}
 	
 	public function buildForm(FormBuilderInterface $builder, array $options)
@@ -23,8 +25,15 @@ class MeterEditType extends AbstractType
 		$builder->add('accountNumber','text',  array('label'=>'Número de Cuenta:', 'required'=>false, 'max_length'=>32));
 		$builder->add('meterNumber','text',  array('label'=>'Número de Medidor:', 'required'=>false, 'max_length'=>64));
 		$builder->add('isActive','checkbox',  array('label'=>'Activo: ', 'required'=>false,));
-		$builder->add('sewerage','checkbox',  array('label'=>'Alcantarillado: ', 'required'=>false,));
-		$builder->add('memberName','text',  array('label'=>'Nombre del Miembro:', 'required'=>false, 'max_length'=>128));
+		$builder->add('sewerage', 'choice', array(
+				'choices'   => $this->sewerageArray,
+				'label' => 'Alcantarillado:',
+				'empty_value' => '0',
+				'required' => false
+		)
+		);
+		
+		$builder->add('memberName','text',  array('label'=>'Nombre del Miembro:', 'required'=>false, 'max_length'=>512));
 		$builder->add('accountType', 'entity',
 				array(
 						'class' => 'PaymentDataAccessBundle:AccountType',

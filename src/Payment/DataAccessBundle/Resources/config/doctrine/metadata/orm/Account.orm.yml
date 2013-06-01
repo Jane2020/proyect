@@ -25,7 +25,8 @@ Account:
             nullable: false
             column: is_active
         sewerage:
-            type: boolean
+            type: integer
+            unsigned: false
             nullable: true
     manyToOne:
         member:

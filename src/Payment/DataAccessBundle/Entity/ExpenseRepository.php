@@ -12,36 +12,39 @@ use Doctrine\ORM\EntityRepository;
  */
 class ExpenseRepository extends EntityRepository
 {
-	public function findExpenseByFilters($expenseDate,$expenseName,$expenseRuc, $offset, $limit,$count = true ) {
-	
+	public function findExpenseByFilters($expenseDate,$expenseName,$expenseRuc, $offset, $limit,$count = true ) 
+	{
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder('e');
-		if ($count) {
+		if ($count) 
+		{
 			$queryBuilder->add('select', $queryBuilder->expr()->count('e.id'));
-		} else {
+		}
+		else 
+		{
 			$queryBuilder->add('select', 'e');
 			$queryBuilder->orderBy('e.id','DESC');
 			$queryBuilder->setFirstResult($offset);
 			$queryBuilder->setMaxResults($limit);
 		}
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:Expense e');			
-		
 		$queryBuilder->Where('e.isDeleted = 0');
 		
-		if ($expenseDate != null) {
+		if ($expenseDate != null) 
+		{
 			$queryBuilder->andWhere('e.expenseDate = ?1');
 			$queryBuilder->setParameter(1, $expenseDate);	
 		}
 		
-		if ($expenseName != null) {
+		if ($expenseName != null) 
+		{
 			$expenseName = str_replace(' ', '%', $expenseName);
 			$expenseName = '%' . strtolower($expenseName) . '%';
 			$queryBuilder->andwhere($queryBuilder->expr()->like($queryBuilder->expr()->lower('e.expenseName'), '?2'));
-			
 			$queryBuilder->setParameter(2, $expenseName);
 		}
 		
-		if ($expenseRuc != null) {
-			
+		if ($expenseRuc != null) 
+		{
 			$expenseRuc = str_replace(' ', '%', $expenseRuc);
 			$expenseRuc = $expenseRuc . '%';
 			$queryBuilder->andwhere($queryBuilder->expr()->like('e.expenseRuc', '?3'));
@@ -52,7 +55,24 @@ class ExpenseRepository extends EntityRepository
 		$result = $query->getResult();
 		return $result;
 	}
-	
-	
-	
+					
+	public function findExpensesByFilters($startDate,$endDate, $offset, $limit, $count = true) 
+	{
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('e');
+		if ($count)
+		{
+			$queryBuilder->add('select', $queryBuilder->expr()->count('e.id'));
+		}
+		else
+		{
+			$queryBuilder->add('select', 'e');
+			$queryBuilder->orderBy('e.id');
+			$queryBuilder->setFirstResult($offset);
+			$queryBuilder->setMaxResults($limit);
+		}
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Expense e');
+		$queryBuilder->innerJoin('e.transaction', 't');
+		$queryBuilder->Where('e.isDeleted = 0');
+		
+	}	
 }	

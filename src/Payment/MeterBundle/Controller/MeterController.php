@@ -138,8 +138,8 @@ class MeterController extends Controller
     		$account = new Account();
     		$title = "Creación";
     	}
-
-    	$accountForm = $this->createForm(new MeterEditType($em), $account);
+		$sewerageArray = $this->getSewerageAll();
+    	$accountForm = $this->createForm(new MeterEditType($em, $sewerageArray), $account);
     	if ($request->getMethod() == 'POST')
     	{
     		$band = $request->request->get('band', 0);
@@ -148,19 +148,38 @@ class MeterController extends Controller
     			$accountForm->bind($request);
     			if ($accountForm->isValid())
     			{
-    				$user = $this->get('security.context')->getToken()->getUser();
-    				$userId = $user->getId();
-    				$user = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($userId);
-    				$member = $em->getRepository('PaymentDataAccessBundle:Member')->find($account->getMemberId());
-    				$account->setMember($member);
-    				$account->setSystemUser($user);
-    				$em->persist($account);
-    				$em->flush();
-    				$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
-    				return $this->redirect($this->generateUrl('_listMeter'));
+    				if ($account->getMemberId())
+    				{
+	    				$user = $this->get('security.context')->getToken()->getUser();
+	    				$userId = $user->getId();
+	    				$user = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($userId);
+	    				$member = $em->getRepository('PaymentDataAccessBundle:Member')->find($account->getMemberId());
+	    				$account->setMember($member);
+	    				$account->setSystemUser($user);
+	    				$em->persist($account);
+	    				$em->flush();
+	    				$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
+	    				return $this->redirect($this->generateUrl('_listMeter'));
+    				}
+    				else
+    				{
+    					$this->get('session')->getFlashBag()->add('message', 'Por favor ingrese el nombre del miembro.');
+    				}
     			}
     		}
     	}
     	return array('form' => $accountForm->createView(), 'title' => $title, 'cid'=>$accountId);
     }    
+    
+    private function getSewerageAll()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$sewearge = $em->getRepository('PaymentDataAccessBundle:Parameter')->find(11);
+    	$seweargeMaximum = $sewearge->getValue();
+    	for( $i=1; $i<= $seweargeMaximum; $i++)
+    	{
+    		$sewerageArray[$i] = $i;
+    	}
+    	return $sewerageArray;
+    }
 }

@@ -28,9 +28,11 @@ class CollectionController extends Controller
 		$contItems = 0;
 		$accountId = 0;
 		$form = $this->createForm(new CollectionSearchType(), $collectionSearch);
-		if ($request->getMethod() == 'POST') {
+		if ($request->getMethod() == 'POST') 
+		{
 			$form->bind($request);			
-			if ($form->isValid()) {
+			if ($form->isValid()) 
+			{
 				$datas = $form->getData();
 				$account = $datas->getAccount();
 				$user = $this->get('security.context')->getToken()->getUser();

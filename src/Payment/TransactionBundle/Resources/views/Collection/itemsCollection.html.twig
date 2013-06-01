@@ -56,18 +56,20 @@
                     </table>
 {{ form_rest(form) }}
                 </form>
-  {% if (band) %}              
+  {% if (band) %}
 <table>
-<tr><td> Nombre:</td><td colspan="3">{{ account.member.name }} {{ account.member.lastName }}</td></tr>     
-<tr><td> Direccion:</td><td colspan="3">{{ account.member.address }}</td></tr>   
-<tr><td> Telefono:</td><td>{{ account.member.phone }}</td><td> Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
-<tr><td> Número de Cuenta:</td><td>{{ account.accountNumber }}</td><td> Número de Medidor:</td><td>{{ account.meterNumber }}</td></tr>  
-</tr>              
+<tr><td colspan="4"><b>Junta Administradora del Abastecimiento del Agua Potable<b></td></tr>
+<tr><td colspan="4" align="center"><font size="1">Provincia de Tungurahua</font></td></tr>
+<tr><td colspan="4">&nbsp;</td></tr>
+<tr><td> Número de Cuenta:</td><td>{{ account.accountNumber }}</td><td> Número de Conexión:</td><td>{{ account.meterNumber }}</td></tr>
+<tr><td>Nombre:</td><td colspan="3">{{ account.member.name }} {{ account.member.lastName }}</td></tr>     
+<tr><td> Dirección:</td><td colspan="3">{{ account.member.address }}</td></tr>   
+<tr><td> Teléfono:</td><td>{{ account.member.phone }}</td><td> Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
 </table>
 <br>
 {% if(contItems > 0) %}
 
-<table>
+<table border="1">
 <tr><th>Fecha</th><th>Motivo</th><th>Valor</th></tr>
 {% set total = 0 %}
 {% for item in items %}
@@ -77,12 +79,10 @@
 	<td> {{ item.cost | number_format(2) }} {% set total = total + item.cost %}</td>
 	</tr>
 {% endfor %}
-<tr><td></td><td><b>Total</b></td><td><b>{{ total | number_format(2) }}</b></td></tr>
+<tr><td colspan="2" align="right"><b>Total</b></td><td><b>{{ total | number_format(2) }}</b></td></tr>
 </table>
 {% else %}
-No existe consumos para esta cuenta
+No existe consumos para esta cuenta.
 {% endif %}
-
 {% endif %}
-
 {% endblock %}	

@@ -1,7 +1,6 @@
 {% extends 'PaymentApplicationBundle::layout.html.twig' %}
 {% block javascripts %}
  {{ parent() }}
-<script type="text/javascript" src="{{ asset('bundles/paymenttransaction/js/expenseSearch.js') }}"></script>
 <script type="text/javascript">
 function printService()
 {
@@ -37,6 +36,46 @@ function printService()
 		document.getElementById("paginator").style.position = 'relative';
 	}				
 }
+
+function validation()
+{
+	positionTo = document.getElementById("memberSearch_to").options.selectedIndex; 
+	to = document.getElementById("memberSearch_to").options[positionTo].text;
+	positionFrom = document.getElementById("memberSearch_from").options.selectedIndex; 
+	from = document.getElementById("memberSearch_from").options[positionFrom].text;
+	if (to <= from)
+	{
+		document.getElementById("memberSearch_from").style.borderColor="";
+		document.getElementById("error").style.visibility='hidden';
+		document.memberSearch.submit();
+	}	
+	else
+	{
+		document.getElementById("memberSearch_from").style.borderColor="red";
+		document.getElementById("error").style.visibility = 'visible';
+		document.getElementById("error").innerHTML = 'El número debe ser mayor o igual a Desde.';
+	}	
+}
+
+function elimineColor()
+{
+	positionTo = document.getElementById("memberSearch_to").options.selectedIndex; 
+	to = document.getElementById("memberSearch_to").options[positionTo].text;
+	positionFrom = document.getElementById("memberSearch_from").options.selectedIndex; 
+	from = document.getElementById("memberSearch_from").options[positionFrom].text;
+	if (to <= from)
+	{
+		document.getElementById("memberSearch_from").style.borderColor="";
+		document.getElementById("error").innerHTML = '';
+		document.getElementById("error").style.visibility='hidden';
+	}
+	else
+	{
+		document.getElementById("memberSearch_from").style.borderColor="red";
+		document.getElementById("error").style.visibility = 'visible';
+		document.getElementById("error").innerHTML = 'El número debe ser mayor o igual a Desde.';
+	}		
+}
 </script>
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}	
@@ -66,12 +105,12 @@ function printService()
     	    <td class="titleSearch">{{ form_label(form.to) }}</td>
     	    <td>{{ form_widget(form.to) }}</td>
     	     <td class="titleSearch">{{ form_label(form.from) }}</td>
-    	    <td>{{ form_widget(form.from) }}</td>
+    	    <td>{{ form_widget(form.from, { 'attr': {'onClick': 'javascript:elimineColor();' } }) }}<div id="error"></div></td>
     	    <td valign="top">
 				{{ form_widget(form.offset, { 'attr': {'value': '0'} }) }}  
 				{{ form_widget(form.limit, { 'attr': {'value': limit } }) }}  
 				<div id = "searchButton">
-                	<input type="submit" name="btsend" id="button_search" value='Buscar' id="btsend"/>            
+                	<input type="button" name="btsend" id="button_search" value='Buscar' id="btsend" onclick="javascript:validation()"/>            
                 </div>
             </td>            
 		</tr> 
@@ -95,20 +134,26 @@ function printService()
         	    Nombre del Miembro
             </th>
             <th class="title">
-              	Número Celular
-            </th>        
+              	Número de Cuenta
+            </th>
+             <th class="title">
+              	Dirección
+            </th>            
     	</tr>
 		{% set i = 1 %}
 		{% for item in members %}
         <tr>
          	<td class="content_table" >
-				{{ item.documentNumber }}
+				{{ item.document_number }}
             </td>
  			<td class="content_table" >
-				{{ item.name}} {{ item.lastname}}
+				{{ item.lastname}} {{ item.name}}
+            </td>   
+             <td class="content_table" >
+				{{ item.account_number}}
             </td>   
             <td class="content_table" >
-				{{ item.celularPhone}}
+				{{ item.address}}
             </td>                                          
          </tr>
 		{% set i = i +1 %}
