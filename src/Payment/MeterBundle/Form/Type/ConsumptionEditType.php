@@ -31,7 +31,12 @@ class ConsumptionEditType extends AbstractType
 				'label' => '# Conexión',
 				'required' => false,
 		));
+		
 		$builder->add('meterCurrentReading','text',  array('label'=>'Lectura de Medidor', 'required'=>false, 'max_length'=>11));
+		$builder->add('consumptionHave', 'checkbox', array(
+				'label'     => 'No Tiene Consumo',
+				'required'  => false,
+		));
 		if (!$this->isOperator)
 		{
 			$builder->add('description','textarea',  array('label'=>'Observaciones:', 'required'=>false, 'max_length'=>512));

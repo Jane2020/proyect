@@ -114,18 +114,22 @@ class ConsumptionController extends Controller
 				throw new AccessDeniedException();
 			}			
 			
-		} else {
+		}
+		else 
+		{
 			$consumption = new Consumption();
 			$title = "Crear";
 		}
 		$rol = true;
-		if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+		if ($this->get('security.context')->isGranted('ROLE_ADMIN')) 
+		{
 			$rol = false;
 		}
 		
 		$consumptionForm = $this->createForm(new ConsumptionEditType($em,$rol,$accountId), $consumption);
 	
-		if ($request->getMethod() == 'POST') {
+		if ($request->getMethod() == 'POST') 
+		{
 			$band = $request->request->get('band', 0);
 			if ($band != 0)
 			{
@@ -136,7 +140,8 @@ class ConsumptionController extends Controller
 				{	
 					$consumptionAnt = $em->getRepository('PaymentDataAccessBundle:Consumption')->findPrevious($consumption);
 					$meterAnt = 0;
-					if($consumptionAnt)	{
+					if($consumptionAnt)	
+					{
 						if(is_array($consumptionAnt)) 
 						{
 							$consumptionAnt = $consumptionAnt[0];
@@ -144,11 +149,18 @@ class ConsumptionController extends Controller
 						$consumption->setMeterPreviousReading($consumptionAnt);
 						$meterAnt = $consumptionAnt->getMeterCurrentReading();
 					}
-					$value = $consumption->getMeterCurrentReading() - $meterAnt;
+					if ($consumption->getMeterCurrentReading())
+					{
+						$value = $consumption->getMeterCurrentReading() - $meterAnt;
+					}
+					else 
+					{
+						$value = $meterAnt;
+					}
 					if($value >= 0)
 					{					
 						if ($consumptionForm->isValid())
-						{							
+						{	
 							$consumption->setConsumptionValue($value);
 							$consumption->setReadDate(new \DateTime($consumption->getReadDate()));
 							$consumption->setSystemDate(new \DateTime());	

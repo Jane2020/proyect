@@ -4,7 +4,21 @@
  {{ parent() }}
  <script type="text/javascript" src="{{ asset('bundles/paymentmeter/js/consumption.js') }}"></script>
 <script type="text/javascript">
-loadEvents();
+	loadEvents();
+	function onConsumption()
+	{
+		val = document.getElementById("consumptionEdit_meterCurrentReading");
+		val.value = '';
+		val.readOnly = true; 
+		val.className = '';		
+	}
+	
+	function upConsumption()
+	{
+		val = document.getElementById("consumptionEdit_meterCurrentReading");
+		val.readOnly = false;
+		val.className = 'required';		
+	}
 </script>
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}
@@ -37,21 +51,23 @@ loadEvents();
 </tr>
 <tr>
 <td class="title" valign="top">{{ form_label(form.meterCurrentReading) }}</td>
-<td>{{ form_widget(form.meterCurrentReading, { 'attr': {'class': 'required'} }) }} </td>
+<td>{{ form_widget(form.meterCurrentReading, {'attr': {'class': 'required'}}) }}</td>
+<td>{{ form_label(form.consumptionHave) }}</td>
+<td>{{ form_widget(form.consumptionHave, { 'attr': {'onclick': 'if(this.checked == true){onConsumption()} else{upConsumption()}'} })}}</td>
 </tr>  
 <tr>
 <td class="title" valign="top">{{ form_label(form.readDate) }}</td>
-<td>{{ form_widget(form.readDate, { 'attr': {'class': 'required', 'readOnly': 'true'} }) }} </td>
+<td colspan="3">{{ form_widget(form.readDate, { 'attr': {'class': 'required', 'readOnly': 'true'} }) }} </td>
 </tr>
 {% if(rol == false) %}
 <tr>
 <td class="title" valign="top">{{ form_label(form.description) }}</td>
-<td>{{ form_widget(form.description, { 'attr': {'class': 'required', 'rows': 5, 'cols': 30} }) }} </td>
+<td colspan="3">{{ form_widget(form.description, { 'attr': {'class': 'required', 'rows': 5, 'cols': 30} }) }} </td>
 </tr>
 {% endif %}
 <tr>
 
-<td height="50px;" align="right" valign="bottom">
+<td height="50px;" align="center" valign="bottom" colspan="4">
  <input type="submit" value="Guardar" name="btsend" id="button_enter"/>
  <input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listConsumption') }}'"/>
 </td>

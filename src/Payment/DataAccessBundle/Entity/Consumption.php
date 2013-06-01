@@ -566,4 +566,29 @@ class Consumption
     {
     	$this->isPayment = 0;
     }
+    
+    private $consumptionHave;
+    
+    /**
+     * Set consumptionHave
+     *
+     * @param boolean $consumptionHave
+     * @return $consumptionHave
+     */
+    public function setConsumptionHave($consumptionHave)
+    {
+    	$this->consumptionHave = $consumptionHave;
+    	return $this;
+    }
+    
+    /**
+     * Get consumptionHave
+     *
+     * @return boolean
+     */
+    public function getConsumptionHave()
+    {
+    	return $this->consumptionHave;
+    }
+    
 }
