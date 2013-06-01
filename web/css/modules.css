@@ -165,7 +165,7 @@ h1{
 #copyright{
 	background-image: url("../images/back_3_h.jpg");
     background-repeat: repeat-x;
-    font-size: 10px;
+    font-size: 11px;
     height: 51px;
     padding-top: 16px;
 	}
@@ -499,4 +499,9 @@ padding: 2px 6px
     height: 70px;
     padding-top: 20px;
     font-size: 22px;
+}
+
+div.error {
+	color: #ff0000 !important;
+	font-size: 7pt;
 }

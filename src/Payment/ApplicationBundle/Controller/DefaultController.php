@@ -83,7 +83,7 @@ class DefaultController extends Controller
 	public function generalMenuAction(Request $request)
 	{
 		$rol = $this->get('security.context')->getToken()->getUser()->getRoles();
-		//$rol = trim($rol[0]);
+		$rol = trim($rol[0]);
 		$parentMenu = $this->getDoctrine()->getRepository('PaymentDataAccessBundle:NavigationItem')->getMenus(0, $rol);
 		return array('parentMenu'=>$parentMenu);
 	}
@@ -141,7 +141,7 @@ class DefaultController extends Controller
     				$em->flush();
     			}
     			$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
-    			return $this->render("PaymentApplicationBundle:Default:welcome.html.twig");
+    			return $this->redirect($this->generateUrl('home'));
     		}
     	}  
     	return $this->render("PaymentApplicationBundle:Configuration:configurationItem.html.twig", array('parameters' => $parameters, 'validationArray' => $validationArray, 'validation' =>$validation));
