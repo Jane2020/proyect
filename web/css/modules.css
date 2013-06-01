@@ -273,6 +273,41 @@ padding: 2px 6px
 	margin-top:5px;
 	
 	}
+	
+.menu_int{
+	
+	background: none repeat scroll 0 0 #5b6065;
+	font-family: "ArmataRegular","Trebuchet MS",Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    border: medium none;
+    margin-top: 20px;
+ 
+}
+
+.menu_int tr{
+	background-image: url("../images/line_table.jpg");
+    background-repeat: repeat-x;
+
+}
+
+.menu_int td{
+	padding: 8px 18px 8px 18px;
+
+}
+
+
+.menu_int a{
+	
+	color: #a9d0ff;
+	text-decoration: none;
+}
+
+
+.menu_int td:hover {
+    background-color: #5eabea;
+    color: #FFFFFF;
+}
+
 
 #texto_gris a{
 	color:#909090;
@@ -283,3 +318,58 @@ padding: 2px 6px
 	
 	}
 	
+	
+#meterSearch{
+	float: right;
+	}
+	
+#tableListUser {
+    
+  	border: none;
+    color: #6a6d71;
+    float: right;
+    left: 235px;
+    position: absolute;
+    top: 288px;
+    width: 76%;
+    display: table;
+    background: #ececec;
+    overflow: hidden;
+   }
+  
+
+#tableListUser tr {
+    border-bottom: 2px solid #fff;
+
+}
+
+#tableListUser td{
+ 
+    padding: 10px;
+}
+
+#tableListUser th{
+ 
+    padding: 10px;
+    color: #0d5f99;
+}
+
+
+
+#modulos{
+	display: table;
+	clear: both;	
+	float: right;
+}
+
+#logo_int {
+	
+	border: 0 none;
+	width: 223px;
+    height: 77px;
+    background-image: url("../images/logo_sicoap.png");
+    
+}
+
+
+
