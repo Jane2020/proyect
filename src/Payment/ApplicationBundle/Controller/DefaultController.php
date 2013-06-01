@@ -117,15 +117,22 @@ class DefaultController extends Controller
     	{
     		foreach ($parameters as $item)
     		{
-    			$parameter = $request->request->get($item->getKey());
-    			$name= $item->getName();
-    			$validation = $this->validationParameters($parameter, $item->getRexType());
-    			$item->setValue(trim($parameter));
-    			if ($validation == false)
+    			$parameter = $request->request->get($item->getKey()); 
+    			if($item->getTypeField() == 'select')
     			{
-    				$validationArray[] = 'Por favor ingrese correctamente el '.$name;
+    				$item->setValue($parameter);
     			}
-    		}    		 
+    			$name= $item->getName();
+    			if ($item->getRexType() <>'')
+    			{
+    				$validation = $this->validationParameters($parameter, $item->getRexType());
+	    			$item->setValue(trim($parameter));
+	    			if ($validation == false)
+	    			{
+	    				$validationArray[] = 'Por favor ingrese correctamente el '.$name;
+	    			}
+    			}
+    		} 
     		if (!$validationArray)
     		{
     			foreach ($parameters as $item)
@@ -173,6 +180,11 @@ class DefaultController extends Controller
     		if ($item->getTypeField() == 'date')
     		{
     			$dateArray[] = $item->getKey();
+    		}
+    		
+    		if ($item->getTypeField() == 'select')
+    		{
+    			$hoursArray[] = $item->getKey();    			
     		}
     		$ruler.= "'".$item->getKey()."':{ required:true, ";
     		$message.= "'".$item->getKey()."':{ require:'Por favor ingrese el/la ".$item->getName()."',";
@@ -234,9 +246,9 @@ class DefaultController extends Controller
     {
     	$rexType = "'".$rexType."'";
     	if (!$parameter or (!preg_match($rexType, $parameter)))
-    	{
-    		return false;
-    	}	
+	    {
+	    	return false;
+	    }    		
     	return true; 
     }
 }
