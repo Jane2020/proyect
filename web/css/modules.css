@@ -4,11 +4,20 @@
 body{
 	margin:0;
 	padding:0;
-	font-size:13px;
+	font-size:12px;
 	font-family: "ArmataRegular","Trebuchet MS",Arial,Helvetica,sans-serif;
 	color:#666666;
-	background-color:#FFFFFF;
+	background-color:##ebebed;
 	}
+input{
+	border: 1px solid #a5c4d4;
+	border-radius: 3px;
+	padding: 5px;
+	box-shadow: 0 0 5px #CDCDCD inset;
+
+}
+
+
 
 
 /* ----------------------------------------------Wrapper-------------------------------------*/
@@ -354,21 +363,139 @@ padding: 2px 6px
     color: #0d5f99;
 }
 
+.tableSearch{
+	position: absolute;
+    right: 4px;
+    top: 229px;
+}
 
+
+#contentRight {
+ 
+ 	/*background-image: url("../images/background.png");*/
+ 	background: -moz-linear-gradient(center top , #FAFAFA 0%, #D4D4D4 100%) repeat scroll 0 0 transparent;
+   	background-color:#f5f5f5;
+    border: 1px dashed #bbd4e6;
+    border-radius: 8px 8px 8px 8px;
+    box-shadow: 1px 3px 6px #BABABA;
+    color: #0D5F99;
+    float: right;
+    left: 222px;
+    padding: 20px;
+    position: absolute;
+    top: 170px;
+    width: 65%;
+    
+}
+#tableEditUser tr {
+	border-bottom: #c4c4c4;
+     
+}
+
+#tableEditUser .title{
+	width: 200px;
+	
+}
+
+	
 #modulos{
-	display: table;
-	clear: both;	
-	float: right;
+	
+    padding-top: 20px;
+    width: 150px;
+     margin: -84px 20px 0px 0px;
+    padding-top: 20px;
+    width: 700px;
+    float: right;
+	
 }
 
 #logo_int {
 	
-	border: 0 none;
+	
 	width: 223px;
     height: 77px;
     background-image: url("../images/logo_sicoap.png");
+    background-repeat: no-repeat;
+    
     
 }
+
+#logo_sup {
+	
+   background: -moz-linear-gradient(center top , #D4D4D4 0%, #FFFFFF 42%) repeat scroll 0 0 transparent;
+    box-shadow: 3px 3px 5px #3D4144;
+    margin-left: 22px;
+    width: 225px;
+
+    
+}
+
+#button_search{
+	background: -moz-linear-gradient(center top , #E4F1F6 0%, #CFE6EF 100%) repeat scroll 0 0 transparent;
+    border: 1px solid #CED5D7;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 0 0 3px #EEF5F7;
+    font-weight: bold;
+    padding: 5px 9px;
+    text-shadow: 1px 1px 0px white;
+}
+#loguot{
+	padding-top: 50px;
+	 text-align: center;
+	 color: #363636;
+	 font-weight: lighter;
+}
+
+#loguot a{
+	color: #0079b7;
+	font-weight: bold;
+}
+
+#menu_sup {
+   /* background: url("../images/menu_sup_img.png") repeat-x scroll 0 0 transparent;*/
+    border-radius: 0 0 4px 4px;
+    box-shadow: -1px 0 0 rgba(255, 255, 255, 0.8) inset;
+    clear: both;
+    padding: 5px;
+    position: absolute;
+    right: 45px;
+    text-shadow: 0 1px 0 #FFFFFF;
+    top: 167px;
+    font-size: 11px;
+    
+}
+
+#menu_sup a{
+ color: #335e75;
+ text-decoration: none;   
+}
+
+#menu_sup a:hover{
+ color: #a6a6a6;
+ text-decoration: none;   
+}
+
+#menu_sup td{
+   
+     -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #D1D1D1;
+    border-image: none;
+    border-style: solid;
+    border-width: 0 1px 0 0;
+    box-shadow: -1px 0 0 rgba(255, 255, 255, 0.8) inset, 1px 0 0 rgba(255, 255, 255, 0.8) inset;
+    padding: 0 13px 3px;
+}
+
+
+.texto_vino a{	
+	color: #ffffff;
+	float: right;
+	padding: 0px 5px 0px 5px;
+}
+
 
 
 

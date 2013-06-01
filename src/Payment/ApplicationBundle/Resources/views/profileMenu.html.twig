@@ -1,23 +1,12 @@
 <div id="modulos">    
     {% if is_granted('ROLE_USER') %}
-        <table width="300" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-                <td>      	 
-                    <div class="texto_vino"><a href="{{ path('_editProfile') }}">Mi Perfil </a></div>
-                <td width="17" valign="bottom"><img src="{{ asset('bundles/paymentapplication/images/ic3.jpg') }}" class="perfil"/>
-                    </a>
-                </td>
-            </tr>
-        </table> 
+             	 
+                    <div class="texto_vino"><a href="{{ path('_editProfile') }}">Mi perfil</a></div>
+                
 
-        <table width="300" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-                <td>
-                    <div class="texto_vino"><a href="{{ path('_logout') }}">Cerrar Sesi&oacute;n </a></div>
-                <td width="17" valign="bottom"><img src="{{ asset('paymentapplication/images/ic4.jpg') }}" class="cerrar"/></td>
-
-            </tr>
-        </table>
+       
+                    <div class="texto_vino"><a href="{{ path('_logout') }}">Cerrar Sesi&oacute;n</a></div>
+               
     {% endif %}
 
     </div>
