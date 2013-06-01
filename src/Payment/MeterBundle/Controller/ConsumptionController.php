@@ -156,6 +156,7 @@ class ConsumptionController extends Controller
 					else 
 					{
 						$value = $meterAnt;
+						
 					}
 					if($value >= 0)
 					{					
