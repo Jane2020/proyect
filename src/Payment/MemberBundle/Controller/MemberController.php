@@ -85,7 +85,7 @@ class MemberController extends Controller
 	 */
 	public function editMemberAction(Request $request) 
 	{
-		$title = "Edición";
+		$title = "Editar";
 		$memberId = $request->request->get('cid', 0);
 		if (is_array($memberId)) 
 		{
@@ -100,7 +100,7 @@ class MemberController extends Controller
 		else 
 		{
 			$member = new Member();
-			$title = "Creación";
+			$title = "Crear";
 		}
 		
 		$memberForm = $this->createForm(new MemberEditType(), $member);

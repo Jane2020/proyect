@@ -29,7 +29,7 @@
 {% endblock %}
 
 {% block content %}
-<div id="title_image">Cuentas - Medidores </div>
+<div id="title_image">{{ title }} Cuenta - Medidor </div>
 <form action="{{ path('_editMeter') }}" method="post" {{ form_enctype(form) }} id="meterEdit" name="meterEdit">
 	<div id="contentLeft">
 		{% for flashMessage in app.session.flashbag.get('message') %}

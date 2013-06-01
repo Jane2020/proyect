@@ -24,7 +24,7 @@
 {% endblock %}
 
 {% block content %}
-{{ title }} Consumo
+<div id="title_image">{{ title }} Consumo</div>
 <form action="{{ path('_editConsumption') }}" method="post" {{ form_enctype(form) }} id="consumptionEdit" name="consumptionEdit">
 <div id="contentLeft">
  {% for flashMessage in app.session.flashbag.get('message') %}

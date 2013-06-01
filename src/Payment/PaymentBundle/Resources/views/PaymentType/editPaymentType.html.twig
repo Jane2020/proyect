@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-<div id="title_image"> Tipos de Multas y Sanciones </div>
+<div id="title_image">{{ title }} Tipo de Multa y Sanción</div>
 <form action="{{ path('_editPaymentType') }}" method="post" {{ form_enctype(form) }} id="paymentTypeEdit" name="paymentTypeEdit">
 <div id="contentLeft">
  {% for flashMessage in app.session.flashbag.get('message') %}

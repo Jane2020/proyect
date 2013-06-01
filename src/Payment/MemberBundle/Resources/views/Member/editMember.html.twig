@@ -99,7 +99,7 @@ loadEvents();
 {% endblock %}
 
 {% block content %}
-<div id="title_image">Miembros</div>
+<div id="title_image">{{ title }} Miembro</div>
 <form action="{{ path('_editMember') }}" method="post" {{ form_enctype(form) }} id="memberEdit" name="memberEdit">
 	<div id="contentLeft">
 		{% for flashMessage in app.session.flashbag.get('message') %}

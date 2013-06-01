@@ -10,7 +10,7 @@ loadEvents();
 {% endblock %}
 
 {% block content %}
-<div id="title_image">Usuarios del Sistema</div>
+<div id="title_image">{{ title }} Usuario del Sistema</div>
 {% if title == 'Editar' %}
 {% form_theme form 'PaymentSecurityBundle:Administration:form.edit.html.twig' %}
 {% else %}

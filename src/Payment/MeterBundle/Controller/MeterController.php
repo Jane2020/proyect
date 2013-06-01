@@ -120,7 +120,7 @@ class MeterController extends Controller
      */
     public function editMeterAction(Request $request)
     {
-    	$title = "Edición";
+    	$title = "Editar";
     	$accountId = $request->request->get('cid', 0);
     	if (is_array($accountId))
     	{
@@ -136,7 +136,7 @@ class MeterController extends Controller
     	else
     	{
     		$account = new Account();
-    		$title = "Creación";
+    		$title = "Crear";
     	}
 		$sewerageArray = $this->getSewerageAll();
     	$accountForm = $this->createForm(new MeterEditType($em, $sewerageArray), $account);
