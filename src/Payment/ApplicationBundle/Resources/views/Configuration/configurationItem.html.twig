@@ -13,6 +13,7 @@ jQuery.noConflict();
 {% endblock %}	
 
 {% block content %}
+<div id="title_image">Configuraciones</div>
 <br>
 {% for message in validationArray %}
 <div class="flash-message">
@@ -24,9 +25,9 @@ jQuery.noConflict();
 <form action="" method="post" id='configurationForm' name="configurationForm">
 <table id="tableListUser" >
 <tr>
-	<td align="center" colspan="2">
+	<th align="center" colspan="2">
 		<b>PARAMETROS DE CONFIGURACIÓN</b>
-	</td>	
+	</th>	
 </tr>
 <tr>
 	<td align="center" colspan="2">
@@ -99,8 +100,8 @@ jQuery.noConflict();
 		&nbsp;
 	</td>	
 </tr>
-<tr>
-	<td height="50px;" align="right" valign="bottom">
+<tr><td></td>
+	<td>
  		<input type="submit" value="Guardar" name="btsend" id="button_enter"/>
  		<input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('configurationItem') }}'"/>
 	</td>

@@ -99,7 +99,7 @@ loadEvents();
 {% endblock %}
 
 {% block content %}
-{{ title }} de Miembro
+<div id="title_image">Miembros</div>
 <form action="{{ path('_editMember') }}" method="post" {{ form_enctype(form) }} id="memberEdit" name="memberEdit">
 	<div id="contentLeft">
 		{% for flashMessage in app.session.flashbag.get('message') %}
@@ -165,9 +165,10 @@ loadEvents();
 		</tr>
 		{{ form_errors(form) }}				
 		<tr>
-			<td id="button_int" height="50px;" align="right" valign="bottom">
+		<td></td>
+			<td >
  				<input type="button" value="Guardar" name="btsend" id="button_enter" onClick="javascript:submitForm();"/>
- 				<input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listMember') }}'"/>
+ 				<input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listMember') }}';"/>
 			</td>
 		</tr>
 	</table>

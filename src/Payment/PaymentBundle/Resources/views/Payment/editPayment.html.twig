@@ -36,7 +36,7 @@
 {% endblock %}
 
 {% block content %}
-{{ title }} Pago
+<div id="title_image">Multas y Sanciones</div>
 <form action="" method="post" {{ form_enctype(form) }} id="paymentEdit" name="paymentEdit">
 <div id="contentLeft">
  {% for flashMessage in app.session.flashbag.get('message') %}
@@ -77,7 +77,8 @@
 			<td>{{ form_widget(form.isRecidivism) }}  </td>
 		</tr>		
 		<tr>
-			<td height="50px;" align="right" valign="bottom">
+		<td></td>
+			<td >
  				<input type="submit" value="Guardar" name="btsend" id="button_enter"/>
  				<input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listPayment') }}'"/>
 			</td>

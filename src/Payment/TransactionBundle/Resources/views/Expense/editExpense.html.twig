@@ -10,7 +10,7 @@ loadEvents();
 {% endblock %}
 
 {% block content %}
-{{ title }} Gastos
+<div id="title_image">Gastos</div>
 <form action="{{ path('_editExpense') }}" method="post" {{ form_enctype(form) }} id="expenseEdit" name="expenseEdit">
 <div id="contentLeft">
  {% for flashMessage in app.session.flashbag.get('message') %}
@@ -73,8 +73,8 @@ loadEvents();
 <td>{{ form_widget(form.expenseDescription, { 'attr': {'class': 'required', 'cols': 30}}) }}  </td>
 </tr>
 <tr>
-
-<td height="50px;" align="right" valign="bottom">
+<td></td>
+<td>
  <input type="submit" value="Guardar" name="btsend" id="button_enter"/>
  <input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listExpense') }}'"/>
 </td>

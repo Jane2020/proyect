@@ -10,6 +10,7 @@ loadEvents();
 {% endblock %}
 
 {% block content %}
+<div id="title_image">Usuarios del Sistema</div>
 {% if title == 'Editar' %}
 {% form_theme form 'PaymentSecurityBundle:Administration:form.edit.html.twig' %}
 {% else %}
@@ -57,10 +58,10 @@ loadEvents();
 <td>{{ form_widget(form.enabled) }}  {{ form_rest(form) }}</td>
 </tr>
 <tr>
-
-<td align="right" valign="bottom">
- <input type="submit" value="Guardar" name="btsend" id="button_enter"/></td>
- <td><input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listUser') }}'"/></td>
+<td></td>
+<td >
+ <input type="submit" value="Guardar" name="btsend" id="button_enter"/>
+<input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listUser') }}'"/></td>
 
 </td>
 </tr>

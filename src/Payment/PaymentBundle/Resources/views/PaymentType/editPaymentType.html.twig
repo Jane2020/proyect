@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-{{ title }} Tipo de Pago
+<div id="title_image"> Tipos de Multas y Sanciones </div>
 <form action="{{ path('_editPaymentType') }}" method="post" {{ form_enctype(form) }} id="paymentTypeEdit" name="paymentTypeEdit">
 <div id="contentLeft">
  {% for flashMessage in app.session.flashbag.get('message') %}
@@ -54,8 +54,8 @@
 <td>{{ form_widget(form.isActive) }}  </td>
 </tr>
 <tr>
-
-<td height="50px;" align="right" valign="bottom">
+<td></td>
+<td>
  <input type="submit" value="Guardar" name="btsend" id="button_enter"/>
  <input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listPaymentType') }}'"/>
 </td>

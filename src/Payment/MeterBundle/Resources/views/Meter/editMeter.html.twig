@@ -29,7 +29,7 @@
 {% endblock %}
 
 {% block content %}
-{{ title }} de Miembro
+<div id="title_image">Cuentas - Medidores </div>
 <form action="{{ path('_editMeter') }}" method="post" {{ form_enctype(form) }} id="meterEdit" name="meterEdit">
 	<div id="contentLeft">
 		{% for flashMessage in app.session.flashbag.get('message') %}
@@ -73,9 +73,10 @@
 	
 		{{ form_errors(form) }}				
 		<tr>
-			<td height="50px;" align="right" valign="bottom">
+		<td></td>
+			<td >
  				<input type="submit" value="Guardar" name="btsend" id="button_enter"/>
- 				<input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listMeter') }}'"/>
+ 				<input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listMeter') }}';"/>
 			</td>
 		</tr>
 	</table>
