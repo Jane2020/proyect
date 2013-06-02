@@ -26,9 +26,10 @@
 	}
 
 	 $(function() 
-			 {
-				$( "#paymentEdit_paymentDate" ).datepicker({dateFormat: "yy-mm-dd",  changeMonth: true,
-					changeYear: true});
+			 { var currentDate = new Date();
+				$( "#paymentEdit_paymentDate" ).datepicker({
+					dateFormat: "yy-mm-dd",  changeMonth: true,
+					changeYear: true}).datepicker('setDate', currentDate);
 			 })
 
 </script>
