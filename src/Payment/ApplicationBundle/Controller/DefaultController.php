@@ -83,8 +83,7 @@ class DefaultController extends Controller
 	public function generalMenuAction(Request $request)
 	{
 		$parentMenu = array();
-		$user = $this->get('security.context');
-		
+		$user = $this->get('security.context');		
 		if ($user->isGranted('ROLE_USER'))
 		{
 			$rol = $this->get('security.context')->getToken()->getUser()->getRoles();
