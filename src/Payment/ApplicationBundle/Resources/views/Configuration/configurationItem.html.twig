@@ -56,9 +56,8 @@ jQuery.noConflict();
 		 	jQuery.noConflict();
 		 	 $(function()
 		 			{
-		 			$( "#{{ item.key}}").datepicker({dateFormat: "yy-mm-dd", changeMonth: true,
-		 			changeYear: true});
-		 			}); 		 					 	 		
+		 			$( "#{{ item.key}}").datepicker({dateFormat: "yy-mm-dd", changeMonth: true, changeYear: true});
+		 			});
 			</script>
 		 	<input type="text" name="{{ item.key }}" value="{{ item.value }}" id="{{ item.key }}" readonly="readonly" id="{{ item.key }}">
 		 	<div id="error"></div>

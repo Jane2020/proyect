@@ -159,7 +159,7 @@ class ConsumptionController extends Controller
 						
 					}
 					if($value >= 0)
-					{					
+					{
 						if ($consumptionForm->isValid())
 						{	
 							$consumption->setConsumptionValue($value);
@@ -175,7 +175,7 @@ class ConsumptionController extends Controller
 							$this->get('session')->getFlashBag()->add('message', 'El Item ha sido almacenado &eacute;xitosamente.');
 			
 							return $this->redirect($this->generateUrl('_listConsumption'));
-						}
+						}						
 					}
 					$this->get('session')->getFlashBag()->add('message', 'La lectura ingresada, es menor a la lectura anterior del medidor que es: '.$meterAnt.'. Por favor corrija su ingreso.');
 				} else {
