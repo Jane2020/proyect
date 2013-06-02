@@ -42,7 +42,9 @@ class CollectionController extends Controller
 				$accountId = $account->getId();	
 			}
 		}
-		return array('form' => $form->createView(), 'band' => $band, 'account' => $account, 'items' => $items, 'contItems' => $contItems, 'accountId' => $accountId);
+		$month = array('02' => 'Enero', '03' => 'Febrero', '04' => 'Marzo', '05' => 'Abril', '06' => 'Mayo', '07' => 'Junio', '08' => 'Julio', '09' => 'Agosto', '10' => 'Septiembre', '11' => 'Octubre', '12' => 'Noviembre', '01' => 'Diciembre');
+		$date = $month[date('m')].' '.date('Y');
+		return array('form' => $form->createView(), 'band' => $band, 'account' => $account, 'items' => $items, 'contItems' => $contItems, 'accountId' => $accountId, 'dateFac' => $date);
 	}
 	
 	/**
@@ -55,6 +57,8 @@ class CollectionController extends Controller
 		$user = $this->get('security.context')->getToken()->getUser();
 		$items = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Transaction')->getItemsToCollection($user,$account,true);
 		$contItems = count($items);
-		return array('account' => $account, 'items' => $items, 'contItems' => $contItems);
+		$month = array('02' => 'Enero', '03' => 'Febrero', '04' => 'Marzo', '05' => 'Abril', '06' => 'Mayo', '07' => 'Junio', '08' => 'Julio', '09' => 'Agosto', '10' => 'Septiembre', '11' => 'Octubre', '12' => 'Noviembre', '01' => 'Diciembre');
+		$date = $month[date('m')].' '.date('Y');
+		return array('account' => $account, 'items' => $items, 'contItems' => $contItems, 'dateFac' => $date);
 	}
 }
