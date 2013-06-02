@@ -1,333 +1,315 @@
 <?php
 
 namespace Payment\DataAccessBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Member
  */
-class Member
-{
-    /**
-     * @var integer
-     */
-    public $id;
+class Member {
+	/**
+	 * @var integer
+	 */
+	private $id;
 
-     /**
-     * @var string
-     * 
-     * @Assert\NotBlank(
-     *   message = "Por favor ingrese la cédula de identidad."
-     * )
-     * 
-     * @Assert\Regex(
-     *     pattern = "/^(?:\+)?\d{10}$/",
-     *     message = "Por favor ingrese 10 dígitos."
-     * )
-     */
-    private $documentNumber;
+	/**
+	 * @var string
+	 * 
+	 * @Assert\NotBlank(
+	 *   message = "Por favor ingrese la cédula de identidad."
+	 * )
+	 * 
+	 * @Assert\Regex(
+	 *     pattern = "/^(?:\+)?\d{10}$/",
+	 *     message = "Por favor ingrese 10 dígitos."
+	 * )
+	 */
+	private $documentNumber;
 
-     /**
-     * @var string
-     * 
-     * @Assert\NotBlank(
-     *   message = "Por favor ingrese el nombre."
-     * )
-     * 
-     * @Assert\Regex(
-     *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.]+$/",
-     *     message = "Valor del nombre es incorrecto."
-     * )
-     */
-    private $name;
+	/**
+	 * @var string
+	 * 
+	 * @Assert\NotBlank(
+	 *   message = "Por favor ingrese el nombre."
+	 * )
+	 * 
+	 * @Assert\Regex(
+	 *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.]+$/",
+	 *     message = "Valor del nombre es incorrecto."
+	 * )
+	 */
+	private $name;
 
-    /**
-     * @var string
-     * 
-     * @Assert\NotBlank(
-     *   message = "Por favor ingrese el apellido."
-     * )
-     * 
-     * @Assert\Regex(
-     *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.]+$/",
-     *     message = "Valor del apellido es incorrecto."
-     * )
-     */
-    private $lastname;
+	/**
+	 * @var string
+	 * 
+	 * @Assert\NotBlank(
+	 *   message = "Por favor ingrese el apellido."
+	 * )
+	 * 
+	 * @Assert\Regex(
+	 *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.]+$/",
+	 *     message = "Valor del apellido es incorrecto."
+	 * )
+	 */
+	private $lastname;
 
-    /**
-     * @var \DateTime
-     * 
-     */
-    private $birthDate;
+	/**
+	 * @var \DateTime
+	 * 
+	 */
+	private $birthDate;
 
-    /**
-     * @var string
-     * 
-     * @Assert\Regex(
-     *     pattern = "/^[a-zA-Z0-9ÁÉÍÓÚÑáéíóúñ\s\,\.\:\;\-\#]+$/",
-     *     message = "Valor de la dirección es incorrecta." 
-     * )    
-     */
-    private $address;
+	/**
+	 * @var string
+	 * 
+	 * @Assert\Regex(
+	 *     pattern = "/^[a-zA-Z0-9ÁÉÍÓÚÑáéíóúñ\s\,\.\:\;\-\#]+$/",
+	 *     message = "Valor de la dirección es incorrecta." 
+	 * )    
+	 */
+	private $address;
 
-    /**
-     * @var string
-     * 
-     * @Assert\Regex(
-     *     pattern = "/^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]\.?){0,63}[a-z0-9!#$%&'*+\/=?^_`{|}~-]@(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\])$/i",
-     *     message = "Valor del e-mail es incorrecto." 
-     * )  
-     */
-    private $email;
+	/**
+	 * @var string
+	 * 
+	 * @Assert\Regex(
+	 *     pattern = "/^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]\.?){0,63}[a-z0-9!#$%&'*+\/=?^_`{|}~-]@(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\])$/i",
+	 *     message = "Valor del e-mail es incorrecto." 
+	 * )  
+	 */
+	private $email;
 
-    /**
-     * @var string
-     * 
-     *
-     * @Assert\Regex(
-     *     pattern = "/^(?:\+)?\d{9}$/",
-     *     message = "Por favor ingrese 9 dígitos." 
-     * )  
-     */
-    private $phone;
+	/**
+	 * @var string
+	 * 
+	 *
+	 * @Assert\Regex(
+	 *     pattern = "/^(?:\+)?\d{9}$/",
+	 *     message = "Por favor ingrese 9 dígitos." 
+	 * )  
+	 */
+	private $phone;
 
-    /**
-     * @var string
-     * 
-     * @Assert\NotBlank(
-     *   message = "Por favor ingrese el número de celular."
-     * ) 
-     * 
-     * @Assert\Regex(
-     *     pattern = "/^(?:\+)?\d{10}$/",
-     *     message = "Por favor ingrese 10 dígitos." 
-     * ) 
-     */
-    private $celularPhone;
+	/**
+	 * @var string
+	 * 
+	 * @Assert\NotBlank(
+	 *   message = "Por favor ingrese el número de celular."
+	 * ) 
+	 * 
+	 * @Assert\Regex(
+	 *     pattern = "/^(?:\+)?\d{10}$/",
+	 *     message = "Por favor ingrese 10 dígitos." 
+	 * ) 
+	 */
+	private $celularPhone;
 
+	/**
+	 * Get id
+	 *
+	 * @return integer 
+	 */
+	public function getId() {
+		return $this->id;
+	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * Set documentNumber
+	 *
+	 * @param string $documentNumber
+	 * @return Member
+	 */
+	public function setDocumentNumber($documentNumber) {
+		$this->documentNumber = $documentNumber;
 
-    /**
-     * Set documentNumber
-     *
-     * @param string $documentNumber
-     * @return Member
-     */
-    public function setDocumentNumber($documentNumber)
-    {
-        $this->documentNumber = $documentNumber;
-    
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get documentNumber
-     *
-     * @return string 
-     */
-    public function getDocumentNumber()
-    {
-        return $this->documentNumber;
-    }
+	/**
+	 * Get documentNumber
+	 *
+	 * @return string 
+	 */
+	public function getDocumentNumber() {
+		return $this->documentNumber;
+	}
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Member
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
+	/**
+	 * Set name
+	 *
+	 * @param string $name
+	 * @return Member
+	 */
+	public function setName($name) {
+		$this->name = $name;
 
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+		return $this;
+	}
 
-    /**
-     * Set lastname
-     *
-     * @param string $lastname
-     * @return Member
-     */
-    public function setLastname($lastname)
-    {
-        $this->lastname = $lastname;
-    
-        return $this;
-    }
+	/**
+	 * Get name
+	 *
+	 * @return string 
+	 */
+	public function getName() {
+		return $this->name;
+	}
 
-    /**
-     * Get lastname
-     *
-     * @return string 
-     */
-    public function getLastname()
-    {
-        return $this->lastname;
-    }
+	/**
+	 * Set lastname
+	 *
+	 * @param string $lastname
+	 * @return Member
+	 */
+	public function setLastname($lastname) {
+		$this->lastname = $lastname;
 
-    /**
-     * Set birthDate
-     *
-     * @param \DateTime $birthDate
-     * @return Member
-     */
-    public function setBirthDate($birthDate)
-    {
-        $this->birthDate = $birthDate;
-    
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get birthDate
-     *
-     * @return \DateTime 
-     */
-    public function getBirthDate()
-    {
-        return $this->birthDate;
-    }
+	/**
+	 * Get lastname
+	 *
+	 * @return string 
+	 */
+	public function getLastname() {
+		return $this->lastname;
+	}
 
-    /**
-     * Set address
-     *
-     * @param string $address
-     * @return Member
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-    
-        return $this;
-    }
+	/**
+	 * Set birthDate
+	 *
+	 * @param \DateTime $birthDate
+	 * @return Member
+	 */
+	public function setBirthDate($birthDate) {
+		$this->birthDate = $birthDate;
 
-    /**
-     * Get address
-     *
-     * @return string 
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
+		return $this;
+	}
 
-    /**
-     * Set email
-     *
-     * @param string $email
-     * @return Member
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    
-        return $this;
-    }
+	/**
+	 * Get birthDate
+	 *
+	 * @return \DateTime 
+	 */
+	public function getBirthDate() {
+		return $this->birthDate;
+	}
 
-    /**
-     * Get email
-     *
-     * @return string 
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
+	/**
+	 * Set address
+	 *
+	 * @param string $address
+	 * @return Member
+	 */
+	public function setAddress($address) {
+		$this->address = $address;
 
-    /**
-     * Set phone
-     *
-     * @param string $phone
-     * @return Member
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-    
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get phone
-     *
-     * @return string 
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
+	/**
+	 * Get address
+	 *
+	 * @return string 
+	 */
+	public function getAddress() {
+		return $this->address;
+	}
 
-    /**
-     * Set celularPhone
-     *
-     * @param string $celularPhone
-     * @return Member
-     */
-    public function setCelularPhone($celularPhone)
-    {
-        $this->celularPhone = $celularPhone;
-    
-        return $this;
-    }
+	/**
+	 * Set email
+	 *
+	 * @param string $email
+	 * @return Member
+	 */
+	public function setEmail($email) {
+		$this->email = $email;
 
-    /**
-     * Get celularPhone
-     *
-     * @return string 
-     */
-    public function getCelularPhone()
-    {
-        return $this->celularPhone;
-    }
-    /**
-     * @var boolean
-     */
-    private $isActive;
+		return $this;
+	}
 
+	/**
+	 * Get email
+	 *
+	 * @return string 
+	 */
+	public function getEmail() {
+		return $this->email;
+	}
 
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return Member
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-    
-        return $this;
-    }
+	/**
+	 * Set phone
+	 *
+	 * @param string $phone
+	 * @return Member
+	 */
+	public function setPhone($phone) {
+		$this->phone = $phone;
 
-    /**
-     * Get isActive
-     *
-     * @return boolean 
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
-    }
+		return $this;
+	}
+
+	/**
+	 * Get phone
+	 *
+	 * @return string 
+	 */
+	public function getPhone() {
+		return $this->phone;
+	}
+
+	/**
+	 * Set celularPhone
+	 *
+	 * @param string $celularPhone
+	 * @return Member
+	 */
+	public function setCelularPhone($celularPhone) {
+		$this->celularPhone = $celularPhone;
+
+		return $this;
+	}
+
+	/**
+	 * Get celularPhone
+	 *
+	 * @return string 
+	 */
+	public function getCelularPhone() {
+		return $this->celularPhone;
+	}
+	/**
+	 * @var boolean
+	 */
+	private $isActive;
+
+	/**
+	 * Set isActive
+	 *
+	 * @param boolean $isActive
+	 * @return Member
+	 */
+	public function setIsActive($isActive) {
+		$this->isActive = $isActive;
+
+		return $this;
+	}
+
+	/**
+	 * Get isActive
+	 *
+	 * @return boolean 
+	 */
+	public function getIsActive() {
+		return $this->isActive;
+	}
+
+	public function setId($id) {
+		$this->id = $id;
+	}
+
 }
