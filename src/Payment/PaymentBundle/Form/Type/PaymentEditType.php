@@ -14,7 +14,6 @@ class PaymentEditType extends AbstractType
 	public function __construct($entityManager,$accountId, $id)
 	{
 		$this->em = $entityManager;
-		$this->accounts = $this->getAccounts($accountId);
 		$this->id = $id;
 	}
 	
@@ -48,29 +47,6 @@ class PaymentEditType extends AbstractType
 		$builder->add('paymentDate','text',  array('label'=>'Fecha de Infracción:', 'required'=>false, 'max_length'=>10));
 		$builder->add('isRecidivism','checkbox',  array('label'=>'Reincidencia en Infracción: ', 'required'=>false,));
 	}
-
-	private function getAccounts($accountId)
-	{
-		$queryBuilder = $this->em->createQueryBuilder('c');
-		$queryBuilder->add('select', 'c');
-		$queryBuilder->add('from', 'PaymentDataAccessBundle:Consumption c');
-		$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p', 'WITH', "p.key = 'date_start_consumption'");
-		$queryBuilder->innerJoin('PaymentDataAccessBundle:Parameter', 'p1', 'WITH', "p1.key = 'date_end_consumption'");
-		$queryBuilder->Where('c.isDeleted = 0');
-		$queryBuilder->andWhere('c.systemDate >= p.value');
-		$queryBuilder->andWhere("c.systemDate <= DATE_ADD(p1.value,1,'day')");
-		$query = $queryBuilder->getQuery();
-		$results = $query->getResult();
-		$data = array();
-		foreach ($results as $result)
-		{
-			if($result->getAccount()->getId() != $accountId)
-			{
-				$data[] = $result->getAccount()->getId();
-			}
-		}
-		return $data;
-	}
 	
 	private function getQueryBuilder()
 	{
@@ -78,11 +54,7 @@ class PaymentEditType extends AbstractType
 		$qb->add('select', 'a');
 		$qb->add('from', 'PaymentDataAccessBundle:Account a');
 		$qb->where('a.isActive = 1');
-		if (count($this->accounts) > 0)
-		{
-			$qb->andWhere($qb->expr()->notIn('a.id', $this->accounts));
-		}
-	
+			
 		$qb->orderBy('a.accountNumber', 'ASC');
 		return $qb;
 	}
