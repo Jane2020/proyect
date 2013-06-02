@@ -82,9 +82,15 @@ class DefaultController extends Controller
 	 */
 	public function generalMenuAction(Request $request)
 	{
-		$rol = $this->get('security.context')->getToken()->getUser()->getRoles();
-		$rol = trim($rol[0]);
-		$parentMenu = $this->getDoctrine()->getRepository('PaymentDataAccessBundle:NavigationItem')->getMenus(0, $rol);
+		$parentMenu = array();
+		$user = $this->get('security.context');
+		
+		if ($user->isGranted('ROLE_USER'))
+		{
+			$rol = $this->get('security.context')->getToken()->getUser()->getRoles();
+			$rol = trim($rol[0]);
+			$parentMenu = $this->getDoctrine()->getRepository('PaymentDataAccessBundle:NavigationItem')->getMenus(0, $rol);
+		}
 		return array('parentMenu'=>$parentMenu);
 	}
 	

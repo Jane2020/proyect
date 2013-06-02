@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>An Error Occurred: {{ status_text }}</title>
-</head>
-<body>
-    <h1>Oops! An Error Occurred</h1>
-    <h2>The server returned a "{{ status_code }} {{ status_text }}".</h2>
-</body>
-</html>
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block title %}Página Inhabilitada - {{ parent() }} {% endblock %}
+{% block content %}
+<div id="title_image">Página Inhabilitada</div>
+Por favor vuelva a intentarlo mas tarde. Por favor consulte con el Adminsitrador del sistema.
+{% endblock content %}
