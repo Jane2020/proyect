@@ -36,7 +36,7 @@ class CollectionController extends Controller
 				$datas = $form->getData();
 				$account = $datas->getAccount();
 				$user = $this->get('security.context')->getToken()->getUser();
-				$items = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Transaction')->getItemsToCollection($user,$account);	
+				$items = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Transaction')->getItemsToCollection($user,$account);
 				$band = true;
 				$contItems = count($items);		
 				$accountId = $account->getId();	

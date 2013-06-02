@@ -58,19 +58,62 @@
                 </form>
   {% if (band) %}
 <table>
-<tr><td colspan="4"><b>Junta Administradora del Abastecimiento del Agua Potable<b></td></tr>
-<tr><td colspan="4" align="center"><font size="1">Provincia de Tungurahua</font></td></tr>
-<tr><td colspan="4">&nbsp;</td></tr>
-<tr><td> Número de Cuenta:</td><td>{{ account.accountNumber }}</td><td> Número de Conexión:</td><td>{{ account.meterNumber }}</td></tr>
-<tr><td>Nombre:</td><td colspan="3">{{ account.member.name }} {{ account.member.lastName }}</td></tr>     
-<tr><td> Dirección:</td><td colspan="3">{{ account.member.address }}</td></tr>   
-<tr><td> Teléfono:</td><td>{{ account.member.phone }}</td><td> Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
+<tr><td colspan="2"><b>Junta Administradora del Abastecimiento del Agua Potable<b></td></tr>
+<tr><td colspan="2" align="center"><font size="1">Provincia de Tungurahua</font></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td>Mes Facturado:</td><td></td></tr>
+<tr><td>Cuenta N°:</td><td>{{ account.accountNumber }}</td></tr>
+<tr><td>N° de Conexión:</td><td>{{ account.meterNumber }}</td></tr>
+<tr><td>Nombre:</td><td>{{ account.member.name }} {{ account.member.lastName }}</td></tr>
+<tr><td>Cédula:</td><td>{{ account.member.documentNumber }}</td></tr>        
+<tr><td>Dirección:</td><td>{{ account.member.address }}</td></tr>   
+<tr><td>Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
 </table>
 <br>
 {% if(contItems > 0) %}
 
 <table border="1">
-<tr><th>Fecha</th><th>Motivo</th><th>Valor</th></tr>
+	<tr>
+		<td colspan="2" align="center">
+			Lecturas
+		</td>
+		<td colspan="3" align="center">
+			Consumo en el Mes
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Actual
+		</td>
+		<td>
+			Anterior
+		</td>
+		<td>
+			Consumo en el Mes
+		</td>
+		<td>
+			Básico
+		</td>
+		<td>
+			Excedente
+		</td>
+	</tr>
+	<tr>
+		<td>
+		</td>
+		<td>			
+		</td>
+		<td>
+		</td>
+		<td>			
+		</td>
+		<td>
+		</td>		
+	</tr>
+</table>
+<br>
+<table border="1">
+<tr><th>FECHA</th><th>DETALLE</th><th>CANTIDAD</th><th>VALOR UNITARIO</th><th>VALOR TOTAL</th></tr>
 {% set total = 0 %}
 {% for item in items %}
 	<tr>
@@ -79,8 +122,10 @@
 	<td> {{ item.cost | number_format(2) }} {% set total = total + item.cost %}</td>
 	</tr>
 {% endfor %}
-<tr><td colspan="2" align="right"><b>Total</b></td><td><b>{{ total | number_format(2) }}</b></td></tr>
+<tr><td colspan="4" align="right"><b>Total</b></td><td><b>{{ total | number_format(2) }}</b></td></tr>
 </table>
+<br>
+Válido como comprobante de Pago si tiene el sello de cancelación.
 {% else %}
 No existe consumos para esta cuenta.
 {% endif %}

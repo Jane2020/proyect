@@ -74,7 +74,7 @@ class TransactionRepository extends EntityRepository
 		{
 			foreach ($consuptions as $item)
 			{
-				// Registro basico
+				// Registro básico
 				$month = array('01' => 'Enero', '02' => 'Febrero', '03' => 'Marzo', '04' => 'Abril', '05' => 'Mayo', '06' => 'Junio', '07' => 'Julio', '08' => 'Agosto', '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre');
 				$date = $month[date('m')].' '.date('Y');
 				$items[] = array('date' => $date, 'cost' => $parameter[$this->basisCost]['value'],'motive' => $parameter[$this->basisCost]['label'],'type' => 1,'amount' => 1, 'unitCost' => $parameter[$this->basisCost]['value'],'entity' => $item);
@@ -184,5 +184,5 @@ class TransactionRepository extends EntityRepository
 			$em->close();
 			throw $e->getMessage();
 		}
-	}
+	}	
 }
