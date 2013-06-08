@@ -36,7 +36,8 @@ class CollectionController extends Controller
 				$datas = $form->getData();
 				$account = $datas->getAccount();
 				$user = $this->get('security.context')->getToken()->getUser();
-				$items = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Transaction')->getItemsToCollection($user,$account);
+				$result = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Transaction')->getItemsToCollection($user,$account);
+				$items = $result['items'];
 				$band = true;
 				$contItems = count($items);		
 				$accountId = $account->getId();	
@@ -55,10 +56,13 @@ class CollectionController extends Controller
 	{
 		$account = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Account')->find($accountId);
 		$user = $this->get('security.context')->getToken()->getUser();
-		$items = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Transaction')->getItemsToCollection($user,$account,true);
+		$result = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Transaction')->getItemsToCollection($user,$account,true);
+		$items = $result['items'];
 		$contItems = count($items);
 		$month = array('02' => 'Enero', '03' => 'Febrero', '04' => 'Marzo', '05' => 'Abril', '06' => 'Mayo', '07' => 'Junio', '08' => 'Julio', '09' => 'Agosto', '10' => 'Septiembre', '11' => 'Octubre', '12' => 'Noviembre', '01' => 'Diciembre');
 		$date = $month[date('m')].' '.date('Y');
-		return array('account' => $account, 'items' => $items, 'contItems' => $contItems, 'dateFac' => $date);
+		$factNumber = str_pad($result['transaction'], 8, "0", STR_PAD_LEFT);		
+		return array('account' => $account, 'items' => $items, 'contItems' => $contItems, 'dateFac' => $date,'factNumber' => $factNumber);
 	}
+	
 }

@@ -17,6 +17,8 @@ class TransactionRepository extends EntityRepository
 	private $excess = 'excess_cost'; 
 	private $maxConsumption = 'maximum_consumption_milliliters'; 
 	private $sewarage = 'basic_cost_sewerage'; 
+	private $fineWater = 'fine_cost_water';
+	private $fineWaterSewarage = 'fine_cost_water_sewerage'; 
 	
 	public function getItemsToCollection($user,$account,$save = false)
 	{			
@@ -70,8 +72,11 @@ class TransactionRepository extends EntityRepository
 		$consuptions = $this->getItems($account, 'Consumption', true);
 		$total = 0;
 		///  registro de consumo
-		if(count($consuptions) > 0)
+		$consumptionsNumber = count($consuptions);
+		if($consumptionsNumber > 0)
 		{
+			$i = 1;
+			
 			foreach ($consuptions as $item)
 			{
 				// Registro básico
@@ -87,7 +92,8 @@ class TransactionRepository extends EntityRepository
 					$items[] = array('date' => $date, 'cost' => $cost,'motive' => $parameter[$this->excess]['label'].' ( '.$value.'m3 x '.$parameter[$this->excess]['value'].' c/m3)','type' => 3,'amount' => $value, 'unitCost' => $parameter[$this->excess]['value'],'entity' => $item);
 					$total = $total + $cost;
 				}
-				
+				$fine = $parameter[$this->fineWaterSewarage]['value'];
+				$fineMotive = $parameter[$this->fineWaterSewarage]['label'];
 				if ($account->getSewerage())
 				{
 					// Registro costo de alcantarillado
@@ -95,6 +101,15 @@ class TransactionRepository extends EntityRepository
 					$totalSewerage = $parameter[$this->sewarage]['value'] * $sewerageAccount;
 					$items[] = array('date' => $date, 'cost' => $totalSewerage,'motive' => $parameter[$this->sewarage]['label'].' ( '.$sewerageAccount.' x '.$parameter[$this->sewarage]['value'].' c/u)','type' => 2,'amount' => $sewerageAccount,'unitCost' => ($parameter[$this->sewarage]['value']),'entity' => $item);
 					$total = $total + ($parameter[$this->sewarage]['value'] * $sewerageAccount);
+					$fine = $parameter[$this->fineWater]['value'];
+					$fineMotive = $parameter[$this->fineWater]['label'];
+				}
+				
+				if($i < $consumptionsNumber)
+				{
+					$items[] = array('date' => $date, 'cost' => $fine,'motive' => $fineMotive,'type' => 6,'amount' => 1,'unitCost' => $fine,'entity' => $item);
+					$total = $total + ($fine);	
+					$i++;
 				}
 			}
 
@@ -122,9 +137,10 @@ class TransactionRepository extends EntityRepository
 
 		if ($save)
 		{
-			$this->saveItems($user,$payments,$consuptions,$items, $total);
+			$result['transaction'] = $this->saveItems($user,$payments,$consuptions,$items, $total);
 		}
-		return $items;			
+		$result['items'] = $items;
+		return $result;			
 	}
 	
 	private function saveItems($user,$payments,$consumptions,$items,$total)
@@ -151,7 +167,7 @@ class TransactionRepository extends EntityRepository
 				$income = new Income();
 				$income->setIncomeType($type);
 				$income->setTransaction($transaction);
-				if ($item['type'] > 3)
+				if (($item['type']== 4)||($item['type']== 5))
 				{
 					$income->setPayment($item['entity']);
 				} else {
@@ -184,5 +200,6 @@ class TransactionRepository extends EntityRepository
 			$em->close();
 			throw $e->getMessage();
 		}
+		return $transaction->getId();
 	}	
 }
