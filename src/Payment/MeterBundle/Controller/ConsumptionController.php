@@ -164,7 +164,10 @@ class ConsumptionController extends Controller
 						{	
 							$consumption->setConsumptionValue($value);
 							$consumption->setReadDate(new \DateTime($consumption->getReadDate()));
-							$consumption->setSystemDate(new \DateTime());	
+							if($consumptionId == 0)
+							{
+								$consumption->setSystemDate(new \DateTime());
+							}							
 												
 							$user = $this->get('security.context')->getToken()->getUser();	
 							$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
