@@ -43,11 +43,11 @@ jQuery.noConflict();
 	</td>
 </tr>
 {% for item in parameters %}
-    <tr>
-	    <td class="content_table" >
+	<tr>
+        <td class="content_table" >
 			{{ item.name }}
-        </td>   
-         <td class="content_table" >
+        </td>
+        <td class="content_table" >
          {% if (item.typeField == 'input') %}
          		<input type="text" name="{{ item.key }}" value="{{ item.value }}" id="{{ item.key }}" required="required">         		
          {% endif %}			

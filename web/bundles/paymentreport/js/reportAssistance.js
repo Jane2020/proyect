@@ -38,27 +38,16 @@ function setValidations(){
 
 $(function() {
 	$( "#memberAssistanceSearch_startDate" ).datepicker({ 
-		dateFormat: "yy-mm-dd",
+		dateFormat: "yy-mm-dd",changeMonth: true, changeYear: true,
 		onSelect: function( selectedDate ) {
             $( "#memberAssistanceSearch_endDate" ).datepicker( "option", "minDate", selectedDate );
     }
      });	
 	
 	$( "#memberAssistanceSearch_endDate" ).datepicker({ 
-		dateFormat: "yy-mm-dd",
+		dateFormat: "yy-mm-dd",changeMonth: true,changeYear: true,
 	     onSelect: function( selectedDate ) {
 	             $( "#memberAssistanceSearch_startDate" ).datepicker( "option", "maxDate", selectedDate );
 	     }
 		 });	
 });
-
-$(function() 
-		 {
-			$( "#memberAssistanceSearch_startDate" ).datepicker({dateFormat: "yy-mm-dd",  changeMonth: true,
-				changeYear: true});
-		 });
-$(function() 
-		 {
-			$( "#memberAssistanceSearch_endDate" ).datepicker({dateFormat: "yy-mm-dd",  changeMonth: true,
-				changeYear: true});
-		 });

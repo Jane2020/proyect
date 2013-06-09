@@ -69,70 +69,46 @@ class MemberRepository extends EntityRepository
 	
 	public function findMemberByParameterToList($controller, $orderOption, $to, $from, $offset, $limit, $count = true)
 	{
-		if (!$to)
+		if ($to && $from)
 		{
-			$to = $offset;			
+			$to = $to -1;
+			$lim = 	" limit ".$to.",".$from;		
 		}
-		if (!$from)
+		else
 		{
-			$from = $limit;
+			$lim = '';
 		}
-/*		else
-		{
-			$from++;
-		}*/
+
 			
 		$conec = $controller->get("database_connection");
 		if ($orderOption == 1)
 		{
 			$memberId = " distinct(member.id), ";
-			$order = " member.is_active = 1  order by member.lastname ";			
+			$order = " member.is_active = 1  order by member.name ";		
+			$where = "";
 		}
 		else
 		{
-			$memberId = "";
-			$order = " account.is_active = 1 order by account.account_number ";			
+			$memberId = " account.account_number,";
+			$order = " account.is_active = 1 order by account.account_number ";
+			$where = "inner join account on member.id = account.member_id";
 		}
 		
 		if ($count == true)	
 		{
-			$sql = "select count(*) as total from (select". $memberId." member.document_number, member.name, member.lastname, member.address, account.account_number ";
+			$sql = "select count(*) as total from (select". $memberId." member.document_number, member.name, member.lastname, member.address";
+			$val = "";
 		}
 		else
 		{
-			$sql = "select * from (select". $memberId." member.document_number, member.name, member.lastname, member.address, account.account_number ";		
+			$sql = "select * from (select". $memberId." member.document_number, member.name, member.lastname, member.address ";
+			$val = " limit ". $offset.",".$limit;
 		}
-		$sql.= "from account
-				inner join member on member.id = account.member_id
-				where".$order." limit ".$to.",".$from.") as val limit ". $offset.",".$limit;
 		
+		$sql.= " from member ".$where;
+		$sql.= " where".$order.$lim.") as val".$val; 
 		$result =  $conec->fetchAll($sql);
-		return $result;
 		
-		/*$queryBuilder = $this->getEntityManager()->createQueryBuilder('a');
-		if ($count)
-		{
-			$queryBuilder->add('select', $queryBuilder->expr()->count('a.id'));
-		}
-		else
-		{
-			$queryBuilder->select(array('a', 'm'));
-			if ($orderOption == 1)
-			{
-				$queryBuilder->orderBy('m.lastname');
-			}
-			if ($orderOption == 2)
-			{
-				$queryBuilder->orderBy('a.accountNumber');
-			}
-			$queryBuilder->setFirstResult($offset);
-			$queryBuilder->setMaxResults($limit);
-		}
-		$queryBuilder->add('from', 'PaymentDataAccessBundle:Account a');
-		$queryBuilder->leftJoin('a.member', 'm');
-		$queryBuilder->where($queryBuilder->expr()->eq('m.isActive', '1'));
-		$query = $queryBuilder->getQuery();
-		$result = $query->getResult();
-		return $result;*/
+		return $result;
 	}	
 }

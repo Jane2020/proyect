@@ -6,6 +6,18 @@ reportMember:
     pattern:  /generacion-de-listado-de-asistencia
     defaults: { _controller: PaymentReportBundle:Report:reportMember}    
 
-reportExpensesAndCollections:
+reportExpenses:
     pattern:  /reporte-de-gastos
-    defaults: { _controller: PaymentReportBundle:Report:reportExpenses}                    
+    defaults: { _controller: PaymentReportBundle:Report:reportExpenses}   
+
+reportCollection:
+    pattern:  /reporte-de-cobros
+    defaults: { _controller: PaymentReportBundle:Report:reportCollection}
+
+reportDetailCollection:
+    pattern:  /reporte-de-detalle-de-cobro/{id}
+    defaults: { _controller: PaymentReportBundle:Report:reportDetailCollection}    
+    
+reportList:
+    pattern:  /listado-de-reportes
+    defaults: { _controller: PaymentReportBundle:Report:reportList}                                        

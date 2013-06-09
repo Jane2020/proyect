@@ -222,14 +222,14 @@ class DefaultController extends Controller
     		$date .=  " $(function() {
     
     				$('#".$dateArray[$i]."' ).datepicker({
-    		dateFormat: 'yy-mm-dd',
+    		dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true,
     		onSelect: function( selectedDate ) {
     			$( '#".$dateArray[$i+1]."' ).datepicker( 'option', 'minDate', selectedDate );
     		}
     		});
     
     		$( '#".$dateArray[$i+1]."' ).datepicker({
-    		dateFormat: 'yy-mm-dd',
+    		dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true,
     		onSelect: function( selectedDate ) {
     			$( '#".$dateArray[$i]."' ).datepicker( 'option', 'maxDate', selectedDate );
     		}

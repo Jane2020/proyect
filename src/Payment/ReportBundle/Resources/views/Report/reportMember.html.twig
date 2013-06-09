@@ -80,6 +80,8 @@ function elimineColor()
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}	
 {% block content %}
+<div id="title_image">Reporte de Miembros</div>
+{% set action = path('reportMember')  %}
 <table width="350" border="0" align="right" style="padding:5px;" id="print">
 	<tr>
 	    <td style="text-align: center">
@@ -127,31 +129,36 @@ function elimineColor()
 <form id='form_check' name='form_check' action='' method='post'>
 	<table id="tableListUser" >
     	<tr>
+    		{% if orderOption != 1%}   
+            <th class="title">
+              	Número de Cuenta
+            </th>
+             {% endif %}
         	<th class="title">
                 Cédula de Identidad
             </th>   
             <th class="title_check">
         	    Nombre del Miembro
-            </th>
+            </th>            
             <th class="title">
-              	Número de Cuenta
-            </th>
-             <th class="title">
               	Dirección
             </th>            
     	</tr>
 		{% set i = 1 %}
 		{% for item in members %}
         <tr>
+          	{% if orderOption != 1 %}   
+             <td class="content_table" >
+             
+				{{ item.account_number}}
+            </td>   
+            {% endif %}
          	<td class="content_table" >
 				{{ item.document_number }}
             </td>
  			<td class="content_table" >
-				{{ item.lastname}} {{ item.name}}
-            </td>   
-             <td class="content_table" >
-				{{ item.account_number}}
-            </td>   
+				{{ item.name}} {{ item.lastname}}
+            </td>
             <td class="content_table" >
 				{{ item.address}}
             </td>                                          
@@ -164,13 +171,13 @@ function elimineColor()
             	No existen items a mostrar
             </td>
 		{% endif %}
-        </tr>
+		</tr>
 </table>
-{% if total>10 %}
+{% if ((total > limit) or (limit == 9999)) %}
 <table id="paginator">
 	<tr>
     	<td align="center">
-			{% include 'PaymentApplicationBundle:Paginator:paginator.html.twig' %}
+			{% include 'PaymentApplicationBundle:Paginator:paginatorItems.html.twig' %}
         </td>	
 	</tr>
 </table>

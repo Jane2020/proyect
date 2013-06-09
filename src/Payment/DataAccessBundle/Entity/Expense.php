@@ -158,7 +158,7 @@ class Expense {
 	public function getId() {
 		return $this->id;
 	}
-
+	
 	/**
 	 * Set systemDate
 	 *

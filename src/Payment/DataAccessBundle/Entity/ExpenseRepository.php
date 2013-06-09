@@ -71,8 +71,20 @@ class ExpenseRepository extends EntityRepository
 			$queryBuilder->setMaxResults($limit);
 		}
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:Expense e');
-		$queryBuilder->innerJoin('e.transaction', 't');
 		$queryBuilder->Where('e.isDeleted = 0');
+		if($startDate)
+		{
+			$queryBuilder->andWhere($queryBuilder->expr()->gte('e.expenseDate', '?1'));
+			$queryBuilder->setParameter(1, $startDate);
+		}
+		if($endDate)
+		{
+			$queryBuilder->andWhere($queryBuilder->expr()->lte('e.expenseDate', '?2'));
+			$queryBuilder->setParameter(2, $endDate);
+		}
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;
 		
 	}	
 }	

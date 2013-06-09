@@ -1,8 +1,25 @@
 {% extends 'PaymentApplicationBundle::layout.html.twig' %}
 {% block javascripts %}
  {{ parent() }}
-<script type="text/javascript" src="{{ asset('bundles/paymentreport/js/reportMember.js') }}"></script>
 <script type="text/javascript">
+jQuery.noConflict();
+$(function() {
+	$( "#expensivesSearch_startDate" ).datepicker({ 
+		dateFormat: "yy-mm-dd",changeMonth: true, changeYear: true,
+		onSelect: function( selectedDate ) {
+            $( "#expensivesSearch_endDate" ).datepicker( "option", "minDate", selectedDate );
+    }
+     });	
+	
+	$( "#expensivesSearch_endDate" ).datepicker({ 
+		dateFormat: "yy-mm-dd",changeMonth: true,changeYear: true,
+	     onSelect: function( selectedDate ) {
+	             $( "#expensivesSearch_startDate" ).datepicker( "option", "maxDate", selectedDate );
+	     }
+		 });	
+});
+
+
 function printService()
 {
 	document.getElementById("print").style.visibility='hidden' ;
@@ -37,10 +54,18 @@ function printService()
 		document.getElementById("paginator").style.position = 'relative';
 	}				
 }
+
+function clearForm()
+{
+	document.getElementById("expensivesSearch_startDate").value = '';
+	document.getElementById("expensivesSearch_endDate").value = '';	 	
+}
 </script>
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}	
 {% block content %}
+<div id="title_image">Reporte de Gastos</div>
+{% set action = path('reportMember')  %}
 <table width="350" border="0" align="right" style="padding:5px;" id="print">
 	<tr>
 	    <td style="text-align: center">
@@ -49,68 +74,49 @@ function printService()
     </tr>    
 </table>
 <br><br><br>
- {% for flashMessage in app.session.flashbag.get('message') %}
+{% for flashMessage in app.session.flashbag.get('message') %}
     <div class="flash-message">
-    {% autoescape false %}
-        {{ flashMessage|trans({}, 'FOSUserBundle') }}
-    {% endautoescape %}
+{% autoescape false %}
+    {{ flashMessage|trans({}, 'FOSUserBundle') }}
+{% endautoescape %}
     </div><br>
 {% endfor %}
-
 {{ app.session.flashbag.set('message', '')}}
-
-<form action="{{ path('_listExpense') }}" method="post" {{ form_enctype(form) }} id='expenseSearch' name="expenseSearch">
+<form action="{{ path('reportExpenses') }}" method="post" {{ form_enctype(form) }} id='expensivesSearch' name="expensivesSearch">
 	{{ form_errors(form) }}
-	<table class="tableSearch">
-    	<tr>
-        	<td class="titleSearch" valign="top">
-        		{{ form_label(form.expenseRuc) }}
-        	</td>
-            <td valign="top" >
-            	{{ form_widget(form.expenseRuc) }}
-            </td>
-            <td class="titleSearch" valign="top">
-            	{{ form_label(form.expenseName) }}
-            </td>
-            <td valign="top" >
-            	{{ form_widget(form.expenseName) }}
-            </td>
-            <td class="titleSearch" valign="top">
-            	{{ form_label(form.expenseDate) }}
-            </td>
-            <td valign="top" >
-            	{{ form_widget(form.expenseDate,{ 'attr': {'readOnly': 'true'} }) }}
-            </td>
-            <td valign="top">
+    <table class="tableSearch">
+    	<tr>    
+    	    <td class="titleSearch">{{ form_label(form.startDate) }}</td>
+    	    <td>{{ form_widget(form.startDate, { 'attr': {'readonly': 'readonly' } }) }}</td>
+    	    <td class="titleSearch">{{ form_label(form.endDate) }}</td>
+    	    <td>{{ form_widget(form.endDate, { 'attr': {'readonly': 'readonly' } }) }}</td>    	    
+    	    <td valign="top">
 				{{ form_widget(form.offset, { 'attr': {'value': '0'} }) }}  
 				{{ form_widget(form.limit, { 'attr': {'value': limit } }) }}  
-				<div id ="searchButton">
-                	<input type="submit" name="btsend" id="button_search" value='Buscar' />
-                	&nbsp;
-                	<input type="button" name="button" id="button_search" value='Resetear' onclick="document.expenseSearch.expenseSearch_expenseRuc.value = ''; document.expenseSearch.expenseSearch_expenseName.value = '';document.expenseSearch.expenseSearch_expenseDate.value = '';document.expenseSearch.submit();"/>
-                </div>	
-			</td>
+				<div id = "searchButton">
+                	<input type="submit" name="btsend" id="button_search" value='Buscar' id="btsend"/>
+                	<input type="button" value="Resetear" onClick="javascript:clearForm();">
+                </div>
+            </td>            
 		</tr> 
-        <tr>
-        	<td></td><td>{{ form_errors(form.expenseRuc) }}</td>
-            <td></td><td>{{ form_errors(form.expenseName) }}</td>
-            <td></td><td>{{ form_errors(form.expenseDate) }}</td><td><br></td>
- 		</tr>
 	</table>
-	{{ form_rest(form) }}
+{{ form_rest(form) }}
 </form>
+<div id = "print">
 <form id='form_check' name='form_check' action='' method='post'>
 	<table id="tableListUser" >
+    	<table id="tableListUser" >
     	<tr>
+	    	<th class="title">
+                Fecha
+            </th>
         	<th class="title_check">
             	# Ruc
             </th>
             <th class="title">
 	            Nombre
             </th>
-    	    <th class="title">
-                Fecha
-            </th>
+    	    
             <th class="title">
                 Descripción
             </th>   
@@ -120,14 +126,15 @@ function printService()
         </tr>
 		{% for item in expense %}
         <tr>
+             <td class="content_table">
+				{{ item.expenseDate | date("Y-m-d") }}
+             </td>
+    
              <td class="content_table" >
 				{{ item.expenseRuc }}
              </td>
              <td class="content_table" >
 				{{ item.expenseName }}
-             </td>
-             <td class="content_table" >
-				{{ item.expenseDate | date("Y-m-d") }}
              </td>
              <td class="content_table" >
 				{{ item.expenseDescription }}
@@ -144,15 +151,16 @@ function printService()
             </td>
         </tr>    
 		{% endif %}
-	</table>
-{% if total>10 %}
-    <table id="paginator" width="100%">
-	    <tr>
-    	    <td align="center">
-				{% include 'PaymentApplicationBundle:Paginator:paginator.html.twig' %}
-            </td>	
-        </tr>
-     </table>
-{% endif %}
+</table>
+{% if ((total > limit) or (limit == 9999)) %}
+<table id="paginator">
+	<tr>
+    	<td align="center">
+			{% include 'PaymentApplicationBundle:Paginator:paginatorItems.html.twig' %}
+        </td>	
+	</tr>
+</table>
+</div>
+{% endif %}	
 </form>
 {% endblock %}

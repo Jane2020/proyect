@@ -3,6 +3,7 @@
  {{ parent() }}
 <script type="text/javascript" src="{{ asset('bundles/paymentreport/js/reportAssistance.js') }}"></script>
 <script type="text/javascript">
+
 function printService()
 {
 	document.getElementById("print").style.visibility='hidden' ;
@@ -81,6 +82,8 @@ function clearForm()
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}	
 {% block content %}
+<div id="title_image">Reporte de Infracciones</div>
+{% set action = path('reportMemberAssistance')  %}
 <table width="350" border="0" align="right" style="padding:5px;" id="print">
 	<tr>
 	    <td style="text-align: center">
@@ -104,7 +107,9 @@ function clearForm()
     	    <td class="titleSearch">{{ form_label(form.name) }}</td>
     	    <td>{{ form_widget(form.name, { 'attr': {'class': 'textoBuscar' } }) }}</td>
     	    <td class="titleSearch">{{ form_label(form.paymentType) }}</td>
-    	    <td>{{ form_widget(form.paymentType) }}</td>
+    	    <td colspan="2">{{ form_widget(form.paymentType) }}</td>
+    	</tr>
+    	<tr>    
     	    <td class="titleSearch">{{ form_label(form.startDate) }}</td>
     	    <td>{{ form_widget(form.startDate, { 'attr': {'readonly': 'readonly' } }) }}</td>
     	    <td class="titleSearch">{{ form_label(form.endDate) }}</td>
@@ -171,11 +176,11 @@ function clearForm()
 		{% endif %}
         </tr>
 </table>
-{% if total>10 %}
+ {% if ((total > limit) or (limit == 9999)) %}
 <table id="paginator">
 	<tr>
     	<td align="center">
-			{% include 'PaymentApplicationBundle:Paginator:paginator.html.twig' %}
+			{% include 'PaymentApplicationBundle:Paginator:paginatorItems.html.twig' %}
         </td>	
 	</tr>
 </table>
