@@ -1,0 +1,31 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block javascripts %}
+ {{ parent() }}
+<script type="text/javascript">
+  var link = '_deleteConsumption';
+  var action_print = "{{ path('_printListToRead') }}";
+  function submit_check()
+  {	
+	  var alto = 550; 
+	  var ancho = 800;
+	  var posicion_x; 
+	  var posicion_y; 
+	  posicion_x=(screen.width/2)-(ancho/2); 
+	  posicion_y=(screen.height/2)-(alto/2); 
+	  window.open(action_print, 'popup', "width="+ancho+",height="+alto+",menubar=0,toolbar=0,directories=0,scrollbars=1,resizable=1,left="+posicion_x+",top="+posicion_y+"");
+  }
+  </script>
+ <script type="text/javascript" src="{{ asset('bundles/paymentapplication/js/deleteConfirmation.js') }}"></script>
+{% endblock %}	
+{% block title %}Listado de Consumo - {{ parent() }} {% endblock %}
+{% block content %}
+<div id="title_image">Listado de Consumo</div>
+
+<div style="text-align: center;">
+Imagen
+<br>
+<a href="javascript:submit_check();">
+               Generar Listado
+</div>
+
+{% endblock %}

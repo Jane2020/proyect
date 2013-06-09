@@ -13,4 +13,4 @@ _itemsCollection:
     defaults: { _controller: PaymentTransactionBundle:Collection:itemsCollection }  
 _printCollection:
     pattern:  /gestion-de-cobros/imprimir/{accountId}
-    defaults: { _controller: PaymentTransactionBundle:Collection:printCollection } 
+    defaults: { _controller: PaymentTransactionBundle:Collection:printCollection }  

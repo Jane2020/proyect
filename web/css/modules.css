@@ -510,7 +510,7 @@ div.error {
 	width: 100%;
 }
 
-#printTable span{
+#printTable span, #printTableList span {
 	font-size: 24px;
 	font-weight: bold;
 }
@@ -531,4 +531,10 @@ div.error {
 .itemTotal{
 	font-size: 20px;
 	font-weight: bold;
+}
+#printTableList {
+	width: 95%;
+	font-size: 14px;
+	border-collapse: collapse; border-spacing: 0;
+	margin: auto;
 }

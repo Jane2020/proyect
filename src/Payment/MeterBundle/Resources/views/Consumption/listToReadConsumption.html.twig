@@ -1,0 +1,64 @@
+<script type="text/javascript">
+function printService()
+{
+	document.getElementById("print").style.visibility='hidden' ;
+	window.print();
+	document.getElementById("print").style.visibility='visible';
+}
+
+</script>
+<link rel="stylesheet" type="text/css" href="{{ asset('css/modules.css') }}" />
+<table  align="right" id="print">
+  <tr>
+    <td><a href='javascript:printService();' >Imprimir</a></td>
+     <td><a href='javascript:window.close();' >Cerrar</a></td>
+  </tr>
+</table>
+<br><br>
+<table id="printTableList">
+<tr><td colspan="2" align="center"><span>Junta Administradora del Abastecimiento del Agua Potable</span></td></tr>
+<tr><td colspan="2" align="center"><font size="3">Provincia de Tungurahua</font></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td class="itemTable1">Mes de Lectura:</td><td>{{ date }}</td></tr>  
+</table>
+<br>
+<br>
+<table id="printTableList" border="1">
+<tr><th>CUENTA</th><th>NOMBRE</th><th>CONSUMO</th><th>CUENTA</th><th>NOMBRE</th><th>CONSUMO</th></tr>
+{% set i = 1 %}
+{% set j = 1 %}
+
+{% for item in accounts %}
+{% if (i > limit) %}
+	{% set i = 1 %}
+	</table>
+	<br><br>
+	<table id="printTableList">
+	<tr><td colspan="2" align="center"><span>Junta Administradora del Abastecimiento del Agua Potable</span></td></tr>
+	<tr><td colspan="2" align="center"><font size="3">Provincia de Tungurahua</font></td></tr>
+	<tr><td colspan="2">&nbsp;</td></tr>
+	<tr><td class="itemTable1">Mes de Lectura:</td><td>{{ date }}</td></tr>  
+	</table>
+	<br>
+	<br>
+	<table id="printTableList" border="1">
+	<tr><th>CUENTA</th><th>NOMBRE</th><th>CONSUMO</th><th>CUENTA</th><th>NOMBRE</th><th>CONSUMO</th></tr>
+{% endif %}
+	{% if (j == 1) %}	
+		<tr>
+		<td class="itemDetail">{{ item.accountNumber }}</td>
+		<td>{{ item.member.name }} {{ item.member.lastname }}</td>
+		<td class="itemDetail"> &nbsp;</td>
+		{% else %}
+		{% if (item != 'null') %}
+			<td class="itemDetail">{{ item.accountNumber }}</td>
+			<td>{{ item.member.name }} {{ item.member.lastname }}</td>
+			<td class="itemDetail"> &nbsp;</td></tr>
+				
+		{% endif %}
+		{% set j = 0 %}
+	{% endif %}
+	{% set i = i + 1 %}
+	{% set j = j + 1 %}
+{% endfor %}
+</table>

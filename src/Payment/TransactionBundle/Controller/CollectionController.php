@@ -64,5 +64,4 @@ class CollectionController extends Controller
 		$factNumber = str_pad($result['transaction'], 8, "0", STR_PAD_LEFT);		
 		return array('account' => $account, 'items' => $items, 'contItems' => $contItems, 'dateFac' => $date,'factNumber' => $factNumber);
 	}
-	
 }

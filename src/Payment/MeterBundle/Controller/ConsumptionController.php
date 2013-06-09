@@ -15,6 +15,7 @@ use Payment\MeterBundle\Form\Type\ConsumptionEditType;
 class ConsumptionController extends Controller
 {
 	const LIMIT_PAGINATOR = 20;
+	const LIMIT_LIST = 38;
 	/**
 	 * @Template()
 	 * @Secure(roles="ROLE_OPERATOR")
@@ -189,4 +190,66 @@ class ConsumptionController extends Controller
 		return array('form' => $consumptionForm->createView(), 'title' => $title, 'cid'=>$consumptionId,'rol' => $rol);
 	}
 	
+	/**
+	 * @Template()
+	 * @Secure(roles="ROLE_OPERATOR")
+	 */
+	public function readConsumptionAction(Request $request)
+	{
+		return array();
+	}
+	
+	/**
+	 * @Template()
+	 * @Secure(roles="ROLE_OPERATOR")
+	 */
+	public function listToReadConsumptionAction(Request $request)
+	{
+		$limit = self::LIMIT_LIST;
+		$accounts = $this->getDoctrine()->getEntityManager()->getRepository('PaymentDataAccessBundle:Account')->findByIsActive(1,array('accountNumber' => 'ASC'));
+		$month = array('01' => 'Enero', '02' => 'Febrero', '03' => 'Marzo', '04' => 'Abril', '05' => 'Mayo', '06' => 'Junio', '07' => 'Julio', '08' => 'Agosto', '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre');
+		$date = $month[date('m')].' '.date('Y');
+		$accounts = $this->getListToRead($accounts, $limit);
+		return array('accounts' => $accounts, 'date' => $date,'limit' => $limit * 2);
+	}
+	/**
+	 * @Secure(roles="ROLE_OPERATOR")
+	 */
+
+	private function getListToRead($account, $limit)
+	{
+		$i = 1;
+		$k = 1;
+		$init = 0;
+		$sum = 1;
+		$result = array();
+		foreach ($account as $item)
+		{
+			$result[$i] = $item;	
+			$i = $i + 2;
+			if($k == $limit)
+			{	
+				$sum++;				
+				if ($sum == 3)
+				{
+					$init = $init + 2;
+					$init = $limit * $init;
+					$sum = 1;
+				}
+				$i = $init + $sum;
+				$k = 0;
+												
+			}
+			$k++;			
+		}
+		$cont = count($account);
+		for ($j = $k; $j <= $limit; $j++)
+		{
+			$result[$i] = 'null';
+			$i = $i + 2;
+		}
+		ksort($result);
+
+		return $result;
+	}
 }
