@@ -202,4 +202,48 @@ class TransactionRepository extends EntityRepository
 		}
 		return $transaction->getId();
 	}	
+	
+	public function findCollectionByFilters($controller, $startDate,$endDate, $offset, $limit, $count = true)
+	{
+		$conec = $controller->get("database_connection");
+		
+		if ($count == true)
+		{
+			$sql = "SELECT count(distinct(`transaction`.id)) as total";
+			$lim = "";			
+		}
+		else
+		{
+			$sql = "SELECT distinct(`transaction`.id), account.account_number as accountNumber, member.name, member.lastname, `transaction`.total_value as totalValue, `transaction`.system_date as systemDate";
+			$lim =  " limit ". $offset.",".$limit;			
+		}
+		
+		$sql.= " FROM `transaction` inner join income 
+				on income.transaction_id = `transaction`.id
+				inner join consumption
+				on consumption.id = income.consumption_id
+				inner join account
+				on account.id = consumption.account_id
+				inner join member
+				on member.id = account.member_id";
+		if($startDate)
+		{
+			$sql.= " where ('".$startDate."' <= `transaction`.system_date)";			
+		}
+		if($endDate)
+		{
+			if ($startDate)
+			{
+				$val = ' and ';
+			}			
+			else
+			{
+				$val = ' where ';
+			}
+			$sql.= $val." ('".$endDate."' >= `transaction`.system_date)";
+		}
+		$sql.= " order by (`transaction`.id)".$lim;
+		$result =  $conec->fetchAll($sql);		
+		return $result;
+	}
 }
