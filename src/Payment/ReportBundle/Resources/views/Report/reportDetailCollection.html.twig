@@ -1,0 +1,95 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block javascripts %}
+ {{ parent() }}
+<script type="text/javascript">
+function printService()
+{
+	document.getElementById("print").style.visibility='hidden' ;
+	document.getElementById("print").style.position = 'absolute';
+	document.getElementById("botonera").style.visibility='hidden' ;
+	document.getElementById("botonera").style.position = 'absolute';
+	document.getElementById("topline").style.visibility='hidden';
+	document.getElementById("topline").style.position = 'absolute';
+	document.getElementById("copyright").style.visibility='hidden';
+	document.getElementById("copyright").style.position = 'absolute';
+	document.getElementById("searchButton").style.visibility='hidden';
+	document.getElementById("searchButton").style.position = 'absolute';
+	window.print();
+	document.getElementById("print").style.visibility='visible';
+	document.getElementById("print").style.position = 'relative';
+	document.getElementById("botonera").style.visibility='visible';
+	document.getElementById("botonera").style.position = 'relative';
+	document.getElementById("topline").style.visibility='visible' ;
+	document.getElementById("topline").style.position = 'relative';
+	document.getElementById("copyright").style.visibility='visible' ;
+	document.getElementById("copyright").style.position = 'relative';
+	document.getElementById("searchButton").style.visibility='visible';
+	document.getElementById("searchButton").style.position = 'relative';
+			
+}
+</script>
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}	
+{% block content %}
+<div id="title_image">Reporte de Cobros</div>
+
+<table width="350" border="0" align="right" style="padding:5px;" id="print">
+	<tr>
+	    <td style="text-align: center">
+	     	<a href='javascript:printService();' >Imprimir</a>	    	
+        </td>
+    </tr>    
+</table>
+<br><br><br>
+<table id="printTable">
+<tr><td colspan="2" align="center"><span>Junta Administradora del Abastecimiento del Agua Potable</span></td></tr>
+<tr><td colspan="2" align="center"><font size="3">Provincia de Tungurahua</font></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td class="itemTable">Mes Facturado:</td><td>{{ date }}</td></tr>
+<tr><td class="itemTable">Cuenta N°:</td><td>{{ account.accountNumber }}</td></tr>
+<tr><td class="itemTable">N° de Conexión:</td><td>{{ account.meterNumber }}</td></tr>
+<tr><td class="itemTable">Nombre:</td><td>{{ account.member.name }} {{ account.member.lastName }}</td></tr>
+<tr><td class="itemTable">Cédula:</td><td>{{ account.member.documentNumber }}</td></tr>        
+<tr><td class="itemTable">Dirección:</td><td>{{ account.member.address }}</td></tr>   
+<tr><td class="itemTable">Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
+</table>	
+<br>
+<br>
+<table id="tableListUser">
+<tr><th colspan="3">LECTURAS</th><th colspan="4">DETALLE DE COMPROBANTE</th></tr>
+<tr><th>ANTERIOR</th><th>ACTUAL</th><th>CONSUMO</th><th>DETALLE</th><th>CANTIDAD</th><th>VALOR UNITARIO</th><th>VALOR TOTAL</th></tr>
+{% set total = 0 %}
+{% for item in collections %}
+	<tr>
+	{% set ant = '' %}
+	{% set act = '' %}
+	{% set con = '' %}
+	{% set motive = '' %}
+	{% set amount = '' %}
+	{% set unitCost = '' %}
+	{% set cost = '' %}
+	{% if(item.consumption) %}
+		{% if(item.incomeType.id == 1) %}
+			{% set ant = item.consumption.meterPreviousreading.meterCurrentReading %}
+			{% set act = item.consumption.meterCurrentReading %}
+			{% set con = act - ant %}
+		{% endif %}
+	{% endif %}
+	{%  set motive = item.incomeType.name  %}
+	{%  set amount = item.amount  %}
+	{%  set unitCost = item.basicServiceUnitCost  %}
+	{%  set cost = amount * unitCost  %}
+	<td class="itemDetail">{{ ant }}</td>
+	<td class="itemDetail">{{ act }}</td>
+	<td class="itemDetail">{{ con }}</td>
+	<td> {{ motive }}</td>
+	<td class="itemDetail"> {{ amount }} {% set total = total + cost %}</td>
+	<td class="itemDetail"> {{ unitCost | number_format(2) }}</td>
+	<td class="itemDetail"> {{ cost  | number_format(2) }}</td>
+	</tr>
+{% endfor %}
+<tr><td colspan="6" align="right"><b>Total</b></td><td class="itemDetail itemTotal"><hr>{{ total | number_format(2) }}</td></tr>
+</table>
+<br>
+Válido como comprobante de Pago si tiene el sello de cancelación.
+{% endblock %}

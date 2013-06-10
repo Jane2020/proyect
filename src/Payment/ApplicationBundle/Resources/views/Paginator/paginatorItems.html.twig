@@ -1,0 +1,48 @@
+<script type="text/javascript">
+function submit_form(form, page)
+{
+	var forms = document.getElementById(form);	
+	var offset = document.getElementById(form+'_offset');
+	offset.value = page;
+	forms.action = '{{ action }}';
+	forms.submit();	
+}
+
+function change_limit(form, select)
+{
+	var forms = document.getElementById(form);	
+	var offset = document.getElementById(form+'_offset');
+	offset.value = 0;
+	var limit = document.getElementById(form+'_limit');
+	limit.value = select.value;
+	forms.action = '{{ action }}';
+	forms.submit();	
+}
+</script>
+
+<div class="paginator"> 
+Mostrar
+        <select name="limit" onChange="change_limit('{{ paginator.form_name }}',this)">
+        {% for item in limit_paginator %}
+        <option value="{{ item }}" {% if limit == item %} selected {% endif %}>{% if item == 99999 %} Todos {% else %} {{ item }} {% endif %}</option>
+        {% endfor %}
+        </select>   
+         &nbsp;&nbsp;
+        {% if paginator.currentpage != 1 %}
+            <span> <a class="previous" style="color: #AFB9CB" href="javascript:submit_form('{{ paginator.form_name }}','{{ paginator.currentpage-1 }}')">Anterior</a></span>
+        {% endif %}
+        {% for i in 1..paginator.numpages%}           
+
+            {%  if( i in paginator.range) %}
+                {% if i==paginator.currentpage %}
+                    <span> {{i}}</span> 
+                {% else %}
+                <span> <a class="number_next" style="color: #AFB9CB" href="javascript:submit_form('{{ paginator.form_name }}','{{ i }}')"> {{i}}</a></span> 
+                {% endif %}
+            {% endif %}
+            
+        {% endfor %}
+        {% if ((paginator.currentpage * paginator.limit) < paginator.itemscount) %}
+       <span>  <a class="next" style="color: #AFB9CB" href="javascript:submit_form('{{ paginator.form_name }}','{{ paginator.currentpage+1 }}')">Siguiente</a></span> 
+        {% endif %}               
+</div>

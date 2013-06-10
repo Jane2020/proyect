@@ -203,8 +203,16 @@ class ReportController extends Controller
      */
     public function reportDetailCollectionAction(Request $request)
     {
-    	print_r('kdkd');
-    	exit();
+    	$transactionId = $request->get('id');
+    	$collections = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Income')->findByTransaction($transactionId);
+		$account = $collections[0]->getConsumption()->getAccount();
+		$transaction = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Transaction')->find($transactionId);
+		$date = $transaction->getSystemDate();
+		$year = $date->format('Y');
+		$date = $date->format('m');		
+		$month = array('02' => 'Enero', '03' => 'Febrero', '04' => 'Marzo', '05' => 'Abril', '06' => 'Mayo', '07' => 'Junio', '08' => 'Julio', '09' => 'Agosto', '10' => 'Septiembre', '11' => 'Octubre', '12' => 'Noviembre', '01' => 'Diciembre');
+		$date = $month[$date].' '.$year;
+    	return array ('collections' => $collections, 'date' => $date, 'account' => $account);
     }
     /**
      * @Template()

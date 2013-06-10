@@ -77,4 +77,4 @@ fos_user:
                 address:        %mailer_user%
                 sender_name:    SICAP
 parameters:
-    limit_paginator: [5,10,20,50,100,999]               
+    limit_paginator: [5,10,20,50,100,99999]               

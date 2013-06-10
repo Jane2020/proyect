@@ -1,9 +1,29 @@
 {% extends 'PaymentApplicationBundle::layout.html.twig' %}
 {% block javascripts %}
  {{ parent() }}
-<script type="text/javascript" src="{{ asset('bundles/paymentreport/js/reportAssistance.js') }}"></script>
 <script type="text/javascript">
+jQuery.noConflict();
+$(function() {
+	$( "#collectionReportSearch_startDate" ).datepicker({ 
+		dateFormat: "yy-mm-dd",changeMonth: true, changeYear: true,
+		onSelect: function( selectedDate ) {
+            $( "#collectionReportSearch_endDate" ).datepicker( "option", "minDate", selectedDate );
+    }
+     });	
+	
+	$( "#collectionReportSearch_endDate" ).datepicker({ 
+		dateFormat: "yy-mm-dd",changeMonth: true,changeYear: true,
+	     onSelect: function( selectedDate ) {
+	             $( "#collectionReportSearch_startDate" ).datepicker( "option", "maxDate", selectedDate );
+	     }
+		 });	
+});
 
+function clearForm()
+{
+	document.getElementById("collectionReportSearch_startDate").value = '';
+	document.getElementById("collectionReportSearch_endDate").value = '';
+}
 function printService()
 {
 	upPrint();
@@ -20,21 +40,21 @@ function printService()
 	document.getElementById("printTableList").style.visibility='visible';
 	document.getElementById("printTableList").style.position = 'relative';
 	document.getElementById("title_image").style.visibility='hidden';
-	document.getElementById("title_image").style.position = 'absolute';
-	document.getElementById("tableListUser").border = 1;	
+	document.getElementById("title_image").style.position ='absolute';
+	document.getElementById("tableListUser").border = 1;
 	if ({{ total }} > 10)
 	{
 		document.getElementById("paginator").style.visibility='hidden';
-		document.getElementById("paginator").style.position = 'absolute';
+		document.getElementById("paginator").style.position ='absolute';
 	}
 	window.print();
 	downPrint();
-	document.getElementById("tableListUser").border = 0;		
+	document.getElementById("tableListUser").border = 0;	
 	document.getElementById("print").style.visibility='visible';
 	document.getElementById("print").style.position = 'relative';
 	document.getElementById("botonera").style.visibility='visible';
 	document.getElementById("botonera").style.position = 'relative';
-	document.getElementById("topline").style.visibility='visible' ;
+	document.getElementById("topline").style.visibility='visible';
 	document.getElementById("topline").style.position = 'relative';
 	document.getElementById("copyright").style.visibility='visible' ;
 	document.getElementById("copyright").style.position = 'relative';
@@ -43,77 +63,57 @@ function printService()
 	document.getElementById("printTableList").style.visibility='hidden';
 	document.getElementById("printTableList").style.position = 'absolute';
 	document.getElementById("title_image").style.visibility='visible';
-	document.getElementById("title_image").style.position ='relative';	
+	document.getElementById("title_image").style.position ='relative';
 	if ({{ total }} > 10)
 	{
 		document.getElementById("paginator").style.visibility='visible';
-		document.getElementById("paginator").style.position = 'relative';
+		document.getElementById("paginator").style.position ='relative';
 	}				
 }
- 
 
 function upPrint()
 {
-	name = document.getElementById("memberAssistanceSearch_name").value;
-	if (!name)
-	{
-		 document.getElementById("memberAssistanceSearch_name").value = 'Ninguno';
-	}
-	startDate = document.getElementById("memberAssistanceSearch_startDate").value;
+	startDate = document.getElementById("collectionReportSearch_startDate").value;
 	if (!startDate)
 	{
-		document.getElementById("memberAssistanceSearch_startDate").value = 'Ninguna';
+		document.getElementById("collectionReportSearch_startDate").value = 'Ninguna';
 	}
-	endDate	= document.getElementById("memberAssistanceSearch_endDate").value;
+	endDate	= document.getElementById("collectionReportSearch_endDate").value;
 	if (!endDate)
 	{
-		document.getElementById("memberAssistanceSearch_endDate").value = 'Ninguna';
+		document.getElementById("collectionReportSearch_endDate").value = 'Ninguna';
 	}		
 }
 
 function downPrint()
 {
-	name = document.getElementById("memberAssistanceSearch_name").value;
-	if (name == 'Ninguno')
-	{
-		document.getElementById("memberAssistanceSearch_name").value = '';
-	}
-	startDate = document.getElementById("memberAssistanceSearch_startDate").value;
+	startDate = document.getElementById("collectionReportSearch_startDate").value;
 	if (startDate == 'Ninguna')
 	{
-		document.getElementById("memberAssistanceSearch_startDate").value = '';
+		document.getElementById("collectionReportSearch_startDate").value = '';
 	}
-	endDate	= document.getElementById("memberAssistanceSearch_endDate").value;
+	endDate	= document.getElementById("collectionReportSearch_endDate").value;
 	if (endDate == 'Ninguna')
 	{
-		document.getElementById("memberAssistanceSearch_endDate").value = '';
+		document.getElementById("collectionReportSearch_endDate").value = '';
 	}	
-}
-
-function clearForm()
-{
-	document.getElementById("memberAssistanceSearch_startDate").value = '';
-	document.getElementById("memberAssistanceSearch_endDate").value = '';
-	document.getElementById("memberAssistanceSearch_name").value = ''; 	
 }
 </script>
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}	
 {% block content %}
-<div id="printTableList" style="visibility: hidden;position: absolute;">
-<table id="printList" width="100%">
+<table id="printTableList" " width="100%" style="visibility: hidden;position: absolute;">
 	<tr><td colspan="2" align="center"><font size="5"><span>Junta Administradora del Abastecimiento del Agua Potable</font></span></td></tr>
 	<tr><td colspan="2" align="center"><font size="2">Provincia de Tungurahua</font></td></tr>
 	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2"><img src="{{ asset('images/img_inicio.png') }}"/><font style="font-size:22px; font-weight: bold;"> Reporte de Infracciones</font></td></tr>  
+	<tr><td colspan="2"><img src="{{ asset('images/img_inicio.png') }}"/><font style="font-size:22px; font-weight: bold;"> Reporte de Cobros</font></td></tr>  
 </table>
-</div>
-<div id="title_image">Reporte de Infracciones</div>
-{% set action = path('reportMemberAssistance')  %}
+<div id="title_image">Reporte de Cobros</div>
+{% set action = path('reportCollection')  %}
 <table width="350" border="0" align="right" style="padding:5px;" id="print">
 	<tr>
 	    <td style="text-align: center">
-	     	<a href='javascript:printService();' >Imprimir</a>	    	
+	     	<a href='javascript:printService();'>Imprimir</a>	    	
         </td>
     </tr>    
 </table>
@@ -126,15 +126,9 @@ function clearForm()
     </div><br>
 {% endfor %}
 {{ app.session.flashbag.set('message', '')}}
-<form action="{{ path('reportMemberAssistance') }}" method="post" {{ form_enctype(form) }} id='memberAssistanceSearch' name="memberAssistanceSearch">
+<form action="{{ path('reportCollection') }}" method="post" {{ form_enctype(form) }} id='collectionReportSearch' name="collectionReportSearch">
 	{{ form_errors(form) }}
-    <table class="tableSearch" id="tableSearch" >
-    	<tr>
-    	    <td class="titleSearch">{{ form_label(form.name) }}</td>
-    	    <td>{{ form_widget(form.name, { 'attr': {'class': 'textoBuscar' } }) }}</td>
-    	    <td class="titleSearch">{{ form_label(form.paymentType) }}</td>
-    	    <td colspan="2">{{ form_widget(form.paymentType) }}</td>
-    	</tr>
+    <table class="tableSearch">
     	<tr>    
     	    <td class="titleSearch">{{ form_label(form.startDate) }}</td>
     	    <td>{{ form_widget(form.startDate, { 'attr': {'readonly': 'readonly' } }) }}</td>
@@ -149,60 +143,62 @@ function clearForm()
                 </div>
             </td>            
 		</tr> 
-        <tr>
-        	<td colspan="3"><div class="error"></div></td>
-        </tr>
-        <tr>
-        	<td></td><td>{{ form_errors(form.name) }}</td><td><br></td>
-       	</tr>
 	</table>
-	<div id="temporal" style="visibility: hidden;">		
-	</div>
 {{ form_rest(form) }}
 </form>
 <div id = "print">
 <form id='form_check' name='form_check' action='' method='post'>
-	<table id="tableListUser">
+	<table id="tableListUser" >
     	<tr>
-        	<th class="title">
+        	<th class="title_check">
+            	Num. Fact
+            </th>
+            <th class="title">
+	            Número de Cuenta
+            </th>
+    	    <th class="title">
                 Nombre del Miembro
             </th>
             <th class="title">
-                Tipo de Infracción
-            </th>     
+                Valor Total
+            </th>   
             <th class="title">
-               Fecha de Registro
-            </th>        
-    	</tr>
-		{% set i = 1 %}
-		{% for item in memberAssistance %}
-        <tr>
- 			<td class="content_table" >
-				{% if (item.member) %}
-					{{ item.member.name}} {{ item.member.lastname}}
-			    {% endif %}	
-			    {% if (item.account) %}
-			    	{{ item.account.member.name}} {{ item.account.member.lastname}}			    	
-				{% endif %}	
-            </td> 
-            <td class="content_table" >
-            	{{ item.paymentType.name}} 
-            </td>
-            <td class="content_table" >
-				{{ item.paymentDate|date('Y-m-d')}}
-            </td>                                          
-         </tr>
-		{% set i = i +1 %}
-		{% endfor %}
-         <tr>
-		{% if  total==0 %}
-        	<td colspan="3" align="center" class="content_table_left" id="content_table_left">
-            	No existen items a mostrar
-            </td>
-		{% endif %}
+                Fecha de Cobro
+            </th>  
+            <th class="title">                
+            </th>                        
         </tr>
+		{% for item in collection %}
+        <tr>
+             <td class="content_table" >
+				F00-{{ item.id }}
+             </td>
+              <td class="content_table" >
+				{{ item.accountNumber }}
+             </td>
+             <td class="content_table" >
+				{{ item.name }} {{ item.lastname }}
+             </td>
+             <td class="content_table" >
+				{{ item.totalValue | number_format(2)}}
+             </td>
+             <td class="content_table" >
+				{{ item.systemDate | date("Y-m-d") }}
+             </td>
+          	 <td class="content_table">
+				<a href="{{ path('reportDetailCollection', {'id': item.id}) }}">Detalle</a>
+             </td> 
+        </tr>
+		{% endfor %}
+		{% if  total == 0 %}
+		<tr>
+			<td colspan="6" align="center" class="content_table_left">
+            	No existen Cobros a mostrar
+            </td>
+        </tr>    
+		{% endif %}
 </table>
- {% if ((total > limit) or (limit == 99999)) %}
+{% if ((total > limit) or (limit == 99999)) %}
 <table id="paginator">
 	<tr>
     	<td align="center">

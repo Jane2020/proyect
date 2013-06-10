@@ -19,9 +19,19 @@ $(function() {
 		 });	
 });
 
-
 function printService()
 {
+	startDate = document.getElementById("expensivesSearch_startDate").value;
+	endDate = document.getElementById("expensivesSearch_endDate").value;
+	if (!startDate)
+	{
+		document.getElementById("expensivesSearch_startDate").value = 'Ninguna';		
+	}
+	if (!endDate)
+	{
+		document.getElementById("expensivesSearch_endDate").value = 'Ninguna';
+	}
+	
 	document.getElementById("print").style.visibility='hidden' ;
 	document.getElementById("print").style.position = 'absolute';
 	document.getElementById("botonera").style.visibility='hidden' ;
@@ -32,12 +42,18 @@ function printService()
 	document.getElementById("copyright").style.position = 'absolute';
 	document.getElementById("searchButton").style.visibility='hidden';
 	document.getElementById("searchButton").style.position = 'absolute';
+	document.getElementById("printTableList").style.visibility='visible';
+	document.getElementById("printTableList").style.position = 'relative';
+	document.getElementById("title_image").style.visibility='hidden';
+	document.getElementById("title_image").style.position ='absolute';
+	document.getElementById("tableListUser").border = 1;	
 	if ({{ total }} > 10)
 	{
 		document.getElementById("paginator").style.visibility='hidden';
-		document.getElementById("paginator").style.position = 'absolute';
+		document.getElementById("paginator").style.position ='absolute';
 	}
 	window.print();
+	document.getElementById("tableListUser").border = 0;	
 	document.getElementById("print").style.visibility='visible';
 	document.getElementById("print").style.position = 'relative';
 	document.getElementById("botonera").style.visibility='visible';
@@ -48,13 +64,26 @@ function printService()
 	document.getElementById("copyright").style.position = 'relative';
 	document.getElementById("searchButton").style.visibility='visible';
 	document.getElementById("searchButton").style.position = 'relative';
+	document.getElementById("printTableList").style.visibility='hidden';
+	document.getElementById("printTableList").style.position = 'absolute';
+	document.getElementById("title_image").style.visibility='visible';
+	document.getElementById("title_image").style.position ='relative';	
 	if ({{ total }} > 10)
 	{
 		document.getElementById("paginator").style.visibility='visible';
-		document.getElementById("paginator").style.position = 'relative';
-	}				
+		document.getElementById("paginator").style.position ='relative';
+	}	
+	startDate = document.getElementById("expensivesSearch_startDate").value;
+	endDate = document.getElementById("expensivesSearch_endDate").value;
+	if (startDate == 'Ninguna')
+	{
+		document.getElementById("expensivesSearch_startDate").value = '';		
+	}
+	if (endDate  == 'Ninguna')
+	{
+		document.getElementById("expensivesSearch_endDate").value = '';
+	}	
 }
-
 function clearForm()
 {
 	document.getElementById("expensivesSearch_startDate").value = '';
@@ -64,9 +93,15 @@ function clearForm()
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}	
 {% block content %}
+<table id="printTableList" " width="100%" style="visibility: hidden;position: absolute;">
+	<tr><td colspan="2" align="center"><font size="5"><span>Junta Administradora del Abastecimiento del Agua Potable</font></span></td></tr>
+	<tr><td colspan="2" align="center"><font size="2">Provincia de Tungurahua</font></td></tr>
+	<tr><td colspan="2">&nbsp;</td></tr>
+	<tr><td colspan="2"><img src="{{ asset('images/img_inicio.png') }}"/><font style="font-size:22px; font-weight: bold;"> Reporte de Gastos</font></td></tr>  
+</table>
 <div id="title_image">Reporte de Gastos</div>
 {% set action = path('reportMember')  %}
-<table width="350" border="0" align="right" style="padding:5px;" id="print">
+<table border="0" align="right" style="padding:5px;" id="print">
 	<tr>
 	    <td style="text-align: center">
 	     	<a href='javascript:printService();' >Imprimir</a>	    	
@@ -95,7 +130,7 @@ function clearForm()
 				{{ form_widget(form.limit, { 'attr': {'value': limit } }) }}  
 				<div id = "searchButton">
                 	<input type="submit" name="btsend" id="button_search" value='Buscar' id="btsend"/>
-                	<input type="button" value="Resetear" onClick="javascript:clearForm();">
+                	<input type="button" value="Resetear" onClick="javascript:clearForm();" id="button_search">
                 </div>
             </td>            
 		</tr> 
@@ -103,9 +138,9 @@ function clearForm()
 {{ form_rest(form) }}
 </form>
 <div id = "print">
+<br><br><br>
 <form id='form_check' name='form_check' action='' method='post'>
-	<table id="tableListUser" >
-    	<table id="tableListUser" >
+	<table id="tableListUser">
     	<tr>
 	    	<th class="title">
                 Fecha
@@ -146,13 +181,13 @@ function clearForm()
 		{% endfor %}
 		{% if  total==0 %}
 		<tr>
-			<td colspan="6" align="center" class="content_table_left">
+			<td colspan="6" align="center" class="content_table_left" id="content_table_left">
             	No existen gastos a mostrar
             </td>
         </tr>    
 		{% endif %}
 </table>
-{% if ((total > limit) or (limit == 9999)) %}
+{% if ((total > limit) or (limit == 99999)) %}
 <table id="paginator">
 	<tr>
     	<td align="center">

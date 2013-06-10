@@ -1,0 +1,38 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block javascripts %}
+ {{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}	
+{% block content %}
+<div id="title_image">Listado de Reportes</div>
+<table width="100%" border="0" >
+	<tr>
+		<td style="text-align: center">
+			imagen
+		</td>
+		<td style="text-align: center">
+			imagen
+		</td>
+		<td style="text-align: center">
+			imagen
+		</td>
+		<td style="text-align: center">
+			imagen
+		</td>
+	</tr>
+	<tr>
+	    <td style="text-align: center">
+	     	<a href="{{ path('reportExpenses') }}" >Reporte de Gastos</a>	    	
+        </td>
+        <td style="text-align: center">
+	     	<a href="{{ path('reportMemberAssistance') }}" >Reporte de Multas</a>	    	
+        </td>
+        <td style="text-align: center">
+	     	<a href="{{ path('reportMember') }}" >Reporte de Miembros</a>	    	
+        </td>
+        <td style="text-align: center">
+	     	<a href="{{ path('reportCollection') }}" >Reporte de Cobros</a>	    	
+        </td>
+    </tr>    
+</table>
+{% endblock %}

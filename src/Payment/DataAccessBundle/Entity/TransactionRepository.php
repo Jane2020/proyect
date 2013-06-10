@@ -245,5 +245,5 @@ class TransactionRepository extends EntityRepository
 		$sql.= " order by (`transaction`.id)".$lim;
 		$result =  $conec->fetchAll($sql);		
 		return $result;
-	}
+	}	
 }

@@ -1,6 +1,11 @@
 @charset "utf-8";
 /* CSS Document */
 
+* {
+    margin: 0;
+    padding: 0;
+}
+
 body{
 	margin:0;
 	padding:0;
@@ -8,6 +13,7 @@ body{
 	font-family: "ArmataRegular","Trebuchet MS",Arial,Helvetica,sans-serif;
 	color:#666666;
 	background-color:##ebebed;
+	height: auto;
 	}
 input{
 	border: 1px solid #a5c4d4;
@@ -24,6 +30,7 @@ div.wrapper{
 	width:100%;
 	text-align:left;
 	clear: both;
+	
 	}
 
 h1{
@@ -43,6 +50,19 @@ h1{
 	height:150px;
 	background-repeat:repeat-x;
 	background-image: url(../images/back_h.jpg);	
+	}
+
+.col1{
+	color:#999999; 
+	background-color:#333333;
+	height:100px;
+	background-repeat:repeat-x;
+	background-image: url(../images/background_col1.jpg);	
+	}
+	
+.col4{
+	color:#ffffff; 
+	padding-top: 31px;	
 	}
 
 
@@ -136,6 +156,13 @@ h1{
 
 /* ----------------------------------------------Content-------------------------------------*/
 
+#contentAll{
+	background: -moz-linear-gradient(center bottom , #FFFFFF 56%, #D4D4D4 116%) repeat scroll 0 0 transparent;
+	height: 80px;
+	
+}
+
+
 .container{
 	padding:20px 0;
 	}
@@ -163,11 +190,12 @@ h1{
 /* ----------------------------------------------Copyright-------------------------------------*/
 
 #copyright{
-	background-image: url("../images/back_3_h.jpg");
-    background-repeat: repeat-x;
+	background-image: url("../images/background_copy.jpg");
+    background-repeat: repeat-x;*/
     font-size: 11px;
-    height: 51px;
+    height: 34px;
     padding-top: 16px;
+    color: #ffffff;
 	}
 
 #copyright p{
@@ -263,7 +291,8 @@ padding: 2px 6px
 	}
 	
 #caja{
-	padding-top: 2px;}
+	padding: 20px 20px 0;
+	}
 	
 #button_enter{
 	/*background-color: #8F0507;*/
@@ -286,7 +315,12 @@ padding: 2px 6px
     font-size: 12px;
     border: medium none;
     margin-top: 20px;
- 
+    width:190px;
+}
+
+.menu_int td a:hover {
+    color: #FFFFFF;
+    text-decoration: none;
 }
 
 .menu_int tr{
@@ -388,18 +422,23 @@ padding: 2px 6px
 	
 	width: 223px;
     height: 77px;
-    background-image: url("../images/logo_sicoap.png");
-    background-repeat: no-repeat;
+    /*background-image: url("../images/logo_sicoap.png");
+    background-repeat: no-repeat;*/
     
     
 }
 
 #logo_sup {
 	
-   background: -moz-linear-gradient(center top , #D4D4D4 0%, #FFFFFF 42%) repeat scroll 0 0 transparent;
-    box-shadow: 3px 3px 5px #3D4144;
+    /*background: -moz-linear-gradient(center top , #D4D4D4 0%, #FFFFFF 42%) repeat scroll 0 0 transparent;*/
+    background-image: url("../images/header_logo.png");
+    background-repeat: no-repeat;
+    height:100px;
     margin-left: 22px;
-    width: 225px;
+    margin: 0 auto;
+    min-width: 950px;
+    max-width: 1024px;
+    width: 95%;
 
     
 }
@@ -480,14 +519,18 @@ padding: 2px 6px
 
 #url_b_content{
     float: left;
-    margin: 20px;
-    width: 80%;
-    color: #1862a1;   
+    margin: 20px 0 0 20px;
+    width: 76%;
+    color: #1862a1;  
+    overflow: hidden; 
 }
 
 #botonera{
 	float:left;
-	padding-left: 20px;
+	overflow: hidden;
+	margin-right: 9px;
+    overflow: hidden;
+    width: 190px;
 }
 
 #title_image{
@@ -504,13 +547,14 @@ padding: 2px 6px
 div.error {
 	color: #ff0000 !important;
 	font-size: 7pt;
+	
 }
 
 #printTable{
 	width: 100%;
 }
 
-#printTable span, #printTableList span {
+#printTable span{
 	font-size: 24px;
 	font-weight: bold;
 }
@@ -531,10 +575,4 @@ div.error {
 .itemTotal{
 	font-size: 20px;
 	font-weight: bold;
-}
-#printTableList {
-	width: 95%;
-	font-size: 14px;
-	border-collapse: collapse; border-spacing: 0;
-	margin: auto;
 }

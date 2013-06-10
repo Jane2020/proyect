@@ -370,8 +370,13 @@
 	padding:10px;}
 	
 #barra7 {
-	float: left;	
-	width: 100%;
+	min-width: 0;
+    margin: 0 auto;
+    min-width: 950px;
+    max-width: 1024px;
+    padding: 5px;
+    width: 95%;
+	
 }
 
 #barra3
