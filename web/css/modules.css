@@ -54,10 +54,17 @@ h1{
 
 .col1{
 	color:#999999; 
+<<<<<<< HEAD
+	background-color:#9dc5d2;
+	height:100px;
+	/*background-repeat:repeat-x;
+	background-image: url(../images/background_col1.jpg);*/	
+=======
 	background-color:#333333;
 	height:100px;
 	background-repeat:repeat-x;
 	background-image: url(../images/background_col1.jpg);	
+>>>>>>> refs/remotes/origin/master
 	}
 	
 .col4{
