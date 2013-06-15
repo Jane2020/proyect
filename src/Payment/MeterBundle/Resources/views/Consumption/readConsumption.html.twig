@@ -21,11 +21,12 @@
 {% block content %}
 <div id="title_image">Listado de Consumo</div>
 
-<div style="text-align: center;">
-<img src="../../../web/images/img_icon_11.jpg" width="87" height="102">
-<br>
+<div style="text-align: center;" id="icons_reportes">
 <a href="javascript:submit_check();">
-               Generar Listado
+<img src="{{ asset('images/img_icon_11.jpg') }}" width="87" height="102">
+<br>
+              Generar Listado
+               </a>
 </div>
 
 {% endblock %}
