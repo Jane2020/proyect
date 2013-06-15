@@ -4,6 +4,7 @@
 * {
     margin: 0;
     padding: 0;
+    text-decoration: none;
 }
 
 body{
@@ -54,17 +55,14 @@ h1{
 
 .col1{
 	color:#999999; 
-<<<<<<< HEAD
 	background-color:#9dc5d2;
 	height:100px;
 	/*background-repeat:repeat-x;
 	background-image: url(../images/background_col1.jpg);*/	
-=======
-	background-color:#333333;
 	height:100px;
 	background-repeat:repeat-x;
-	background-image: url(../images/background_col1.jpg);	
->>>>>>> refs/remotes/origin/master
+	/*background-image: url(../images/background_col1.jpg);*/	
+/*refs/remotes/origin/master*/
 	}
 	
 .col4{
@@ -322,7 +320,7 @@ padding: 2px 6px
     font-size: 12px;
     border: medium none;
     margin-top: 20px;
-    width:190px;
+    width:199px;
 }
 
 .menu_int td a:hover {
@@ -390,7 +388,17 @@ padding: 2px 6px
     padding: 10px;
     color: #fff;
     background-color: #86a1ae;
+    text-align: left;
 }
+
+#url_b_content #icons_reportes a{
+	color: #0078aa;
+}
+
+#url_b_content #icons_reportes a:hover{
+	color: #949494;
+}
+
 
 #contentRight { 
  	/*background-image: url("../images/background.png");*/
@@ -443,7 +451,7 @@ padding: 2px 6px
     height:100px;
     margin-left: 22px;
     margin: 0 auto;
-    min-width: 950px;
+    min-width: 999px;
     max-width: 1024px;
     width: 95%;
 
@@ -526,18 +534,18 @@ padding: 2px 6px
 
 #url_b_content{
     float: left;
-    margin: 20px 0 0 20px;
-    width: 76%;
+    margin: 20px 0 0 18px;
+    width: 78%;
     color: #1862a1;  
-    overflow: hidden; 
+   /* overflow: hidden;*/ 
 }
 
 #botonera{
 	float:left;
 	overflow: hidden;
-	margin-right: 9px;
+	/*margin-right: 9px;*/
     overflow: hidden;
-    width: 190px;
+    /*width: 190px;*/
 }
 
 #title_image{
