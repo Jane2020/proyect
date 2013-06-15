@@ -71,7 +71,8 @@ class MemberRepository extends EntityRepository
 	{
 		if ($to && $from)
 		{
-			$to = $to -1;
+			$from = ($from +1) -$to;
+			//$to = $to -1;			
 			$lim = 	" limit ".$to.",".$from;		
 		}
 		else

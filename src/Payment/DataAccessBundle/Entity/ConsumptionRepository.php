@@ -64,4 +64,18 @@ class ConsumptionRepository extends EntityRepository
 		$result = $query->getResult();
 		return $result;
 	}
+	
+	public function findByConsumption($accountId)
+	{
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('c');
+		$queryBuilder->add('select', 'c');
+		$queryBuilder->orderBy('c.id','ASC');
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Consumption c');
+		$queryBuilder->Where('c.isDeleted = 0');
+		$queryBuilder->andWhere('c.account = ?1');
+		$queryBuilder->setParameter(1, $accountId);
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;		
+	}
 }

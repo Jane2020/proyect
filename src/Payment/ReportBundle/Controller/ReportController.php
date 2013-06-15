@@ -2,6 +2,10 @@
 
 namespace Payment\ReportBundle\Controller;
 
+use Payment\ReportBundle\Form\Type\AccountStateSearchType;
+
+use Payment\ReportBundle\Entity\AccountStateSearch;
+
 use Payment\ReportBundle\Form\Type\CollectionReportSearchType;
 use Payment\ReportBundle\Entity\CollectionSearch;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -214,6 +218,7 @@ class ReportController extends Controller
 		$date = $month[$date].' '.$year;
     	return array ('collections' => $collections, 'date' => $date, 'account' => $account);
     }
+    
     /**
      * @Template()
      * @Secure(roles="ROLE_ADMIN")
@@ -221,5 +226,99 @@ class ReportController extends Controller
     public function reportListAction()
     {
     	 return array();
+    }
+    
+    /**
+     * @Template()
+     * @Secure(roles="ROLE_ADMIN")
+     */
+    public function reportAccountStateAction(Request $request)
+    {
+    	$accountStateEntity = new AccountStateSearch();
+    	$accountStateForm = $this->createForm(new AccountStateSearchType(), $accountStateEntity);
+    	$stateAccount = null;
+    	$account = null;
+    	$parameters = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Parameter')->findAll();
+    	$basicConsumption = $parameters[6]->getValue();
+    	if ($request->getMethod() == 'POST')
+    	{
+    		$accountStateForm->bind($request);
+    		$datas = $accountStateForm->getData();
+    		if ($accountStateForm->isValid())
+    		{
+    			$account = $datas->getAccount();
+    			if ($account)
+    			{
+    				$consumption = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Consumption')->findByConsumption($account->getId());
+	   				$account = $consumption[0]->getAccount();
+	   				$stateAccount = $this->getStateAccount($consumption, $parameters);
+    			}
+    		}    		
+    	}
+    	return array ('form' => $accountStateForm->createView(),'stateAccount' => $stateAccount, 'account'=>$account, 'basicConsumption'=>$basicConsumption);    
+    }    
+    
+    private function getStateAccount($consumption, $parameter)
+    {
+    	$i = 0;
+    	foreach ($consumption as $item)
+    	{
+    		$aditionalCost = 0;
+    		if ($i == 0)
+    		{	
+    			$val = $item->getMeterCurrentReading();    			
+    		}
+    		else
+    		{
+    			$date = $item->getSystemDate();
+    			$paymentDate = $date->format('d-m-Y');
+	    		$date = $date->format('m');
+	    		$month = array('02' => 'Enero', '03' => 'Febrero', '04' => 'Marzo', '05' => 'Abril', '06' => 'Mayo', '07' => 'Junio', '08' => 'Julio', '09' => 'Agosto', '10' => 'Septiembre', '11' => 'Octubre', '12' => 'Noviembre', '01' => 'Diciembre');
+	    		$date = $month[$date];
+	    		$basicCost = $parameter[3]->getValue();
+	    		$excess = $item->getConsumptionValue() - $parameter[6]->getValue();
+	    		if ($excess > 0)
+	    		{
+	    			$excessCost = $excess * $parameter[7]->getValue();	    			
+	    		} 
+	    		else
+	    		{
+	    			$excess = 0;
+	    			$excessCost = 0;
+	    		}
+	    		$totalUnit = $basicCost + $excessCost;
+	    		$totalPayment = 0;
+	    		$payment = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Payment')->findBy(array('account'=>$item->getAccount()));
+	    		if ($payment)
+	    		{
+	    			
+	    			foreach ($payment as $paymentValue)
+	    			{
+	    				if ($paymentValue->getIsRecidivism())
+	    				{
+	    					$recidivism = 2;    						
+	    				}
+	    				else
+	    				{
+	    					$recidivism = 1;
+	    				}
+	    				$totalPayment = $totalPayment + ($paymentValue->getCost() * $recidivism);
+	    			}	    			
+	    		}
+	    		if ($item->getAccount()->getSewerage())
+	    		{
+	    			$aditionalCost +=  $parameter[4]->getValue() * $item->getAccount()->getSewerage();
+	    		}
+	    		$total = $totalUnit +$aditionalCost + $totalPayment;
+	    		$stateAccount = array ('date' =>$date, 'meterCurrentReading'=> $item->getMeterCurrentReading(), 'meterBeforeReading' => $val, 'consumptionValue' =>$item->getConsumptionValue(), 'basicConsumption' => $parameter[6]->getValue(),'excess' =>$excess, 'basicCost' => $basicCost, 'excessCost' =>$excessCost, 'totalUnit' => $totalUnit, 'aditionalCost' => $aditionalCost, 'total' =>$total,'paymentDate' => $paymentDate);
+	    		$val = $item->getMeterCurrentReading();    		
+    		}  
+    		if ($i != 0)
+    		{
+    			$stateAccounts[] = $stateAccount;
+    		}
+    		$i++;
+    	}
+    	return($stateAccounts);    	  	
     }
 }

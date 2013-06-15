@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class IncomeRepository extends EntityRepository
 {
+	public function findIncomeByAccount($paymentId)
+	{
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('i');
+		$queryBuilder->add('select', 'i');
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Income i');
+		$queryBuilder->andWhere('i.payment = ?1');
+		$queryBuilder->setParameter(1, $paymentId);
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;
+	}
 }

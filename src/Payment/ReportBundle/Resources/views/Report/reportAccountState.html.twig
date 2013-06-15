@@ -1,0 +1,236 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block javascripts %}
+ {{ parent() }}
+<script type="text/javascript">
+function printService()
+{
+	document.getElementById("print").style.visibility='hidden' ;
+	document.getElementById("print").style.position = 'absolute';
+	document.getElementById("botonera").style.visibility='hidden' ;
+	document.getElementById("botonera").style.position = 'absolute';
+	document.getElementById("topline").style.visibility='hidden';
+	document.getElementById("topline").style.position = 'absolute';
+	document.getElementById("copyright").style.visibility='hidden';
+	document.getElementById("copyright").style.position = 'absolute';
+	document.getElementById("searchButton").style.visibility='hidden';
+	document.getElementById("searchButton").style.position = 'absolute';
+	document.getElementById("printTableList").style.visibility='visible';
+	document.getElementById("printTableList").style.position = 'relative';
+	document.getElementById("title_image").style.visibility='hidden';
+	document.getElementById("title_image").style.position ='absolute';
+	document.getElementById("tableListUser").border = 1;
+	window.print();
+	downPrint();
+	document.getElementById("tableListUser").border = 0;	
+	document.getElementById("print").style.visibility='visible';
+	document.getElementById("print").style.position = 'relative';
+	document.getElementById("botonera").style.visibility='visible';
+	document.getElementById("botonera").style.position = 'relative';
+	document.getElementById("topline").style.visibility='visible';
+	document.getElementById("topline").style.position = 'relative';
+	document.getElementById("copyright").style.visibility='visible' ;
+	document.getElementById("copyright").style.position = 'relative';
+	document.getElementById("searchButton").style.visibility='visible';
+	document.getElementById("searchButton").style.position = 'relative';
+	document.getElementById("printTableList").style.visibility='hidden';
+	document.getElementById("printTableList").style.position = 'absolute';
+	document.getElementById("title_image").style.visibility='visible';
+	document.getElementById("title_image").style.position ='relative';				
+}
+</script>
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}	
+{% block content %}
+<table id="printTableList" " width="100%" style="visibility: hidden;position: absolute;">
+	<tr><td colspan="2" align="center"><font size="5"><span>Junta Administradora del Abastecimiento del Agua Potable</font></span></td></tr>
+	<tr><td colspan="2" align="center"><font size="2">Estado de Cuenta</font></td></tr>
+	<tr><td colspan="2">&nbsp;</td></tr>
+	<tr><td colspan="2"><img src="{{ asset('images/img_inicio.png') }}"/><font style="font-size:22px; font-weight: bold;"> Reporte de Cobros</font></td></tr>  
+</table>
+<div id="title_image">Estado de Cuenta</div>
+{% set action = path('reportCollection')  %}
+<table width="350" border="0" align="right" style="padding:5px;" id="print">
+	<tr>
+	    <td style="text-align: center">
+	     	<a href='javascript:printService();'>Imprimir</a>	    	
+        </td>
+    </tr>    
+</table>
+<br><br><br>
+{% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="flash-message">
+{% autoescape false %}
+    {{ flashMessage|trans({}, 'FOSUserBundle') }}
+{% endautoescape %}
+    </div><br>
+{% endfor %}
+{{ app.session.flashbag.set('message', '')}}
+<form action="{{ path('reportAccountState') }}" method="post" {{ form_enctype(form) }} id='accounStateSearch' name="accounStateSearch">
+	{{ form_errors(form) }}
+    <table class="tableSearch">
+    	<tr>    
+    	     {% set required = 0 %}
+             {% include 'PaymentApplicationBundle:Finder:finder.html.twig' %}
+    	    <td class="titleSearch">{{ form_label(form.yearAccount) }}</td>
+    	    <td>{{ form_widget(form.yearAccount, { 'attr': {'class': 'required' } }) }}</td>    	    
+    	    <td valign="top">
+				<div id = "searchButton">
+                	<input type="submit" name="btsend" id="button_search" value='Buscar' id="btsend"/>                	
+                </div>
+            </td>            
+		</tr> 
+	</table>
+{{ form_rest(form) }}
+</form>
+<div id = "print">
+<br><br>
+<form id='form_check' name='form_check' action='' method='post'>
+{% if  (account != '') %}
+	<table id="tableListUser" >
+    	<tr>
+        	<th class="title">
+            	Num. de Conexión:
+            </th>
+            <td>	
+            	{{ account.accountNumber }}
+            </td>
+            <th class="title">
+            	Apellido y Nombre del Usuario:
+            </th>
+            <td>
+            	{{ account.member.lastname }} {{ account.member.name }}
+            </td>
+        </tr>
+        <tr>    
+            <th class="title">
+	            Dirección:
+            </th>
+            <td>
+            	{{ account.member.address }}
+            </td>
+    	    <th class="title">
+                Consumo Básico:
+            </th>
+            <td>
+            	{{ basicConsumption }} M3
+            </td>
+        </tr>
+        <tr>
+        	<th class="title">
+        		Clase de Consumo:
+        	</th>
+        	<td colspan="3">
+        		{{ account.accountType.name}}
+        	</td>
+        </tr>       
+	</table>
+	<br>
+	<table border="1" width="100%">
+		<tr>
+			<td></td>
+			<td colspan="2" align="center"><b>Estado del Medidor</b></td>
+			<td colspan="3" align="center"><b>Consumo en M3</b></td>
+			<td colspan="3" align="center"><b>Tarifa en $.</b></td>
+			<td><b>Otros</b></td>
+			<td colspan="3" align="center"><b>Deuda</b></td>
+			<td colspan="2" align="center"></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><b>MES</b></td>
+			<td><b>Actual</b></td>
+			<td><b>Anterior</b></td>
+			<td><b>Leído en el Mes</b></td>
+			<td><b>Básico</b></td>
+			<td><b>Excedente</b></td>
+			<td><b>Carga Fija</b></td>
+			<td><b>Excedenet</b></td>
+			<td><b>Total</b></td>
+			<td><b>Otros Conceptos $</b></td>
+			<td><b>Total del Mes</b></td>
+			<td><b>Anterior</b></td>
+			<td><b>Total</b></td>
+			<td><b>Pagos</b></td>
+			<td><b>Saldos</b></td>
+			<td><b>Fecha de Pago</b></td>
+		</tr>
+		{% for item in stateAccount %}
+		<tr>
+			<td>
+				{{ item.date }}
+			</td>
+			<td>	
+				{{ item.meterCurrentReading }}
+           </td>
+			<td>
+				{{  item.meterBeforeReading }}	
+			</td>
+			<td>
+				{{  item.consumptionValue }}
+			</td>
+			<td>
+				{{ item.basicConsumption }}
+			</td>
+			<td>
+				{{ item.excess }}
+			</td>
+			<td>
+				{{ item.basicCost }}
+			</td>
+			<td>
+				{{ item.excessCost }}
+			</td>
+			<td>
+				{{ item.totalUnit }}
+			</td>
+			<td>
+				{{ item.aditionalCost }}				
+			</td>		
+			<td>
+				{{ item.total }}
+			</td>
+			<td>
+			</td>
+			<td>
+				{{ item.total }}
+			</td>
+			<td>
+			</td>
+			<td>
+			</td>
+			<td>
+				{{ item.paymentDate }}
+			</td>
+		</tr>
+		{% endfor %}		
+	</table>
+{% endif %}	
+	{#        
+    {% for item in collection %}
+	<table>
+        <tr>
+             <td class="content_table" >
+				F00-{{ item.id }}
+             </td>
+              <td class="content_table" >
+				{{ item.accountNumber }}
+             </td>
+             <td class="content_table" >
+				{{ item.name }} {{ item.lastname }}
+             </td>
+             <td class="content_table" >
+				{{ item.totalValue | number_format(2)}}
+             </td>
+             <td class="content_table" >
+				{{ item.systemDate | date("Y-m-d") }}
+             </td>
+          	 <td class="content_table">
+				<a href="{{ path('reportDetailCollection', {'id': item.id}) }}">Detalle</a>
+             </td> 
+        </tr>
+		{% endfor %}		
+	</table>
+</div>
+{% endif %}	#}
+</form>
+{% endblock %}
