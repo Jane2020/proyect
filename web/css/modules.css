@@ -591,3 +591,100 @@ div.error {
 	font-size: 20px;
 	font-weight: bold;
 }
+
+#imageGenerateList{
+	background-image: url("../images/img_icon_11.jpg");
+    background-repeat: no-repeat;
+    height: 113px;
+    width: 87px;
+    margin: auto;
+}
+
+#imageGenerateList:HOVER{
+	background-image: url("../images/img_icon_11_1.jpg");
+    background-repeat: no-repeat;
+    height: 113px;
+    width: 96px;
+    margin: auto;
+}
+
+
+#imageExpense{
+	background-image: url("../images/img_icon_03.jpg");
+    background-repeat: no-repeat;
+    height: 113px;
+    width: 87px;
+    margin: auto;
+}
+
+#imageExpense:HOVER{
+	background-image: url("../images/img_icon_03_1.jpg");
+    background-repeat: no-repeat;
+    height: 113px;
+    width: 96px;
+    margin: auto;
+}
+
+#imageFine{
+	background-image: url("../images/img_icon_05.jpg");
+    background-repeat: no-repeat;
+    height: 113px;
+    width: 87px;
+    margin: auto;
+}
+
+#imageFine:HOVER{
+	background-image: url("../images/img_icon_05_1.jpg");
+    background-repeat: no-repeat;
+    height: 113px;
+    width: 96px;
+    margin: auto;
+}
+
+#imageGastos{
+	background-image: url("../images/img_icon_07.jpg");
+    background-repeat: no-repeat;
+    height: 113px;
+    width: 87px;
+    margin: auto;
+}
+
+#imageGastos:HOVER{
+	background-image: url("../images/img_icon_07_1.jpg");
+    background-repeat: no-repeat;
+    height: 113px;
+    width: 96px;
+    margin: auto;
+}
+
+#imageMember{
+	background-image: url("../images/img_icon_09.jpg");
+    background-repeat: no-repeat;
+    height: 113px;
+    width: 87px;
+    margin: auto;
+}
+
+#imageMember:HOVER{
+	background-image: url("../images/img_icon_09_1.jpg");
+    background-repeat: no-repeat;
+    height: 113px;
+    width: 96px;
+    margin: auto;
+}
+
+#imageGenerateList{
+	background-image: url("../images/img_icon_11.jpg");
+    background-repeat: no-repeat;
+    height: 113px;
+    width: 87px;
+    margin: auto;
+}
+
+#imageGenerateList:HOVER{
+	background-image: url("../images/img_icon_11_1.jpg");
+    background-repeat: no-repeat;
+    height: 113px;
+    width: 96px;
+    margin: auto;
+}
