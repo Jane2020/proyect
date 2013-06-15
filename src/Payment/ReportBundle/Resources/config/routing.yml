@@ -20,4 +20,8 @@ reportDetailCollection:
     
 reportList:
     pattern:  /listado-de-reportes
-    defaults: { _controller: PaymentReportBundle:Report:reportList}                                        
+    defaults: { _controller: PaymentReportBundle:Report:reportList}      
+
+reportAccountState:
+    pattern:  /estado-de-cuenta
+    defaults: { _controller: PaymentReportBundle:Report:reportAccountState}                                            
