@@ -592,6 +592,13 @@ div.error {
 	font-weight: bold;
 }
 
+#printTableList {
+	width: 95%;
+	font-size: 14px;
+	border-collapse: collapse; border-spacing: 0;
+	margin: auto;
+}
+
 #imageGenerateList{
 	background-image: url("../images/img_icon_11.jpg");
     background-repeat: no-repeat;

@@ -247,9 +247,10 @@ class ReportController extends Controller
     		if ($accountStateForm->isValid())
     		{
     			$account = $datas->getAccount();
+    			$year = $datas->getYearAccount();
     			if ($account)
     			{
-    				$consumption = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Consumption')->findByConsumption($account->getId());
+    				$consumptions = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Income')->getStateAccount($account,$year);
 	   				$account = $consumption[0]->getAccount();
 	   				$stateAccount = $this->getStateAccount($consumption, $parameters);
     			}
@@ -257,6 +258,56 @@ class ReportController extends Controller
     	}
     	return array ('form' => $accountStateForm->createView(),'stateAccount' => $stateAccount, 'account'=>$account, 'basicConsumption'=>$basicConsumption);    
     }    
+    
+    private function getItems($consumtions)
+    {
+    	$items = array();
+    	$account = null;
+    	$i = -1;
+    	$transaction_id = 0;
+    	foreach ($consumtions as $item)
+    	{
+    		$transaction = $item->getTransaction();
+    		if (($transaction->getId() != $transaction_id))
+    		{
+    			$transaction_id = $transaction->getId();
+    			$i++;
+    		} 
+    		$consumtion = $item->getConsumption();
+    		$type = $items->getType()->getId();
+    		
+    		if($consumtion)
+    		{
+    			switch ($type)
+    			{
+    				case 1: $item['actual'] = 0;
+    					break;
+    				case 2: $item['actual'] = 0;
+    						break;
+    				case 3: $item['actual'] = 0;
+    					break;
+    				case 6: $item['actual'] = 0;
+    					break;
+    			}
+    			
+    		}
+    		
+    		$payment = $item->getPayment();
+    		
+    		if($payment)
+    		{
+    			switch ($type)
+    			{
+    				case 4: $item['actual'] = 0;
+    				break;
+    				case 5: $item['actual'] = 0;    				
+    			}
+    		}
+    		
+    		
+    		
+    	}
+    }
     
     private function getStateAccount($consumption, $parameter)
     {
