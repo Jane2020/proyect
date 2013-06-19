@@ -1,6 +1,23 @@
 {% extends 'PaymentApplicationBundle::layout.html.twig' %}
 {% block javascripts %}
  {{ parent() }}
+ <script type="text/javascript">
+  var link = 'reportAccountState';
+  var action_print = "{{ path('_printAccountState',{'accountId': accountId, 'year': year }) }}";
+  function printService()
+  {	
+	  var alto = 550; 
+	  var ancho = 900;
+	  var posicion_x; 
+	  var posicion_y; 
+	  posicion_x=(screen.width/2)-(ancho/2); 
+	  posicion_y=(screen.height/2)-(alto/2); 
+	  document.accounStateSearch.action.value = 'print';
+	  window.open(action_print, 'popup', "width="+ancho+",height="+alto+",menubar=0,toolbar=0,directories=0,scrollbars=0,resizable=1,left="+posicion_x+",top="+posicion_y+"");
+  }
+
+ 
+  </script> 
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}	
 {% block content %}
@@ -11,14 +28,15 @@
 	<tr><td colspan="2"><img src="{{ asset('images/img_inicio.png') }}"/><font style="font-size:22px; font-weight: bold;"> Reporte de Cobros</font></td></tr>  
 </table>
 <div id="title_image">Estado de Cuenta</div>
-{% set action = path('reportCollection')  %}
-<table width="350" border="0" align="right" style="padding:5px;" id="print">
+{% if accountId > 0 %}
+<table border="0" align="right" style="padding:5px;" id="print">
 	<tr>
 	    <td style="text-align: center">
 	     	<a href='javascript:printService();'>Imprimir</a>	    	
         </td>
     </tr>    
 </table>
+{% endif %}
 <br><br><br>
 {% for flashMessage in app.session.flashbag.get('message') %}
     <div class="flash-message">
@@ -28,7 +46,7 @@
     </div><br>
 {% endfor %}
 {{ app.session.flashbag.set('message', '')}}
-<form action="{{ path('reportAccountState') }}" method="post" {{ form_enctype(form) }} id='accounStateSearch' name="accounStateSearch">
+<form action="{{ path('reportAccountState') }}" method="post" {{ form_enctype(form) }} id='accounStateSearch' name="accounStateSearch" >
 	{{ form_errors(form) }}
     <table class="tableSearch">
     	<tr>    
@@ -38,7 +56,7 @@
     	    <td>{{ form_widget(form.yearAccount, { 'attr': {'class': 'required' } }) }}</td>    	    
     	    <td valign="top">
 				<div id = "searchButton">
-                	<input type="submit" name="btsend" id="button_search" value='Buscar' id="btsend"/>                	
+                	<input type="submit" name="btsend" id="button_search" value='Buscar' id="btsend" />                	
                 </div>
             </td>            
 		</tr> 
@@ -80,7 +98,7 @@
 			<th>Básico</th>
 			<th>Excedente</th>
 			<th>Carga Fija</th>
-			<th>Excedenet</th>
+			<th>Excedente</th>
 			<th>Total</th>
 			<th>Othos Conceptos $</th>
 			<th>Total del Mes</th>
@@ -93,49 +111,51 @@
 		{% for item in stateAccount %}
 		<tr align="center">
 			<td>
-				{{ item.date }}
+				{{ item.month }}
 			</td>
 			<td >	
-				{{ item.meterCurrentReading }}
+				{{ item.present }}
            </td>
 			<td>
-				{{  item.meterBeforeReading }}	
+				{{  item.previous }}	
 			</td>
 			<td>
-				{{  item.consumptionValue }}
+				{{  item.present - item.previous }}
 			</td>
 			<td>
-				{{ item.basicConsumption }}
+				{{ item.basic }}
 			</td>
 			<td>
-				{{ item.excess }}
+				{{ item.excedent | number_format(0) }}
 			</td>
 			<td>
 				{{ item.basicCost }}
 			</td>
 			<td>
-				{{ item.excessCost }}
+				{{ item.excedentCost }}
 			</td>
 			<td>
-				{{ item.totalUnit }}
+			{% set total = item.basicCost + (item.excedent * item.excedentCost) %}
+				{{ total | number_format(2) }}
 			</td>
 			<td>
-				{{ item.aditionalCost }}				
+				{{ item.other | number_format(2) }}				
 			</td>		
 			<td>
-				{{ item.total }}
+				{% set totalF = item.other + total %}
+				{{ totalF | number_format(2) }}
 			</td>
 			<td>
 			</td>
 			<td>
-				{{ item.total }}
+				{{ totalF | number_format(2) }}
 			</td>
 			<td>
 			</td>
 			<td>
 			</td>
 			<td>
-				{{ item.paymentDate }}
+				{{ item.date }}
 			</td>
 		</tr>
 		{% endfor %}		

@@ -238,6 +238,8 @@ class ReportController extends Controller
     	$accountStateForm = $this->createForm(new AccountStateSearchType(), $accountStateEntity);
     	$stateAccount = null;
     	$account = null;
+    	$accountId = 0;
+    	$year = 0;
     	$parameters = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Parameter')->findAll();
     	$basicConsumption = $parameters[6]->getValue();
     	if ($request->getMethod() == 'POST')
@@ -250,63 +252,105 @@ class ReportController extends Controller
     			$year = $datas->getYearAccount();
     			if ($account)
     			{
-    				$consumptions = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Income')->getStateAccount($account,$year);
-	   				$account = $consumption[0]->getAccount();
-	   				$stateAccount = $this->getStateAccount($consumption, $parameters);
+    				$consumptions = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Income')->getStateAccount($account,$year);	   				
+	   				$stateAccount = $this->getItems($consumptions, $basicConsumption);
+	   				$accountId = $account->getId();
     			}
     		}    		
     	}
-    	return array ('form' => $accountStateForm->createView(),'stateAccount' => $stateAccount, 'account'=>$account, 'basicConsumption'=>$basicConsumption);    
+    	return array ('form' => $accountStateForm->createView(),'stateAccount' => $stateAccount, 'account'=>$account, 'basicConsumption' => $basicConsumption, 'accountId' => $accountId, 'year' => $year);    
     }    
     
-    private function getItems($consumtions)
+    /**
+     * @Template()
+     * @Secure(roles="ROLE_ADMIN")
+     */
+    public function printAccountStateAction($accountId, $year)
+    {
+    	$account = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Account')->find($accountId);
+    	$parameters = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Parameter')->findAll();
+    	$basicConsumption = $parameters[6]->getValue();
+    	$consumptions = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Income')->getStateAccount($account,$year);
+    	$stateAccount = $this->getItems($consumptions, $basicConsumption);
+    		
+    	return array ('stateAccount' => $stateAccount, 'account'=>$account, 'basicConsumption' => $basicConsumption);
+    }
+    
+    
+    private function getItems($consumptions, $basic)
     {
     	$items = array();
     	$account = null;
     	$i = -1;
     	$transaction_id = 0;
-    	foreach ($consumtions as $item)
+    	$month = array('01' => 'Enero', '02' => 'Febrero', '03' => 'Marzo', '04' => 'Abril', '05' => 'Mayo', '06' => 'Junio', '07' => 'Julio', '08' => 'Agosto', '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre');
+    	foreach ($consumptions as $item)
     	{
     		$transaction = $item->getTransaction();
     		if (($transaction->getId() != $transaction_id))
     		{
+    			if($i >= 0)
+    			{
+    				$result['other'] = $sum + $sumFine;
+    				$items[$i] = $result;
+    			}    			
     			$transaction_id = $transaction->getId();
     			$i++;
+    			$result = array('excedent' => 0, 'excedentCost' => 0, 'other' => 0);
+    			$sumFine = 0; $sum = 0;
+    			$result['date'] = $transaction->getSystemDate()->format('Y-m-d');
+    			$result['basic'] = $basic;
+    			
     		} 
-    		$consumtion = $item->getConsumption();
-    		$type = $items->getType()->getId();
+    		$consumption = $item->getConsumption();
+    		$type = $item->getIncomeType()->getId();
     		
-    		if($consumtion)
+    		if($consumption)
     		{
     			switch ($type)
     			{
-    				case 1: $item['actual'] = 0;
+    				case 1: 
+    						if(isset($result['present']))
+    						{
+    							$result['other'] = $sum;
+    							$items[$i] = $result;
+    							$i++;
+    							$result = array('excedent' => 0, 'excedentCost' => 0, 'other' => 0);
+    							$result['date'] = $transaction->getSystemDate()->format('Y-m-d');
+    							$result['basic'] = $basic;
+    							$sum = 0;
+    						}
+    						$result['present'] = $consumption->getMeterCurrentReading();
+    						$result['basicCost'] = $item->getBasicServiceUnitCost();
+    						$result['previous'] = $consumption->getMeterPreviousReading()->getMeterCurrentReading();
+    						$date = $consumption->getReadDate();
+    						$result['month'] = $month[$date->format('m')].' '.$date->format('Y');
     					break;
-    				case 2: $item['actual'] = 0;
+    				case 2: $sum = $sum + ($item->getAmount() * $item->getBasicServiceUnitCost());
     						break;
-    				case 3: $item['actual'] = 0;
+    				case 3: $result['excedent'] = $item->getAmount();
+    						 $result['excedentCost'] = $item->getBasicServiceUnitCost();
     					break;
-    				case 6: $item['actual'] = 0;
+    				case 6: $sum = $sum + ($item->getAmount() * $item->getBasicServiceUnitCost());
     					break;
-    			}
-    			
-    		}
-    		
+    			}    			
+    		}    		
     		$payment = $item->getPayment();
     		
     		if($payment)
     		{
     			switch ($type)
     			{
-    				case 4: $item['actual'] = 0;
+    				case 4: $sumFine = $sumFine + ($item->getAmount() * $item->getBasicServiceUnitCost());
     				break;
-    				case 5: $item['actual'] = 0;    				
+    				case 5: $sumFine = $sumFine + ($item->getAmount() * $item->getBasicServiceUnitCost());				
     			}
-    		}
-    		
-    		
-    		
+    		}   		
     	}
+
+    	$result['other'] = $sum;
+    	$items[$i] = $result;
+    	return $items;
     }
     
     private function getStateAccount($consumption, $parameter)

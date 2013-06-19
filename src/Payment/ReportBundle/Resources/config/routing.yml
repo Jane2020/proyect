@@ -24,4 +24,8 @@ reportList:
 
 reportAccountState:
     pattern:  /estado-de-cuenta
-    defaults: { _controller: PaymentReportBundle:Report:reportAccountState}                                            
+    defaults: { _controller: PaymentReportBundle:Report:reportAccountState}      
+_printAccountState:
+    pattern:  /gestion-de-cobros/imprimir/{accountId}/{year}
+    defaults: { _controller: PaymentReportBundle:Report:printAccountState }     
+                                      

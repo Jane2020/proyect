@@ -1,0 +1,115 @@
+<script type="text/javascript">
+function printService()
+{
+	document.getElementById("print").style.visibility='hidden' ;
+	window.print();
+	document.getElementById("print").style.visibility='visible';
+}
+
+</script>
+<link rel="stylesheet" type="text/css" href="{{ asset('css/modules.css') }}" />
+<table  align="right" id="print">
+  <tr>
+    <td><a href='javascript:printService();' >Imprimir</a></td>
+     <td><a href='javascript:window.close();' >Cerrar</a></td>
+  </tr>
+</table>
+<br><br>
+
+{% if  (account != '') %}
+<br>
+<table id="printTable">
+<tr><td colspan="2" align="center"><span>Junta Administradora del Abastecimiento del Agua Potable</span></td></tr>
+<tr><td colspan="2" align="center"><font size="3">Provincia de Tungurahua</font></td></tr>
+<tr><td colspan="2" align="center"><br><font size="3">Estado de Cuenta</font></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td class="itemTable" style="width: 30% !important;">Num. de Conexión:</td><td>{{ account.accountNumber }}</td></tr>
+<tr><td class="itemTable">Apellido y Nombre del Usuario:</td><td>{{ account.member.lastname }} {{ account.member.name }}</td></tr>
+<tr><td class="itemTable"> Dirección:</td><td>{{ account.member.address }}</td></tr>
+<tr><td class="itemTable"> Consumo Básico:</td><td>{{ basicConsumption }} M3</td></tr>
+<tr><td class="itemTable">Clase de Consumo:</td><td>{{ account.accountType.name}}</td></tr>        
+</table>
+
+	<br>
+<table id="printTableDetail" border="1" style="color: #6A6D71;">
+		<tr style="font-size: 10px; font-weight: bold;">
+			<th></th>
+			<th colspan="2" >Estado del Medidor</th>
+			<th colspan="3" ><b>Consumo en M3</th>
+			<th colspan="3" >Tarifa en $.</th>
+			<th><b>Otros</b></th>
+			<th colspan="3" ><b>Deuda</b></th>
+			<th colspan="2" ></th>
+			<th></th>
+		</tr>
+		<tr style="font-size: 8px; font-weight: bold;">
+			<th>MES</th>
+			<th>Actual</th>
+			<th>Anterior</th>
+			<th>Leído en el Mes</th>
+			<th>Básico</th>
+			<th>Excedente</th>
+			<th>Carga Fija</th>
+			<th>Excedente</th>
+			<th>Total</th>
+			<th>Othos Conceptos $</th>
+			<th>Total del Mes</th>
+			<th>Anterior</th>
+			<th>Total</th>
+			<th>Pagos</th>
+			<th>Saldos</th>
+			<th>Fecha de Pago</th>
+		</tr>
+		{% for item in stateAccount %}
+		<tr align="center" style="font-size: 11px; ">
+			<td>
+				{{ item.month }}
+			</td>
+			<td >	
+				{{ item.present }}
+           </td>
+			<td>
+				{{  item.previous }}	
+			</td>
+			<td>
+				{{  item.present - item.previous }}
+			</td>
+			<td>
+				{{ item.basic }}
+			</td>
+			<td>
+				{{ item.excedent | number_format(0) }}
+			</td>
+			<td>
+				{{ item.basicCost }}
+			</td>
+			<td>
+				{{ item.excedentCost }}
+			</td>
+			<td>
+			{% set total = item.basicCost + (item.excedent * item.excedentCost) %}
+				{{ total | number_format(2) }}
+			</td>
+			<td>
+				{{ item.other | number_format(2) }}				
+			</td>		
+			<td>
+				{% set totalF = item.other + total %}
+				{{ totalF | number_format(2) }}
+			</td>
+			<td>
+			</td>
+			<td>
+				{{ totalF | number_format(2) }}
+			</td>
+			<td>
+			</td>
+			<td>
+			</td>
+			<td>
+				{{ item.date }}
+			</td>
+		</tr>
+		{% endfor %}		
+	</table>
+{% endif %}	

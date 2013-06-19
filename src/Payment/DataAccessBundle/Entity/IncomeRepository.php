@@ -51,13 +51,12 @@ class IncomeRepository extends EntityRepository
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:Income i');		
 		$queryBuilder->innerJoin('i.transaction', 't1');
 		$queryBuilder->where($queryBuilder->expr()->in('t1.id', $ids));
-		$queryBuilder->orderBy('t.systemDate');
+		$queryBuilder->orderBy('t1.systemDate');
+		$queryBuilder->addOrderBy('i.consumption');
 
 		$query = $queryBuilder->getQuery();
 		$result = $query->getResult();
 
-		print_r($result);
-		exit();
 		return $result;
 	}
 }
