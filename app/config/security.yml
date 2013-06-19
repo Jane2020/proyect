@@ -39,6 +39,6 @@ security:
         - { path: ^/gestion-de-tipo-pagos/, role: ROLE_ADMIN }
         - { path: ^/gestion-de-usuarios/, role: ROLE_ADMIN }
         - { path: ^/configurar-items, role: ROLE_ADMIN }
-        - { path: ^/configurar-items, role: ROLE_ADMIN }
+        - { path: ^/reportes/, role: ROLE_ADMIN }
     
         

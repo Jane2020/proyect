@@ -48,9 +48,7 @@ class ManagerialMember
 
     /**
      * @var \Payment\DataAccessBundle\Entity\Member
-     * @Assert\NotBlank(
-     *   message = "Por favor ingrese el nombre."
-     * ) 
+	 *
      */
     private $member;
 
@@ -61,6 +59,9 @@ class ManagerialMember
 
     /**
      * @var string
+     * @Assert\NotBlank(
+     *   message = "Por favor ingrese el nombre."
+     * ) 
      */
     private $memberName;
     

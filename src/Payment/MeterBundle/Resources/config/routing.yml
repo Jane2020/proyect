@@ -21,8 +21,8 @@ _deleteConsumption:
     pattern:  /gestion-de-consumo/eliminacion
     defaults: { _controller: PaymentMeterBundle:Consumption:deleteConsumption }  
 _printListToRead:
-    pattern:  /gestion-de-cobros/imprimir-listados
+    pattern:  /gestion-de-consumo/imprimir-listados
     defaults: { _controller: PaymentMeterBundle:Consumption:listToReadConsumption }
 _listToRead:
-    pattern:  /gestion-de-cobros/listado-consumo
+    pattern:  /gestion-de-consumo/listado-consumo
     defaults: { _controller: PaymentMeterBundle:Consumption:readConsumption }
