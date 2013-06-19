@@ -33,4 +33,4 @@ logo_imageright:
     pattern:  /bundles/paymentapplication/images/img_right_mail.jpg
     
 logo_imagecenter:
-    pattern:  /bundles/paymentapplication/images/img_center_mail.jpg
+    pattern:  /images/logo_sicoap.png
