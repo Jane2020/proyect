@@ -25,12 +25,6 @@ _editProfile:
 fos_user_resetting_reset_active:
     pattern:  /active/password
     defaults: { _controller: PaymentSecurityBundle:Resetting:activePassword }
-    
-logo_imageleft:
-    pattern:  /bundles/paymentapplication/images/img_left_mail.jpg
-    
-logo_imageright:
-    pattern:  /bundles/paymentapplication/images/img_right_mail.jpg
-    
+   
 logo_imagecenter:
     pattern:  /images/logo_sicoap.png
