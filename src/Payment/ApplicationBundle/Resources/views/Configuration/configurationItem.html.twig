@@ -63,18 +63,19 @@ jQuery.noConflict();
 		 	<div id="error"></div>
 		 {% endif %}
 		 {% if (item.typeField == 'select') %}
-		 	<select name="{{ item.key }}">
-		 		{% if (item.key == 'hours_start') or (item.key == 'hours_end')%}
-					{% for i in 0..24 %}
+		 	
+		 		{% if (item.key == 'time_start_collection') or (item.key == 'time_end_collection')%}
+				<select name="{{ item.key }}_hour">	
+		 		{% for i in 0..24 %}
 						{% if (item.value == i) %}
     						<option value="{{ i }}" selected="selected">{{ i }}</option>
     					{% else %}	
     						<option value="{{ i }}">{{ i }}</option>
     					{% endif %}	
 					{% endfor %}
-				 {% endif %}	
-				 {% if (item.key == 'minutes_start') or (item.key == 'minutes_end')%}
-				 	{% for i in 0..60 %}
+					</select> :
+				 <select name="{{ item.key }}_minute">	
+				 	{% for i in minutes %}
 				 		{% set val = null %}
 				 		{% if (i < 10) %}
 				 			{% set val = '0' %}
@@ -88,8 +89,9 @@ jQuery.noConflict();
     						<option value="{{ i }}">{{ val~i }}</option>
     					{% endif %}		
 					{% endfor %}
-				 {% endif %}	
-		 	</select>	
+					</select>	
+				 {% endif %}
+		 	
 		 {% endif %}		
         </td>                              
    </tr>

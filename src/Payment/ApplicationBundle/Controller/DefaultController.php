@@ -125,11 +125,16 @@ class DefaultController extends Controller
     			$parameter = $request->request->get($item->getKey()); 
     			if($item->getTypeField() == 'select')
     			{
+    				$parameter = $request->request->get($item->getKey().'_hour');
+    				$parameter1 = $request->request->get($item->getKey().'_minute');
+    				$parameter .= ':'.$parameter1;
     				$item->setValue($parameter);
+    				
     			}
     			$name= $item->getName();
     			if ($item->getRexType() <>'')
     			{
+    				
     				$validation = $this->validationParameters($parameter, $item->getRexType());
 	    			$item->setValue(trim($parameter));
 	    			if ($validation == false)
@@ -149,7 +154,8 @@ class DefaultController extends Controller
     			return $this->redirect($this->generateUrl('home'));
     		}
     	}  
-    	return $this->render("PaymentApplicationBundle:Configuration:configurationItem.html.twig", array('parameters' => $parameters, 'validationArray' => $validationArray, 'validation' =>$validation));
+    	$minutes =  array(00,15,30,45);
+    	return $this->render("PaymentApplicationBundle:Configuration:configurationItem.html.twig", array('parameters' => $parameters, 'validationArray' => $validationArray, 'validation' =>$validation, 'minutes' => $minutes));
     }
     
     /**
