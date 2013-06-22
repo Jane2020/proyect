@@ -42,6 +42,7 @@ jQuery.noConflict();
 		<b>VALOR</b>
 	</td>
 </tr>
+{% set j = 0 %}
 {% for item in parameters %}
 	<tr>
         <td class="content_table" >
@@ -65,9 +66,18 @@ jQuery.noConflict();
 		 {% if (item.typeField == 'select') %}
 		 	
 		 		{% if (item.key == 'time_start_collection') or (item.key == 'time_end_collection')%}
+				
+				{% if(j == 0) %}
+				{% set hour = times.time_start_collection.hour %}
+				{% set minute = times.time_start_collection.minutes %}
+				{% else %}
+				{% set hour = times.time_end_collection.hour %}
+				{% set minute = times.time_end_collection.minutes %}
+				{% endif %}
+				{% set j = 1 %}
 				<select name="{{ item.key }}_hour">	
 		 		{% for i in 0..24 %}
-						{% if (item.value == i) %}
+						{% if (hour == i) %}
     						<option value="{{ i }}" selected="selected">{{ i }}</option>
     					{% else %}	
     						<option value="{{ i }}">{{ i }}</option>
@@ -83,7 +93,7 @@ jQuery.noConflict();
 				 			{% set val = '' %}
 				 		{% endif %}
 				 		
-				 		{% if (item.value == i) %}
+				 		{% if (minute == i) %}
 				 			<option value="{{ i }}" selected="selected">{{ val~i }}</option>
     					{% else %}	
     						<option value="{{ i }}">{{ val~i }}</option>
@@ -93,8 +103,8 @@ jQuery.noConflict();
 				 {% endif %}
 		 	
 		 {% endif %}		
-        </td>                              
-   </tr>
+        </td>       
+</tr>
 {% endfor %}
 <tr>
 	<td align="center" colspan="2">

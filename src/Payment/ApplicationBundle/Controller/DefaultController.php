@@ -154,8 +154,19 @@ class DefaultController extends Controller
     			return $this->redirect($this->generateUrl('home'));
     		}
     	}  
+    	
+    	foreach ($parameters as $item)
+    	{
+    		if($item->getTypeField() == 'select')
+    		{
+    			 $value = explode(':', $item->getValue());
+    			 $time['hour'] = $value[0];
+    			 $time['minutes'] = $value[1];
+    			 $times[$item->getKey()] = $time;
+    		}
+    	}
     	$minutes =  array(00,15,30,45);
-    	return $this->render("PaymentApplicationBundle:Configuration:configurationItem.html.twig", array('parameters' => $parameters, 'validationArray' => $validationArray, 'validation' =>$validation, 'minutes' => $minutes));
+    	return $this->render("PaymentApplicationBundle:Configuration:configurationItem.html.twig", array('parameters' => $parameters, 'validationArray' => $validationArray, 'validation' =>$validation, 'minutes' => $minutes, 'times' => $times));
     }
     
     /**

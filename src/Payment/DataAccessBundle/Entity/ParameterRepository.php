@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class ParameterRepository extends EntityRepository
 {
-	public function isEnabled($firstKey, $endKey, $rolAdmin)
+	public function isEnabled($firstKey, $endKey, $rolAdmin, $time = false)
 	{
 		if ($rolAdmin)
 		{
@@ -25,6 +25,14 @@ class ParameterRepository extends EntityRepository
 		$queryBuilder->andWhere($queryBuilder->expr()->orX(
 				'p.key = ?1',
 				'p.key = ?2'));
+		if ($time)
+		{
+			$queryBuilder->andWhere($queryBuilder->expr()->orX(
+					'p.key = ?3',
+					'p.key = ?4'));
+			$queryBuilder->setParameter(3, 'time_start_collection');
+			$queryBuilder->setParameter(4, 'time_end_collection');
+		}
 		$queryBuilder->setParameter(1, $firstKey);
 		$queryBuilder->setParameter(2, $endKey);
 		$query = $queryBuilder->getQuery();
@@ -36,7 +44,14 @@ class ParameterRepository extends EntityRepository
 		$enabled = false;
 		if((date('Y-m-d') >= $date[$firstKey])&&(date('Y-m-d') <= $date[$endKey]))
 		{
-			$enabled = true;	
+			if($time)
+			{
+				/// sacar fechas aqui y comparar
+				if(1 == 1)
+				{
+					$enabled = true;
+				}				
+			}			
 		}
 		return $enabled;
 	}
