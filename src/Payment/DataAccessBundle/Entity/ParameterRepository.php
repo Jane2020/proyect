@@ -37,11 +37,13 @@ class ParameterRepository extends EntityRepository
 		$queryBuilder->setParameter(2, $endKey);
 		$query = $queryBuilder->getQuery();
 		$results = $query->getResult();
+	
 		foreach ($results as $item)
 		{
 			$date[$item->getKey()] = $item->getValue();
 		}
 		$enabled = false;
+
 		if((date('Y-m-d') >= $date[$firstKey])&&(date('Y-m-d') <= $date[$endKey]))
 		{
 			if($time)
@@ -51,6 +53,8 @@ class ParameterRepository extends EntityRepository
 				{
 					$enabled = true;
 				}				
+			}else {
+				$enabled = true;
 			}			
 		}
 		return $enabled;

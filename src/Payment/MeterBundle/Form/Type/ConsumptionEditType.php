@@ -42,7 +42,10 @@ class ConsumptionEditType extends AbstractType
 			$builder->add('description','textarea',  array('label'=>'Observaciones:', 'required'=>false, 'max_length'=>512));
 		}
 		
-		$builder->add('readDate','text',  array('label'=>'Fecha de Lectura:', 'required'=>false, 'max_length'=>10));
+		$builder->add('readDate','choice',  array('label'=>'Mes de Lectura:', 'required'=>false, 
+				'choices'=>array('01' => 'Enero', '02' => 'Febrero', '03' => 'Marzo', '04' => 'Abril', '05' => 'Mayo', '06' => 'Junio', '07' => 'Julio', '08' => 'Agosto', '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre')
+				,'empty_value' => 'Seleccione',
+		));
 	}
 
 	public function getName()

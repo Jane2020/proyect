@@ -19,10 +19,7 @@ function setValidationsEdit(){
         rules: {
             'consumptionEdit[meterCurrentReading]': {        		
                 regex: /^[0-9]{1,11}$/ 
-            },
-            'consumptionEdit[readDate]': {        		
-                regex: /^\d{2,4}\-\d{1,2}\-\d{1,2}$/
-            },   
+            },             
             'consumptionEdit[description]': {        		
                 regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\@\/]+$/ 
             },  
@@ -34,9 +31,7 @@ function setValidationsEdit(){
             'consumptionEdit[meterCurrentReading]': { 
                 regex: 'Por favor ingrese una lectura válida.' 
             },
-            'consumptionEdit[readDate]': { 
-                regex: 'Por favor ingrese una fecha de inicio válida.' 
-            } ,
+           
         },
         debug: true,
         errorElement: "div",
@@ -45,14 +40,6 @@ function setValidationsEdit(){
         }
     });
 }
-
-$(function() {
-	var currentDate = new Date();
-	$( "#consumptionEdit_readDate" ).datepicker({ 
-		dateFormat: "yy-mm-dd"     }).datepicker('setDate', currentDate);	
-});
-
-
 
 $(document).ready(function(){
 	$("#consumptionEdit_meterCurrentReading").keyup(function(){

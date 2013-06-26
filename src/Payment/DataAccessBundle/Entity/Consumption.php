@@ -27,10 +27,6 @@ class Consumption
      *   message = "Por favor ingrese la Fecha de lectura."
      * )
      * 
-     * @Assert\Regex(
-     *     pattern = "/^\d{2,4}\-\d{1,2}\-\d{1,2}$/",
-     *     message = "Valor de Fecha de lectura es incorrecto."
-     *     )
      */
     private $readDate;
 

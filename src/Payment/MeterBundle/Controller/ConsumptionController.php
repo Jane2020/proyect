@@ -108,7 +108,9 @@ class ConsumptionController extends Controller
 		if ($consumptionId > 0)
 		{
 			$consumption = $em->getRepository('PaymentDataAccessBundle:Consumption')->find($consumptionId);
-			$consumption->setReadDate($consumption->getReadDate()->format('Y-m-d'));
+			$date = $consumption->getReadDate()->format('Y-m-d');
+			$dates = explode('-',$date);
+			$consumption->setReadDate($dates[1]);
 			$accountId = $consumption->getAccount()->getId();			
 			if($consumption->getIsDeleted())
 			{
@@ -164,7 +166,16 @@ class ConsumptionController extends Controller
 						if ($consumptionForm->isValid())
 						{	
 							$consumption->setConsumptionValue($value);
-							$consumption->setReadDate(new \DateTime($consumption->getReadDate()));
+							$date = $consumption->getReadDate();
+							$date = date('Y').'-'.$date;
+							if(date('Y-m') > $date)
+							{
+								$year = date('Y');
+								$year = $year -1;
+								$date = $year.'-'.$date;
+							}
+							$date = $date.'-25';
+							$consumption->setReadDate(new \DateTime($date));
 							if($consumptionId == 0)
 							{
 								$consumption->setSystemDate(new \DateTime());
