@@ -94,10 +94,8 @@ function clearForm()
 {% endblock %}	
 {% block content %}
 <table id="printTableList" " width="100%" style="visibility: hidden;position: absolute;">
-	<tr><td colspan="2" align="center"><font size="5"><span>Junta Administradora del Abastecimiento del Agua Potable</font></span></td></tr>
-	<tr><td colspan="2" align="center"><font size="2">Provincia de Tungurahua</font></td></tr>
-	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2"><img src="{{ asset('images/img_inicio.png') }}"/><font style="font-size:22px; font-weight: bold;"> Reporte de Gastos</font></td></tr>  
+<tr><td colspan="2" align="left"><img src="{{ asset('images/image_report.png') }}" border="0"></td></tr>
+	<tr><td colspan="2"><font style="font-size:22px; font-weight: bold;"> Reporte de Gastos</font></td></tr>  
 </table>
 <div id="title_image">Reporte de Gastos</div>
 {% set action = path('reportMember')  %}

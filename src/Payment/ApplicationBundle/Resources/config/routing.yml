@@ -15,5 +15,5 @@ deleteItem:
     defaults: { _controller: PaymentApplicationBundle:Default:deleteItem }
 
 configurationItem:
-    pattern:  /configurar-items
+    pattern:  /admin/configurar-items
     defaults: { _controller: PaymentApplicationBundle:Default:configurationItem }

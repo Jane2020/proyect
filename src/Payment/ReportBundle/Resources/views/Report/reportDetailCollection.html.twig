@@ -12,8 +12,11 @@ function printService()
 	document.getElementById("topline").style.position = 'absolute';
 	document.getElementById("copyright").style.visibility='hidden';
 	document.getElementById("copyright").style.position = 'absolute';
-	document.getElementById("searchButton").style.visibility='hidden';
-	document.getElementById("searchButton").style.position = 'absolute';
+	document.getElementById("title_image").style.visibility='hidden';
+	document.getElementById("image1").style.visibility='hidden';
+	document.getElementById("image2").style.visibility='hidden';
+	document.getElementById("image3").style.visibility='hidden';
+	document.getElementById("image").style.visibility='visible';
 	window.print();
 	document.getElementById("print").style.visibility='visible';
 	document.getElementById("print").style.position = 'relative';
@@ -23,9 +26,11 @@ function printService()
 	document.getElementById("topline").style.position = 'relative';
 	document.getElementById("copyright").style.visibility='visible' ;
 	document.getElementById("copyright").style.position = 'relative';
-	document.getElementById("searchButton").style.visibility='visible';
-	document.getElementById("searchButton").style.position = 'relative';
-			
+	document.getElementById("title_image").style.visibility='visible';
+	document.getElementById("image1").style.visibility='visible';
+	document.getElementById("image2").style.visibility='visible';
+	document.getElementById("image3").style.visibility='visible';
+	document.getElementById("image").style.visibility='hidden';		
 }
 </script>
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
@@ -42,9 +47,10 @@ function printService()
 </table>
 <br><br><br>
 <table id="printTable">
-<tr><td colspan="2" align="center"><span>Junta Administradora del Abastecimiento del Agua Potable</span></td></tr>
-<tr><td colspan="2" align="center"><font size="3">Provincia de Tungurahua</font></td></tr>
-<tr><td colspan="2">&nbsp;</td></tr>
+<tr id="image1"><td colspan="2" align="center"><span>Junta Administradora del Abastecimiento del Agua Potable</span></td></tr>
+<tr id="image2"><td colspan="2" align="center"><font size="3">Provincia de Tungurahua</font></td></tr>
+<tr id="image3"><td colspan="2">&nbsp;</td></tr>
+<tr id="image" style="visibility: hidden;"><td colspan="2" align="left"><img src="{{ asset('images/image_report.png') }}" border="0"></td></tr>
 <tr><td class="itemTable">Mes Facturado:</td><td>{{ date }}</td></tr>
 <tr><td class="itemTable">Cuenta N°:</td><td>{{ account.accountNumber }}</td></tr>
 <tr><td class="itemTable">N° de Conexión:</td><td>{{ account.meterNumber }}</td></tr>
