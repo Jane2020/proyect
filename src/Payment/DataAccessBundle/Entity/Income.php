@@ -19,10 +19,6 @@ class Income
      */
     private $consumption;
 
-    /**
-     * @var \Payment\DataAccessBundle\Entity\Fines
-     */
-    private $fines;
 
     /**
      * @var \Payment\DataAccessBundle\Entity\IncomeType
@@ -73,28 +69,7 @@ class Income
         return $this->consumption;
     }
 
-    /**
-     * Set fines
-     *
-     * @param \Payment\DataAccessBundle\Entity\Fines $fines
-     * @return Income
-     */
-    public function setFines(\Payment\DataAccessBundle\Entity\Fines $fines = null)
-    {
-        $this->fines = $fines;
     
-        return $this;
-    }
-
-    /**
-     * Get fines
-     *
-     * @return \Payment\DataAccessBundle\Entity\Fines 
-     */
-    public function getFines()
-    {
-        return $this->fines;
-    }
 
     /**
      * Set incomeType
@@ -272,15 +247,6 @@ class Income
         return $this;
     }
 
-    /**
-     * Get finesId
-     *
-     * @return integer 
-     */
-    public function getFinesId()
-    {
-        return $this->finesId;
-    }
 
     /**
      * Set systemUserId
@@ -313,12 +279,6 @@ class Income
      * @var float
      */
     private $basicServiceUnitCost;
-
-    /**
-     * @var \Payment\DataAccessBundle\Entity\Payments
-     */
-    private $payments;
-
 
     /**
      * Set amount
@@ -366,28 +326,7 @@ class Income
         return $this->basicServiceUnitCost;
     }
 
-    /**
-     * Set payments
-     *
-     * @param \Payment\DataAccessBundle\Entity\Payments $payments
-     * @return Income
-     */
-    public function setPayments(\Payment\DataAccessBundle\Entity\Payments $payments = null)
-    {
-        $this->payments = $payments;
     
-        return $this;
-    }
-
-    /**
-     * Get payments
-     *
-     * @return \Payment\DataAccessBundle\Entity\Payments 
-     */
-    public function getPayments()
-    {
-        return $this->payments;
-    }
     /**
      * @var \Payment\DataAccessBundle\Entity\Payment
      */

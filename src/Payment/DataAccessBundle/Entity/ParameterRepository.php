@@ -48,8 +48,7 @@ class ParameterRepository extends EntityRepository
 		{
 			if($time)
 			{
-				/// sacar fechas aqui y comparar
-				if(1 == 1)
+				if((date('H:i') >= $date['time_start_collection'])&&(date('H:i') <= $date['time_end_collection']))
 				{
 					$enabled = true;
 				}				
