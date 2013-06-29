@@ -27,7 +27,7 @@ class ParameterRepository extends EntityRepository
 				'p.key = ?2'));
 		if ($time)
 		{
-			$queryBuilder->andWhere($queryBuilder->expr()->orX(
+			$queryBuilder->orWhere($queryBuilder->expr()->orX(
 					'p.key = ?3',
 					'p.key = ?4'));
 			$queryBuilder->setParameter(3, 'time_start_collection');
@@ -35,7 +35,7 @@ class ParameterRepository extends EntityRepository
 		}
 		$queryBuilder->setParameter(1, $firstKey);
 		$queryBuilder->setParameter(2, $endKey);
-		$query = $queryBuilder->getQuery();
+		$query = $queryBuilder->getQuery();		
 		$results = $query->getResult();
 	
 		foreach ($results as $item)
