@@ -10,17 +10,16 @@ function printService()
 <link rel="stylesheet" type="text/css" href="{{ asset('css/modules.css') }}" />
 <table  align="right" id="print">
   <tr>
-    <td><a href='javascript:printService();' >Imprimir</a></td>
-     <td><a href='javascript:window.close();' >Cerrar</a></td>
+    <td><a href='javascript:printService();' ><img src="{{ asset('images/printer.png') }}" border="0" width="12px">Imprimir</a></td>
+     <td>&nbsp;<a href='javascript:window.close();' ><img src="{{ asset('images/cancel.png') }}" border="0" width="10px">Cerrar</a></td>
   </tr>
 </table>
 <br><br>
 
 {% if  (account != '') %}
 <br>
-<table id="printTable">
-<tr><td colspan="2" align="center"><span>Junta Administradora del Abastecimiento del Agua Potable</span></td></tr>
-<tr><td colspan="2" align="center"><font size="3">Provincia de Tungurahua</font></td></tr>
+<table id="printTable" style="font-size: 12px;">
+<tr><td colspan="2" align="left"><img src="{{ asset('images/image_report.png') }}" border="0"></td></tr>
 <tr><td colspan="2" align="center"><br><font size="3">Estado de Cuenta</font></td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
 <tr><td class="itemTable" style="width: 30% !important;">Num. de Conexión:</td><td>{{ account.accountNumber }}</td></tr>

@@ -167,14 +167,14 @@ class ConsumptionController extends Controller
 						{	
 							$consumption->setConsumptionValue($value);
 							$date = $consumption->getReadDate();
-							$date = date('Y').'-'.$date;
-							if(date('Y-m') > $date)
+							$date1 = date('Y').'-'.$date;
+							if(($date == 12) && (date('Y-m') > $date1))
 							{
 								$year = date('Y');
 								$year = $year -1;
-								$date = $year.'-'.$date;
+								$date1 = $year.'-'.$date1;
 							}
-							$date = $date.'-25';
+							$date = $date1.'-25';
 							$consumption->setReadDate(new \DateTime($date));
 							if($consumptionId == 0)
 							{

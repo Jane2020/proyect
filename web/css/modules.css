@@ -695,3 +695,8 @@ div.error {
     width: 96px;
     margin: auto;
 }
+
+#printTableDetail1 { width: 100%; border-collapse: collapse; border-spacing: 0; visibility: hidden;}
+#printTable1{ width: 100%; visibility: hidden;}
+.printReport{
+	font-size: 12px;}
