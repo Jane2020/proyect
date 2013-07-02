@@ -26,3 +26,7 @@ _printListToRead:
 _listToRead:
     pattern:  /gestion-de-consumo/listado-consumo
     defaults: { _controller: PaymentMeterBundle:Consumption:readConsumption }
+_selectToRead:
+    pattern:  /gestion-de-consumo/seleccion-fecha
+    defaults: { _controller: PaymentMeterBundle:Consumption:selectToReadConsumption }   
+ 

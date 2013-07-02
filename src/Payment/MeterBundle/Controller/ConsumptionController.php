@@ -11,6 +11,7 @@ use Payment\MeterBundle\Entity\ConsumptionSearch;
 use Payment\MeterBundle\Form\Type\ConsumptionSearchType;
 use Payment\DataAccessBundle\Entity\Consumption;
 use Payment\MeterBundle\Form\Type\ConsumptionEditType;
+use Payment\MeterBundle\Entity\DateToList;
 
 class ConsumptionController extends Controller
 {
@@ -214,12 +215,36 @@ class ConsumptionController extends Controller
 	 * @Template()
 	 * @Secure(roles="ROLE_OPERATOR")
 	 */
+	public function selectToReadConsumptionAction(Request $request)
+	{
+		$date = new DateToList();
+		$form = $this->createFormBuilder($date)
+		->add('mounth', 'choice', array(
+			    'choices'   => array('01' => 'Enero', '02' => 'Febrero', '03' => 'Marzo', '04' => 'Abril', '05' => 'Mayo', '06' => 'Junio', '07' => 'Julio', '08' => 'Agosto', '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre'),
+			    'required'  => true,
+				'empty_value' => 'Seleccione...',
+			))
+		->add('year', 'choice', array(
+			    'choices'   => array('2013' => '2013', '2014' => '2014', '2015' => '2015', '2016' => '2016', '2017' => '2017', '2018' => '2018', '2019' => '2019', '2020' => '2020'),
+			    'required'  => true,
+				'empty_value' => 'Seleccione...',
+			))
+		->getForm();
+		
+		return array('form' => $form->createView());
+	}
+	
+	/**
+	 * @Template()
+	 * @Secure(roles="ROLE_OPERATOR")
+	 */
 	public function listToReadConsumptionAction(Request $request)
 	{
+		$form = $request->get('form');
 		$limit = self::LIMIT_LIST;
 		$accounts = $this->getDoctrine()->getEntityManager()->getRepository('PaymentDataAccessBundle:Account')->findByIsActive(1,array('accountNumber' => 'ASC'));
 		$month = array('01' => 'Enero', '02' => 'Febrero', '03' => 'Marzo', '04' => 'Abril', '05' => 'Mayo', '06' => 'Junio', '07' => 'Julio', '08' => 'Agosto', '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre');
-		$date = $month[date('m')].' '.date('Y');
+		$date = $month[$form['mounth']].' '.$form['year'];
 		$accounts = $this->getListToRead($accounts, $limit);
 		return array('accounts' => $accounts, 'date' => $date,'limit' => $limit * 2);
 	}

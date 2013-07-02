@@ -1,0 +1,39 @@
+<link rel="stylesheet" type="text/css" href="{{ asset('css/modules.css') }}" />
+<table  align="right" id="print">
+  <tr>
+     <td>&nbsp;<a href='javascript:window.close();' ><img src="{{ asset('images/cancel.png') }}" border="0" width="10px">Cerrar</a></td>
+  </tr>
+</table>
+<table id="printTableList">
+<tr><td colspan="2" align="left"><img src="{{ asset('images/image_report.png') }}" border="0"></td></tr>
+</table> 
+<br>   
+    {% for flashMessage in app.session.flashbag.get('message') %}
+    <div class="flash-message">
+    {% autoescape false %}
+        {{ flashMessage|trans({}, 'FOSUserBundle') }}
+    {% endautoescape %}
+    </div><br>
+{% endfor %}
+
+{{ app.session.flashbag.set('message', '')}}
+
+<form action="{{ path('_printListToRead') }}" method="post" {{ form_enctype(form) }} id='consumptionSearch' name="consumptionSearch">
+	{{ form_errors(form) }}
+                <table class="tableSearch">
+                    <tr>
+                    <td valign="top">Mes del Listado:</td>
+                        <td valign="top">
+								{{ form_widget(form.mounth, { 'attr': {'class': 'required'}}) }}  
+								{{ form_widget(form.year, { 'attr': {'class': 'required' }}) }}  
+						</td><td>
+                                <input type="submit" name="btsend" id="button_search" value='Generar' />
+                               
+                            </td>
+                        </tr> 
+                        <tr>
+                            <td colspan="3"><div class="error"></div></td>
+                        </tr>                        
+                    </table>
+{{ form_rest(form) }}
+                </form>
