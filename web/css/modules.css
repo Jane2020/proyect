@@ -16,7 +16,7 @@ body{
 	background-color:##ebebed;
 	height: auto;
 	}
-input{
+input, select{
 	border: 1px solid #a5c4d4;
 	border-radius: 3px;
 	padding: 5px;
@@ -55,7 +55,7 @@ h1{
 
 .col1{
 	color:#999999; 
-	background-color:#9dc5d2;
+	background-color:#98C1CE;
 	height:100px;
 	/*background-repeat:repeat-x;
 	background-image: url(../images/background_col1.jpg);*/	
@@ -561,8 +561,12 @@ padding: 2px 6px
 
 div.error {
 	color: #ff0000 !important;
-	font-size: 7pt;
-	
+	font-size: 7pt;	
+}
+
+ #error_message {
+	color: #ff0000 !important;
+	font-size: 10pt;	
 }
 
 #printTable{

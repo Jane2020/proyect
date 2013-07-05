@@ -27,7 +27,7 @@ class ReportController extends Controller
 	
 	/**
 	 * @Template()
-	 * @Secure(roles="ROLE_ADMIN")
+	 * @Secure(roles="ROLE_SECRETARY")
 	 */
     public function reportMemberAssistanceAction(Request $request)
     {
@@ -71,7 +71,7 @@ class ReportController extends Controller
     
 	/**
      * @Template()
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_SECRETARY")
      */
     public function reportMemberAction(Request $request)
     {
@@ -127,7 +127,7 @@ class ReportController extends Controller
     
     /**
      * @Template()
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_SECRETARY")
      */
     public function reportExpensesAction(Request $request)
     {
@@ -165,7 +165,7 @@ class ReportController extends Controller
     
     /**
      * @Template()
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_SECRETARY")
      */
     public function reportCollectionAction(Request $request)
     {
@@ -203,7 +203,7 @@ class ReportController extends Controller
     
     /**
      * @Template()
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_SECRETARY")
      */
     public function reportDetailCollectionAction(Request $request)
     {
@@ -221,7 +221,7 @@ class ReportController extends Controller
     
     /**
      * @Template()
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_SECRETARY")
      */
     public function reportListAction()
     {
@@ -230,7 +230,7 @@ class ReportController extends Controller
     
     /**
      * @Template()
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_SECRETARY")
      */
     public function reportAccountStateAction(Request $request)
     {
@@ -263,7 +263,7 @@ class ReportController extends Controller
     
     /**
      * @Template()
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_SECRETARY")
      */
     public function printAccountStateAction($accountId, $year)
     {
