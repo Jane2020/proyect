@@ -22,7 +22,7 @@ class AccountRepository extends EntityRepository
 		else
 		{
 			$queryBuilder->select(array('a','me'));
-			$queryBuilder->orderBy('a.accountNumber');
+			$queryBuilder->orderBy('a.accountNumber', 'DESC');
 			$queryBuilder->setFirstResult($offset);
 			$queryBuilder->setMaxResults($limit);
 		}

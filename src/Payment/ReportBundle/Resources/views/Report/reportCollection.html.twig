@@ -42,6 +42,9 @@ function printService()
 	document.getElementById("title_image").style.visibility='hidden';
 	document.getElementById("title_image").style.position ='absolute';
 	document.getElementById("tableListUser").border = 1;
+
+	 $(".tdHidden").hide();
+	
 	if ({{ total }} > 10)
 	{
 		document.getElementById("paginator").style.visibility='hidden';
@@ -64,6 +67,7 @@ function printService()
 	document.getElementById("printTableList").style.position = 'absolute';
 	document.getElementById("title_image").style.visibility='visible';
 	document.getElementById("title_image").style.position ='relative';
+	$(".tdHidden").show();
 	if ({{ total }} > 10)
 	{
 		document.getElementById("paginator").style.visibility='visible';
@@ -163,7 +167,7 @@ function downPrint()
             <th class="title">
                 Fecha de Cobro
             </th>  
-            <th class="title">                
+            <th class="title tdHidden">                
             </th>                        
         </tr>
 		{% for item in collection %}
@@ -183,7 +187,7 @@ function downPrint()
              <td class="content_table" >
 				{{ item.systemDate | date("Y-m-d") }}
              </td>
-          	 <td class="content_table">
+          	 <td class="content_table tdHidden">
 				<a href="{{ path('reportDetailCollection', {'id': item.id}) }}">Detalle</a>
              </td> 
         </tr>

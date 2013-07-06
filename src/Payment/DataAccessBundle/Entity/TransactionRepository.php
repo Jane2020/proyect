@@ -33,7 +33,7 @@ class TransactionRepository extends EntityRepository
 		$queryBuilder->add('select', 't');
 		$queryBuilder->add('from', 'PaymentDataAccessBundle:'.$table.' t');		
 		$queryBuilder->Where('t.isDeleted = 0');
-		$queryBuilder->Where('t.isPayment = 0');
+		$queryBuilder->andWhere('t.isPayment = 0');
 		
 		if (!$isConsumtion) {
 			$queryBuilder->andWhere($queryBuilder->expr()->orX(

@@ -58,11 +58,11 @@ function setValidationsEdit(){
             },
             'memberEdit[name]': {     
             	required:true,
-                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.]+$/ 
+                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/ 
             },
             'memberEdit[lastname]': { 
             	required:true,
-            	regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.]+$/
+            	regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/
             },    
             'memberEdit[birthDate]': {        		
                 regex: /^\d{4}\-\d{2}\-\d{2}$/
@@ -114,7 +114,10 @@ function setValidationsEdit(){
         debug: true,
         errorElement: "div",
         submitHandler: function(form){
-            form.submit();
+        	if(submitForm())
+        	{
+        		form.submit();
+        	}
         }
     });
 }

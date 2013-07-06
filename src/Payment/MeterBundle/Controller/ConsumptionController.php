@@ -140,7 +140,17 @@ class ConsumptionController extends Controller
 				$consumptionForm->bind($request);
 				$consumptionExist = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Consumption')->findconsumptionByNameToList($consumption->getAccount(), 0, 5, true, false);
 				
-				if((!$consumptionExist) || ($consumptionId > 0))
+				$date = $consumption->getReadDate();
+				$date1 = date('Y').'-'.$date;
+				if(($date == 12) && (date('Y-m') > $date1))
+				{
+					$year = date('Y');
+					$year = $year -1;
+					$date1 = $year.'-'.$date1;
+				}
+				
+				$conReview = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Consumption')->reviewConsumptionByAccount($consumption->getAccount(), $date1);
+				if(((!$consumptionExist) || ($consumptionId > 0)) and (!$conReview))
 				{	
 					$consumptionAnt = $em->getRepository('PaymentDataAccessBundle:Consumption')->findPrevious($consumption);
 					$meterAnt = 0;
@@ -167,14 +177,7 @@ class ConsumptionController extends Controller
 						if ($consumptionForm->isValid())
 						{	
 							$consumption->setConsumptionValue($value);
-							$date = $consumption->getReadDate();
-							$date1 = date('Y').'-'.$date;
-							if(($date == 12) && (date('Y-m') > $date1))
-							{
-								$year = date('Y');
-								$year = $year -1;
-								$date1 = $year.'-'.$date1;
-							}
+							
 							$date = $date1.'-25';
 							$consumption->setReadDate(new \DateTime($date));
 							if($consumptionId == 0)

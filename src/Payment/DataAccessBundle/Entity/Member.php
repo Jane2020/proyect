@@ -35,7 +35,7 @@ class Member {
 	 * )
 	 * 
 	 * @Assert\Regex(
-	 *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.]+$/",
+	 *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/",
 	 *     message = "Valor del nombre es incorrecto."
 	 * )
 	 */
@@ -49,7 +49,7 @@ class Member {
 	 * )
 	 * 
 	 * @Assert\Regex(
-	 *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.]+$/",
+	 *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/",
 	 *     message = "Valor del apellido es incorrecto."
 	 * )
 	 */

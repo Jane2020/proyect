@@ -51,7 +51,7 @@ class PaymentRepository extends EntityRepository
 		else 
 		{
 			$queryBuilder->select(array('p', 'me', 'pt'));
-			$queryBuilder->orderBy('p.paymentDate');
+			$queryBuilder->orderBy('p.paymentDate', 'DESC');
 			$queryBuilder->setFirstResult($offset);
 			$queryBuilder->setMaxResults($limit);
 		}

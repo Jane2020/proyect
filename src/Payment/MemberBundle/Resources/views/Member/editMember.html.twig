@@ -78,7 +78,7 @@
      {
 		 document.getElementById("memberEdit_documentNumber").style.borderColor = '';
 		 document.getElementById("errorDocumentNumber").style = "display: none;";
-		 document.memberEdit.submit();
+		 return true;
      }
 	 else
 	 {
@@ -86,6 +86,7 @@
 		document.getElementById("errorDocumentNumber").innerHTML = 'Número de Cédula Incorrecto.';	
 		document.getElementById("errorDocumentNumber").style = "display: block;";
      }
+     return false;
  }
 
  function changeColor()
@@ -167,7 +168,7 @@ loadEvents();
 		<tr>
 		<td></td>
 			<td >
- 				<input type="button" value="Guardar" name="btsend" id="button_enter" onClick="javascript:submitForm();"/>
+ 				<input type="submit" value="Guardar" name="btsend" id="button_enter" "/>
  				<input type="button" value="Cancelar" id="button_enter" onclick="javascript:location.href='{{ path('_listMember') }}';"/>
 			</td>
 		</tr>

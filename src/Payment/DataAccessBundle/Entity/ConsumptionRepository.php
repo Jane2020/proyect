@@ -38,7 +38,7 @@ class ConsumptionRepository extends EntityRepository
 			$queryBuilder->andWhere('c.systemDate >= p.value');
 			$queryBuilder->andWhere("c.systemDate <= DATE_ADD(p1.value,1,'day')");
 		}	
-
+		
 		$query = $queryBuilder->getQuery();
 		$result = $query->getResult();
 		return $result;
@@ -78,4 +78,22 @@ class ConsumptionRepository extends EntityRepository
 		$result = $query->getResult();
 		return $result;		
 	}
+	
+	public function reviewConsumptionByAccount($account, $date)
+	{
+		$date .= '%';
+		$queryBuilder = $this->getEntityManager()->createQueryBuilder('c');
+		$queryBuilder->add('select', 'c');		
+		$queryBuilder->add('from', 'PaymentDataAccessBundle:Consumption c');		
+		$queryBuilder->Where('c.isDeleted = 0');
+		$queryBuilder->andWhere('c.account = ?1');
+		$queryBuilder->andWhere("c.readDate like ?2");
+		$queryBuilder->setParameter(1, $account);
+		$queryBuilder->setParameter(2, $date);
+		$query = $queryBuilder->getQuery();
+		$result = $query->getResult();
+		return $result;
+		
+	}
+
 }
