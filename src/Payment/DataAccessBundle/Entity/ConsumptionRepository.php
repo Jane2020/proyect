@@ -79,7 +79,7 @@ class ConsumptionRepository extends EntityRepository
 		return $result;		
 	}
 	
-	public function reviewConsumptionByAccount($account, $date)
+	public function reviewConsumptionByAccount($account, $date, $consumptionId)
 	{
 		$date .= '%';
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder('c');
@@ -88,8 +88,13 @@ class ConsumptionRepository extends EntityRepository
 		$queryBuilder->Where('c.isDeleted = 0');
 		$queryBuilder->andWhere('c.account = ?1');
 		$queryBuilder->andWhere("c.readDate like ?2");
+		
 		$queryBuilder->setParameter(1, $account);
 		$queryBuilder->setParameter(2, $date);
+		if($consumptionId > 0){
+			$queryBuilder->andWhere("c.id <> ?3");
+			$queryBuilder->setParameter(3, $consumptionId);
+		}
 		$query = $queryBuilder->getQuery();
 		$result = $query->getResult();
 		return $result;

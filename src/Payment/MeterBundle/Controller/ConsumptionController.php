@@ -149,7 +149,7 @@ class ConsumptionController extends Controller
 					$date1 = $year.'-'.$date1;
 				}
 				
-				$conReview = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Consumption')->reviewConsumptionByAccount($consumption->getAccount(), $date1);
+				$conReview = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Consumption')->reviewConsumptionByAccount($consumption->getAccount(), $date1, $consumption->getId());
 				if(((!$consumptionExist) || ($consumptionId > 0)) and (!$conReview))
 				{	
 					$consumptionAnt = $em->getRepository('PaymentDataAccessBundle:Consumption')->findPrevious($consumption);
