@@ -226,24 +226,113 @@ class TransactionRepository extends EntityRepository
 				on account.id = consumption.account_id
 				inner join member
 				on member.id = account.member_id";
+		$sql .= ' where (`transaction`.transaction_type_id = 1 )';
 		if($startDate)
 		{
-			$sql.= " where ('".$startDate."' <= `transaction`.system_date)";			
+			$sql.= " and ('".$startDate."' <= `transaction`.system_date)";			
 		}
 		if($endDate)
 		{
-			if ($startDate)
-			{
-				$val = ' and ';
-			}			
-			else
-			{
-				$val = ' where ';
-			}
-			$sql.= $val." ('".$endDate."' >= `transaction`.system_date)";
+			$sql.= " and ('".$endDate."' >= `transaction`.system_date)";
 		}
 		$sql.= " order by (`transaction`.id)".$lim;
 		$result =  $conec->fetchAll($sql);		
 		return $result;
 	}	
+	
+	public function findTransactionByNumber($controller,$number, $offset, $limit, $count = true)
+	{
+		$conec = $controller->get("database_connection");
+		
+		if ($count == true)
+		{
+			$sql = "SELECT count(distinct(`transaction`.id)) as total";
+			$lim = "";			
+		}
+		else
+		{
+			$sql = "SELECT distinct(`transaction`.id), account.account_number as accountNumber, member.name, member.lastname, `transaction`.total_value as totalValue, `transaction`.system_date as systemDate";
+			$lim =  " limit ". $offset.",".$limit;			
+		}
+		
+		$sql.= " FROM `transaction` inner join income 
+				on income.transaction_id = `transaction`.id
+				inner join consumption
+				on consumption.id = income.consumption_id
+				inner join account
+				on account.id = consumption.account_id
+				inner join member
+				on member.id = account.member_id";
+		
+		$sql .= ' where (`transaction`.transaction_type_id = 1 )';
+		if($number)
+		{
+			$sql.= " and (`transaction`.id = ".$number.")";			
+		}
+		
+		$sql.= " order by (`transaction`.id) desc".$lim;
+		$result =  $conec->fetchAll($sql);		
+		return $result;
+	}
+	
+	
+	public function reverseByTransaction($transaction, $user)
+	{
+		$em = $this->getEntityManager();
+		$em->getConnection()->beginTransaction();
+		try 
+		{
+			$incomes = $em->getRepository('PaymentDataAccessBundle:Income')->findBy(array('transaction' =>$transaction));
+			
+			foreach ($incomes as $item)
+			{
+				if($item->getIncomeType()->getId() == 1)
+				{
+					$consumptiom = $item->getConsumption();
+					$consumptiom->setIsPayment(0);
+					$em->persist($consumptiom);
+					$em->flush();
+					
+				}
+				
+				if($item->getIncomeType()->getId() == 4)
+				{
+					$payment = $item->getPayment();
+					$payment->setIsPayment(0);
+					$em->persist($payment);
+					$em->flush();
+						
+				}
+				
+				$em->remove($item);
+				$em->flush();
+			}			
+			$managerial = $em->getRepository('PaymentDataAccessBundle:Managerial')->findOneBy(array('isActive' => 1),array('id' => 'DESC'));
+			$userData = $em->getRepository('PaymentDataAccessBundle:SystemUser')->find($user->getId());
+			$transactionType = $em->getRepository('PaymentDataAccessBundle:TransactionType')->find(3);
+			$transactionReverse = new Transaction();
+			$transactionReverse->setTotalValue($transaction->getTotalValue());
+			$transactionReverse->setSystemDate(new \DateTime());
+			$transactionReverse->setManagerial($managerial);
+			$transactionReverse->setSystemUser($userData);
+			$transactionReverse->setTransactionType($transactionType);
+			$transactionReverse->setTranscationReverse($transaction);
+			$em->persist($transactionReverse);
+			$em->flush();
+				
+			$transaction->setTranscationReverse($transaction);
+			$em->persist($transaction);
+			$em->flush();			
+			$em->getConnection()->commit();
+		
+		} catch (Exception $e) {
+			$em->getConnection()->rollback();
+			$em->close();
+			throw $e->getMessage();
+			return false;
+		}
+		
+		return true;
+	}
+
 }
