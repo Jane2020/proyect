@@ -24,15 +24,15 @@ function confirmExit()
   </tr>
 </table>
 <table id="printTable"  class="printReport">
-<tr><td colspan="2" align="left"><img src="{{ asset('images/image_report.png') }}" border="0"></td></tr>
-<tr><td class="itemTable1">Factura N°:</td><td>{{ factNumber }}</td></tr>
-<tr><td class="itemTable1">Mes Facturado:</td><td>{{ dateFac }}</td></tr>
-<tr><td class="itemTable1">Cuenta N°:</td><td>{{ account.accountNumber }}</td></tr>
-<tr><td class="itemTable1">N° de Conexión:</td><td>{{ account.meterNumber }}</td></tr>
-<tr><td class="itemTable1">Nombre:</td><td>{{ account.member.name }} {{ account.member.lastName }}</td></tr>
-<tr><td class="itemTable1">Cédula:</td><td>{{ account.member.documentNumber }}</td></tr>        
-<tr><td class="itemTable1">Dirección:</td><td>{{ account.member.address }}</td></tr>   
-<tr><td class="itemTable1">Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
+<tr><td colspan="4" align="left"><img src="{{ asset('images/image_report.png') }}" border="0"></td></tr>
+<tr><td class="itemTable1">Factura N°:</td><td>{{ factNumber }}</td>
+	<td class="itemTable1">Mes Facturado:</td><td>{{ dateFac }}</td></tr>
+<tr><td class="itemTable1">Cuenta N°:</td><td>{{ account.accountNumber }}</td>
+	<td class="itemTable1">N° de Conexión:</td><td>{{ account.meterNumber }}</td></tr>
+<tr><td class="itemTable1">Nombre:</td><td>{{ account.member.name }} {{ account.member.lastName }}</td>
+	<td class="itemTable1">Cédula:</td><td>{{ account.member.documentNumber }}</td></tr>        
+<tr><td class="itemTable1">Dirección:</td><td>{{ account.member.address }}</td>  
+	<td class="itemTable1">Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
 </table>
 <br>
 {% if(contItems > 0) %}
@@ -67,15 +67,15 @@ Válido como comprobante de Pago si tiene el sello de cancelación.
 {% if(contItems > 0) %}
 <hr><br><br>
 <table id="printTable1" class="printReport">
-<tr><td colspan="2" align="left"><img src="{{ asset('images/image_report.png') }}" border="0"></td></tr>
-<tr><td class="itemTable1">Factura N°:</td><td>{{ factNumber }}</td></tr>
-<tr><td class="itemTable1">Mes Facturado:</td><td>{{ dateFac }}</td></tr>
+<tr><td colspan="4" align="left"><img src="{{ asset('images/image_report.png') }}" border="0"></td></tr>
+<tr><td class="itemTable1">Factura N°:</td><td>{{ factNumber }}</td>
+	<td class="itemTable1">Mes Facturado:</td><td>{{ dateFac }}</td>	
 <tr><td class="itemTable1">Cuenta N°:</td><td>{{ account.accountNumber }}</td></tr>
-<tr><td class="itemTable1">N° de Conexión:</td><td>{{ account.meterNumber }}</td></tr>
+	<td class="itemTable1">N° de Conexión:</td><td>{{ account.meterNumber }}</td>	
 <tr><td class="itemTable1">Nombre:</td><td>{{ account.member.name }} {{ account.member.lastName }}</td></tr>
-<tr><td class="itemTable1">Cédula:</td><td>{{ account.member.documentNumber }}</td></tr>        
-<tr><td class="itemTable1">Dirección:</td><td>{{ account.member.address }}</td></tr>   
-<tr><td class="itemTable1">Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
+	<td class="itemTable1">Cédula:</td><td>{{ account.member.documentNumber }}</td></tr>        
+<tr><td class="itemTable1">Dirección:</td><td>{{ account.member.address }}</td>	  
+	<td class="itemTable1">Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
 </table>
 <br>
 <table id="printTableDetail1" border="1"  class="printReport">

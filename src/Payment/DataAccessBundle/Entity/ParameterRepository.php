@@ -48,7 +48,7 @@ class ParameterRepository extends EntityRepository
 		{
 			if($time)
 			{
-				if((date('H:i') >= $date['time_start_collection'])&&(date('H:i') <= $date['time_end_collection']))
+				if((strtotime(date('H:i')) >= strtotime($date['time_start_collection']))&&(strtotime(date('H:i')) < strtotime($date['time_end_collection'])))
 				{
 					$enabled = true;
 				}				
