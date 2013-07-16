@@ -42,6 +42,7 @@ function printService()
 	document.getElementById("title_image").style.visibility='hidden';
 	document.getElementById("title_image").style.position ='absolute';
 	document.getElementById("tableListUser").border = 1;
+	document.getElementById("tags").style.visibility='visible';
 
 	 $(".tdHidden").hide();
 	
@@ -72,7 +73,8 @@ function printService()
 	{
 		document.getElementById("paginator").style.visibility='visible';
 		document.getElementById("paginator").style.position ='relative';
-	}				
+	}		
+	document.getElementById("tags").style.visibility='hidden';		
 }
 
 function upPrint()
@@ -170,10 +172,16 @@ function downPrint()
             <th class="title tdHidden">                
             </th>                        
         </tr>
+        {%  set countItem = 0 %}
+        {% set acom = 0 %}
 		{% for item in collection %}
         <tr>
              <td class="content_table" >
-				F00-{{ item.id }}
+             {% set num = '' %}
+             {% for i in 1..(8 - item.id|length) %}
+				{% set num = num ~ '0' %}
+			{% endfor %}
+			{{ num }}{{ item.id }}
              </td>
               <td class="content_table" >
 				{{ item.accountNumber }}
@@ -191,6 +199,8 @@ function downPrint()
 				<a href="{{ path('reportDetailCollection', {'id': item.id}) }}">Detalle</a>
              </td> 
         </tr>
+        {% set countItem =  countItem + 1 %}
+        {% set acom = acom + item.totalValue %}
 		{% endfor %}
 		{% if  total == 0 %}
 		<tr>
@@ -208,7 +218,17 @@ function downPrint()
         </td>	
 	</tr>
 </table>
+
 </div>
 {% endif %}	
 </form>
+
+<table id="tags" style="visibility: hidden;">
+	<tr>
+    	<td >
+		Número de items: {{ countItem }} <b>Total Cobrado: {{ acom | number_format(2) }}</b>
+        </td>	
+	</tr>
+</table>
+
 {% endblock %}

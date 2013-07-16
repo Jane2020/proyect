@@ -99,7 +99,11 @@ $(document).ready(function(){
         	<input type="checkbox" onclick="isChecked(this.checked);" value="{{ item.id }}" name="cid[]" id="cb{{ i }}">
         </td>
         <td class="content_table" >
-			{{ item.id }}
+			{% set num = '' %}
+             {% for i in 1..(8 - item.id|length) %}
+				{% set num = num ~ '0' %}
+			{% endfor %}
+			{{ num }}{{ item.id }}
         </td>
         <td class="content_table">
 			{{ item.accountNumber }}

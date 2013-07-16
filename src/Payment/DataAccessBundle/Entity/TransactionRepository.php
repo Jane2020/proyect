@@ -233,9 +233,9 @@ class TransactionRepository extends EntityRepository
 		}
 		if($endDate)
 		{
-			$sql.= " and ('".$endDate."' >= `transaction`.system_date)";
+			$sql.= " and (DATE_ADD('".$endDate."', INTERVAL 1 DAY) > `transaction`.system_date)";
 		}
-		$sql.= " order by (`transaction`.id)".$lim;
+		$sql.= " order by (`transaction`.id) desc".$lim;
 		$result =  $conec->fetchAll($sql);		
 		return $result;
 	}	
