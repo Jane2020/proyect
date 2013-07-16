@@ -30,7 +30,7 @@ function setValidationsEdit(){
                 regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\@\/]+$/
             },  
             'expenseEdit[expenseAddress]': {        		
-                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\@\/]+$/
+                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\,\@\/]+$/
             },  
             'expenseEdit[expensePhone]': {        		
                 regex: /^(?:\+)?\d{9,10}$/ 
@@ -42,7 +42,7 @@ function setValidationsEdit(){
                 regex: /^(-)?\d+(\.\d\d)?$/
             }, 
             'expenseEdit[expenseDescription]': {        		
-                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\@\/]+$/
+                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\,\@\/]+$/
             }, 
         },
         messages: {
@@ -114,5 +114,12 @@ $(document).ready(function(){
 	$("#expenseEdit_expenseValue").keyup(function(){
 	if ($(this).val() != '')
 	$(this).val($(this).attr('value').replace(/[^0-9'\.]/g, ""));
+	});
+});
+
+$(document).ready(function(){
+	$("#expenseEdit_expensePhone").keyup(function(){
+	if ($(this).val() != '')
+	$(this).val($(this).attr('value').replace(/[^0-9']/g, ""));
 	});
 });

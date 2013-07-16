@@ -45,9 +45,8 @@ class ExpenseRepository extends EntityRepository
 		
 		if ($expenseRuc != null) 
 		{
-			$expenseRuc = str_replace(' ', '%', $expenseRuc);
-			$expenseRuc = $expenseRuc . '%';
-			$queryBuilder->andwhere($queryBuilder->expr()->like('e.expenseRuc', '?3'));
+			$expenseRuc = '%'.$expenseRuc . '%';
+			$queryBuilder->andwhere($queryBuilder->expr()->like('e.expenseNumber', '?3'));
 			$queryBuilder->setParameter(3, $expenseRuc);
 		}
 		
@@ -79,8 +78,7 @@ class ExpenseRepository extends EntityRepository
 		}
 		if($endDate)
 		{
-			$queryBuilder->andWhere($queryBuilder->expr()->lte('e.expenseDate', '?2'));
-			$queryBuilder->setParameter(2, $endDate);
+			$queryBuilder->andWhere("e.expenseDate < DATE_ADD('".$endDate."', 1,'day')");
 		}
 		$query = $queryBuilder->getQuery();
 		$result = $query->getResult();

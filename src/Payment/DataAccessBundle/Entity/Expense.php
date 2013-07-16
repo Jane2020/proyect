@@ -93,10 +93,6 @@ class Expense {
 	/**
 	 * @var string
 	 * 
-	 * @Assert\NotBlank(
-	 *   message = "Por favor ingrese el Ruc."
-	 * )
-	 * 
 	 * @Assert\Regex(
 	 *     pattern = "/^[0-9]{13}$/",
 	 *     message = "Valor del ruc es incorrecto."
@@ -128,7 +124,7 @@ class Expense {
 	 * )
 	 * 
 	 * @Assert\Regex(
-	 *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\@\/]+$/",
+	 *     pattern = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\,\@\/]+$/",
 	 *     message = "Valor de la direción es incorrecto."
 	 * )
 	 */

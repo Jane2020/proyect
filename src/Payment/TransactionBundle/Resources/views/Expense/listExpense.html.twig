@@ -108,6 +108,9 @@ loadEvents();
 
                             </th>
                             <th class="title_check">
+                                # Factura
+                            </th>
+                            <th class="title_check">
                                 # Ruc
                             </th>
 
@@ -131,6 +134,9 @@ loadEvents();
                             <td class="content_table">
                                 <input type="checkbox" onclick="isChecked(this.checked);" value="{{ item.id }}" name="cid[]" id="cb{{ i }}">
                             </td>
+                            <td class="content_table" >
+		{{ item.expenseNumber }}
+                                </td>
                             <td class="content_table" >
 		{{ item.expenseRuc }}
                                 </td>
