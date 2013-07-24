@@ -5,8 +5,8 @@
 function printService()
 {
 	{% set val=0 %}	
-	document.getElementById("print").style.visibility='hidden' ;
-	document.getElementById("print").style.position = 'absolute';
+	document.getElementById("menu_sup").style.visibility='hidden' ;
+	document.getElementById("menu_sup").style.position = 'absolute';
 	document.getElementById("botonera").style.visibility='hidden' ;
 	document.getElementById("botonera").style.position = 'absolute';
 	document.getElementById("topline").style.visibility='hidden';
@@ -30,8 +30,7 @@ function printService()
 	window.print();
 	{% set val=1 %}
 	document.getElementById("tableListUser").border = 0;	
-	document.getElementById("print").style.visibility='visible';
-	document.getElementById("print").style.position = 'relative';
+	document.getElementById("menu_sup").style.visibility='visible';
 	document.getElementById("botonera").style.visibility='visible';
 	document.getElementById("botonera").style.position = 'relative';
 	document.getElementById("topline").style.visibility='visible';
@@ -103,7 +102,7 @@ $(".tdHidden").hide();
 </table>
 <div id="title_image">Reporte de Miembros</div>
 {% set action = path('reportMember')  %}
-<table width="350" border="0" align="right" style="padding:5px;" id="print">
+<table border="0" align="right" style="padding:5px;" id="menu_sup">
 	<tr>
 	    <td style="text-align: center">
 	     	<a href='javascript:printService();' >Imprimir</a>	    	
@@ -146,11 +145,11 @@ $(".tdHidden").hide();
 	</table>
 {{ form_rest(form) }}
 </form>
-<div id = "print">
+<div id = "print1">
 <form id='form_check' name='form_check' action='' method='post'>
 	<table id="tableListUser" >
     	<tr>
-    		{% if orderOption != 1%}   
+    		{% if orderOption == 2%}   
             <th class="title">
               	Número de Cuenta
             </th>
@@ -171,7 +170,7 @@ $(".tdHidden").hide();
 		{% set i = 1 %}
 		{% for item in members %}
         <tr>
-          	{% if orderOption != 1 %}   
+          	{% if orderOption == 2 %}   
              <td class="content_table" >
              
 				{{ item.account_number}}

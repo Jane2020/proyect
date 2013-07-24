@@ -11,7 +11,7 @@ class ExpenseSearchType extends AbstractType
 	{
 		$builder->add('expenseDate', 'text', array('label'=>'Fecha de Expedición:', 'required'=>false, 'max_length'=>10));
 		$builder->add('expenseName', 'text', array('label'=>'Nombre:', 'required'=>false, 'max_length'=>64));
-		$builder->add('expenseRuc', 'text', array('label'=>'Ruc:', 'required'=>false, 'max_length'=>13));
+		$builder->add('expenseRuc', 'text', array('label'=>'Factura:', 'required'=>false, 'max_length'=>13));
 		$builder->add('offset','hidden');
 		$builder->add('limit','hidden');
 	}

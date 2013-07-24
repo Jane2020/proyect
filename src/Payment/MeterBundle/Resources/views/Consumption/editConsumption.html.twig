@@ -19,13 +19,25 @@
 		val.readOnly = false;
 		val.className = 'required';		
 	}
+
+	var statSend = false;
+	function checkSubmit() {
+	    if (!statSend) {
+	        statSend = true;
+	        return true;
+	    } else {
+	        alert("El consumo ya se esta almacenando...");
+	        return false;
+	    }
+	}
+	
 </script>
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}
 
 {% block content %}
 <div id="title_image">{{ title }} Consumo</div>
-<form action="{{ path('_editConsumption') }}" method="post" {{ form_enctype(form) }} id="consumptionEdit" name="consumptionEdit">
+<form action="{{ path('_editConsumption') }}" method="post" {{ form_enctype(form) }} id="consumptionEdit" name="consumptionEdit" onsubmit="return checkSubmit();">
 <div id="contentLeft">
  {% for flashMessage in app.session.flashbag.get('message') %}
     <div class="flash-message">

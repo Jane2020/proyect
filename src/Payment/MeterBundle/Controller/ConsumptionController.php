@@ -137,6 +137,7 @@ class ConsumptionController extends Controller
 			$band = $request->request->get('band', 0);
 			if ($band != 0)
 			{
+				
 				$consumptionForm->bind($request);
 				$consumptionExist = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Consumption')->findconsumptionByNameToList($consumption->getAccount(), 0, 5, true, false);
 				
@@ -148,8 +149,8 @@ class ConsumptionController extends Controller
 					$year = $year -1;
 					$date1 = $year.'-'.$date1;
 				}
-				
-				$conReview = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Consumption')->reviewConsumptionByAccount($consumption->getAccount(), $date1);
+
+				$conReview = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Consumption')->reviewConsumptionByAccount($consumption->getAccount(), $date1, $consumption->getId());
 				if(((!$consumptionExist) || ($consumptionId > 0)) and (!$conReview))
 				{	
 					$consumptionAnt = $em->getRepository('PaymentDataAccessBundle:Consumption')->findPrevious($consumption);
@@ -163,15 +164,11 @@ class ConsumptionController extends Controller
 						$consumption->setMeterPreviousReading($consumptionAnt);
 						$meterAnt = $consumptionAnt->getMeterCurrentReading();
 					}
-					if ($consumption->getMeterCurrentReading())
+					if ($consumption->getMeterCurrentReading() == 0)
 					{
-						$value = $consumption->getMeterCurrentReading() - $meterAnt;
+						$consumption->setMeterCurrentReading($meterAnt);
 					}
-					else 
-					{
-						$value = $meterAnt;
-						
-					}
+					$value = $consumption->getMeterCurrentReading() - $meterAnt;
 					if($value >= 0)
 					{
 						if ($consumptionForm->isValid())

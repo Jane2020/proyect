@@ -7,8 +7,8 @@
 function printService()
 {
 	upPrint();
-	document.getElementById("print").style.visibility='hidden' ;
-	document.getElementById("print").style.position = 'absolute';
+	document.getElementById("menu_sup").style.visibility='hidden' ;
+	document.getElementById("menu_sup").style.position = 'absolute';
 	document.getElementById("botonera").style.visibility='hidden' ;
 	document.getElementById("botonera").style.position = 'absolute';
 	document.getElementById("topline").style.visibility='hidden';
@@ -30,8 +30,7 @@ function printService()
 	window.print();
 	downPrint();
 	document.getElementById("tableListUser").border = 0;		
-	document.getElementById("print").style.visibility='visible';
-	document.getElementById("print").style.position = 'relative';
+	document.getElementById("menu_sup").style.visibility='visible';
 	document.getElementById("botonera").style.visibility='visible';
 	document.getElementById("botonera").style.position = 'relative';
 	document.getElementById("topline").style.visibility='visible' ;
@@ -108,7 +107,7 @@ function clearForm()
 </div>
 <div id="title_image">Reporte de Infracciones</div>
 {% set action = path('reportMemberAssistance')  %}
-<table width="350" border="0" align="right" style="padding:5px;" id="print">
+<table id="menu_sup" border="0" align="right" style="padding:5px;">
 	<tr>
 	    <td style="text-align: center">
 	     	<a href='javascript:printService();' >Imprimir</a>	    	

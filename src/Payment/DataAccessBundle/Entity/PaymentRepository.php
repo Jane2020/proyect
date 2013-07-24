@@ -107,8 +107,7 @@ class PaymentRepository extends EntityRepository
 		}
 		if($endDate)
 		{
-			$queryBuilder->andWhere($queryBuilder->expr()->lte('p.paymentDate', '?4'));
-			$queryBuilder->setParameter(4, $endDate);
+			$queryBuilder->andWhere("p.paymentDate < DATE_ADD('".$endDate."',1,'day')");
 		}
 		
 		if ($memberText != null)

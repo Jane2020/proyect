@@ -27,8 +27,8 @@ function clearForm()
 function printService()
 {
 	upPrint();
-	document.getElementById("print").style.visibility='hidden' ;
-	document.getElementById("print").style.position = 'absolute';
+	document.getElementById("menu_sup").style.visibility='hidden' ;
+	document.getElementById("menu_sup").style.position = 'absolute';
 	document.getElementById("botonera").style.visibility='hidden' ;
 	document.getElementById("botonera").style.position = 'absolute';
 	document.getElementById("topline").style.visibility='hidden';
@@ -42,6 +42,7 @@ function printService()
 	document.getElementById("title_image").style.visibility='hidden';
 	document.getElementById("title_image").style.position ='absolute';
 	document.getElementById("tableListUser").border = 1;
+	document.getElementById("tags").style.visibility='visible';
 
 	 $(".tdHidden").hide();
 	
@@ -53,8 +54,8 @@ function printService()
 	window.print();
 	downPrint();
 	document.getElementById("tableListUser").border = 0;	
-	document.getElementById("print").style.visibility='visible';
-	document.getElementById("print").style.position = 'relative';
+	document.getElementById("menu_sup").style.visibility='visible';
+
 	document.getElementById("botonera").style.visibility='visible';
 	document.getElementById("botonera").style.position = 'relative';
 	document.getElementById("topline").style.visibility='visible';
@@ -72,7 +73,8 @@ function printService()
 	{
 		document.getElementById("paginator").style.visibility='visible';
 		document.getElementById("paginator").style.position ='relative';
-	}				
+	}		
+	document.getElementById("tags").style.visibility='hidden';		
 }
 
 function upPrint()
@@ -112,7 +114,7 @@ function downPrint()
 </table>
 <div id="title_image">Reporte de Cobros</div>
 {% set action = path('reportCollection')  %}
-<table width="350" border="0" align="right" style="padding:5px;" id="print">
+<table border="0" align="right" style="padding:5px;" id="menu_sup">
 	<tr>
 	    <td style="text-align: center">
 	     	<a href='javascript:printService();'>Imprimir</a>	    	
@@ -170,10 +172,16 @@ function downPrint()
             <th class="title tdHidden">                
             </th>                        
         </tr>
+        {%  set countItem = 0 %}
+        {% set acom = 0 %}
 		{% for item in collection %}
         <tr>
              <td class="content_table" >
-				F00-{{ item.id }}
+             {% set num = '' %}
+             {% for i in 1..(8 - item.id|length) %}
+				{% set num = num ~ '0' %}
+			{% endfor %}
+			{{ num }}{{ item.id }}
              </td>
               <td class="content_table" >
 				{{ item.accountNumber }}
@@ -191,6 +199,8 @@ function downPrint()
 				<a href="{{ path('reportDetailCollection', {'id': item.id}) }}">Detalle</a>
              </td> 
         </tr>
+        {% set countItem =  countItem + 1 %}
+        {% set acom = acom + item.totalValue %}
 		{% endfor %}
 		{% if  total == 0 %}
 		<tr>
@@ -208,7 +218,17 @@ function downPrint()
         </td>	
 	</tr>
 </table>
+
 </div>
 {% endif %}	
 </form>
+
+<table id="tags" style="visibility: hidden;">
+	<tr>
+    	<td >
+		Número de items: {{ countItem }} <b>Total Cobrado: {{ acom | number_format(2) }}</b>
+        </td>	
+	</tr>
+</table>
+
 {% endblock %}

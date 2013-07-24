@@ -1,0 +1,143 @@
+{% extends 'PaymentApplicationBundle::layout.html.twig' %}
+{% block title %}Reversa - Cobros  - {{ parent() }} {% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+<script type="text/javascript">
+  var form_id = "reverseSearch";
+
+  var action_delete = "{{ path('_reverseCollection') }}";
+
+
+  function submit_check()
+  {	
+       document.form_check.action = action_delete;           
+       document.form_check.submit();
+  }
+  
+function isChecked(isItChecked)
+{
+	if (isItChecked == true)
+    {
+    	document.form_check.boxchecked.value++;
+    }
+    else 
+    {
+    	document.form_check.boxchecked.value--;
+    }
+}  
+
+$(document).ready(function(){
+	$("#reverseSearch_number").keyup(function(){
+	if ($(this).val() != '')
+	$(this).val($(this).attr('value').replace(/[^0-9']/g, ""));
+	});
+});
+
+
+</script>
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
+{% endblock %}	
+
+{% block content %}
+<div id="title_image">Reversa - Cobros</div>
+<br><br>
+<table id="menu_sup" width="350" border="0" align="right" style="padding:5px;">
+	<tr>
+        <td style="text-align: center">
+        	<a href="javascript:if(document.form_check.boxchecked.value==0){alert('Por favor seleccione al menos una transacción para reversar.');}else{if(confirm('Está seguro que desea reversar la transacción seleccionada?')){submit_check();}}">
+            	<div id="button_delete"></div>Reversar
+            </a>
+        </td>
+   </tr>
+</table>
+<br>
+<br>
+<br>
+{% for flashMessage in app.session.flashbag.get('message') %}
+<div class="flash-message">
+    {% autoescape false %}
+        {{ flashMessage|trans({}, 'FOSUserBundle') }}
+    {% endautoescape %}
+</div><br>
+{% endfor %}
+{{ app.session.flashbag.set('message', '')}}
+
+<form action="{{ path('_listReverse') }}" method="post" {{ form_enctype(form) }} id='reverseSearch' name="reverseSearch">
+	{{ form_errors(form) }}
+	<table class="tableSearch">
+	    <tr>
+	    	<td class="titleSearch">{{ form_label(form.number) }}</td>
+            <td >{{ form_widget(form.number) }}</td>
+            <td valign="top">
+				{{ form_widget(form.offset, { 'attr': {'value': '0'} }) }}  
+				{{ form_widget(form.limit, { 'attr': {'value': limit } }) }}  
+                <input type="submit" name="btsend" id="button_search" value='Buscar' />
+            </td>
+	    </tr> 
+        <tr>
+        	<td></td>
+        	<td>{{ form_errors(form.number) }}</td>
+        	<td><br></td>
+        </tr>
+   </table>
+{{ form_rest(form) }}
+</form>
+<form id='form_check' name='form_check' action='' method='post'>
+<table id="tableListUser" >
+	<tr>
+		<th class="title"></th>
+        <th class="title_check">Número de Factura</th>
+        <th class="title">Numero de Cuenta</th>
+        <th class="title">Nombre del Miembro</th>
+        <th class="title">Valor</th>
+        <th class="title">Fecha</th>
+    </tr>
+{% set i = 1 %}
+{% for item in transactions %}
+    <tr>
+	    <td class="content_table">
+        	<input type="checkbox" onclick="isChecked(this.checked);" value="{{ item.id }}" name="cid[]" id="cb{{ i }}">
+        </td>
+        <td class="content_table" >
+			{% set num = '' %}
+             {% for i in 1..(8 - item.id|length) %}
+				{% set num = num ~ '0' %}
+			{% endfor %}
+			{{ num }}{{ item.id }}
+        </td>
+        <td class="content_table">
+			{{ item.accountNumber }}
+        </td >	
+        <td class="content_table" >
+			{{ item.name }} {{ item.lastname }}
+        </td>      
+        <td class="content_table" >
+				{{ item.totalValue | number_format(2)}}
+             </td>
+             <td class="content_table" >
+				{{ item.systemDate | date("Y-m-d") }}
+             </td>                         
+   </tr>
+{% set i = i +1 %}
+{% endfor %}
+   <tr>
+   {% if  total==0 %}
+   		<td colspan="5" align="center" class="content_table_left">
+       		No existen transacciones a mostrar
+        </td>
+	{% endif %}
+	</tr>
+</table>
+{% if total>10 %}
+<table id="paginator" width="100%">
+	<tr>
+		<td align="center">
+			{% include 'PaymentApplicationBundle:Paginator:paginator.html.twig' %}
+        </td>	
+    </tr>
+</table>
+{% endif %}
+<input type="hidden" value="0" name="boxchecked">
+<input type="hidden" value="0" name="publish">
+</form>
+{% endblock %}

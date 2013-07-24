@@ -38,6 +38,7 @@ security:
         - { path: ^/gestion-de-directivas/, role: ROLE_ADMIN }
         - { path: ^/gestion-de-tipo-pagos/, role: ROLE_ADMIN }
         - { path: ^/gestion-de-usuarios/, role: ROLE_ADMIN }
+        - { path: ^/reversa-de-cobros/, role: ROLE_ADMIN }
         - { path: ^/admin/configurar-items, role: ROLE_ADMIN }
         - { path: ^/reportes/, role: ROLE_SECRETARY }
     

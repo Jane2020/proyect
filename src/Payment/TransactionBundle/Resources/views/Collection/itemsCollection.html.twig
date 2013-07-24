@@ -60,15 +60,15 @@
   <br><br>
   <hr>
 <table id="printTable">
-<tr><td colspan="2" align="center"><span>Junta Administradora del Abastecimiento del Agua Potable</span></td></tr>
-<tr><td colspan="2" align="center"><font size="3">Provincia de Tungurahua</font></td></tr>
-<tr><td colspan="2">&nbsp;</td></tr>
-<tr><td class="itemTable">Mes Facturado:</td><td>{{ dateFac }}</td></tr>
-<tr><td class="itemTable">Cuenta N°:</td><td>{{ account.accountNumber }}</td></tr>
-<tr><td class="itemTable">N° de Conexión:</td><td>{{ account.meterNumber }}</td></tr>
-<tr><td class="itemTable">Nombre:</td><td>{{ account.member.name }} {{ account.member.lastName }}</td></tr>
-<tr><td class="itemTable">Cédula:</td><td>{{ account.member.documentNumber }}</td></tr>        
-<tr><td class="itemTable">Dirección:</td><td>{{ account.member.address }}</td></tr>   
+<tr><td colspan="4" align="center"><span>Junta Administradora del Abastecimiento del Agua Potable</span></td></tr>
+<tr><td colspan="4" align="center"><font size="3">Provincia de Tungurahua</font></td></tr>
+<tr><td colspan="4">&nbsp;</td></tr>
+<tr><td class="itemTable">Mes Facturado:</td><td>{{ dateFac }}</td>
+	<td class="itemTable">Cuenta N°:</td><td>{{ account.accountNumber }}</td></tr>
+<tr><td class="itemTable">N° de Conexión:</td><td>{{ account.meterNumber }}</td>
+	<td class="itemTable">Nombre:</td><td>{{ account.member.name }} {{ account.member.lastName }}</td></tr>
+<tr><td class="itemTable">Cédula:</td><td>{{ account.member.documentNumber }}</td>       
+	<td class="itemTable">Dirección:</td><td>{{ account.member.address }}</td></tr>   
 <tr><td class="itemTable">Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
 </table>
 <br>
