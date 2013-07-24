@@ -52,6 +52,7 @@ class PaymentRepository extends EntityRepository
 		{
 			$queryBuilder->select(array('p', 'me', 'pt'));
 			$queryBuilder->orderBy('p.paymentDate', 'DESC');
+			$queryBuilder->orderBy('p.id', 'DESC');
 			$queryBuilder->setFirstResult($offset);
 			$queryBuilder->setMaxResults($limit);
 		}
@@ -129,6 +130,7 @@ class PaymentRepository extends EntityRepository
 		}		
 		$query = $queryBuilder->getQuery();
 		$result = $query->getResult();
+
 		return $result;
 	}
 }

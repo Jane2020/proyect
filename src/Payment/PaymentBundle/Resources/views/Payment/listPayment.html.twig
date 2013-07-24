@@ -131,7 +131,12 @@ loadEvents();
 				{{ item.paymentType.name }}
             </td>
             <td class="content_table">
-				{{ item.cost |number_format(2)}}
+				{% if(item.isRecidivism) %}
+					{% set val = item.cost * 2 %}
+					{{ val |number_format(2)}}
+				{% else %}
+					{{ item.cost |number_format(2)}}
+				{% endif %}				
             </td >	
             <td class="content_table" >
 				{{ item.paymentDate|date('Y-m-d')}}
