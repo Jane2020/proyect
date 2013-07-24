@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class PaymentRepository extends EntityRepository
 {
+	
 	public function findPaymentTypeByNameToList($paymentTypeText, $offset, $limit, $count = true)
 	{
 	
