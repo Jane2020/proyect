@@ -44,7 +44,7 @@ function setValidationsEdit(){
                 regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\/]+$/ 
             },
             'paymentTypeEdit[description]': {        		
-                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\/]+$/ 
+                regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\_\-\.\/\,\;\:\#]+$/ 
             }, 
             'paymentTypeEdit[cost]': {        		
                 regex: /^(-)?\d+(\.\d\d)?$/
