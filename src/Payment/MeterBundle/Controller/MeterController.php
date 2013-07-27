@@ -104,9 +104,17 @@ class MeterController extends Controller
     		}
     		else
     		{
-    			$em->remove($account);
-    			$em->flush();
-    			$message = "El item ha sido Eliminado &eacute;xitosamente.";
+    			$memberAssoc = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Account')->findBy(array('member'=>$account->getMember()->getId()));
+    			if($memberAssoc)
+    			{
+    				$message = "El item no pudo ser Eliminado, esta relacionado con un miembro.";
+    			}
+    			else
+    			{
+    				$em->remove($account);
+    				$em->flush();
+    				$message = "El item ha sido Eliminado &eacute;xitosamente.";    				
+    			}
     		}
     	}
     
