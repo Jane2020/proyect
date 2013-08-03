@@ -47,6 +47,7 @@ function printService()
 	document.getElementById("title_image").style.visibility='hidden';
 	document.getElementById("title_image").style.position ='absolute';
 	document.getElementById("tableListUser").border = 1;	
+	document.getElementById("tags").style.visibility='visible';
 	if ({{ total }} > 10)
 	{
 		document.getElementById("paginator").style.visibility='hidden';
@@ -83,6 +84,7 @@ function printService()
 	{
 		document.getElementById("expensivesSearch_endDate").value = '';
 	}	
+	document.getElementById("tags").style.visibility='hidden';
 }
 function clearForm()
 {
@@ -156,6 +158,8 @@ function clearForm()
                 Valor
             </th>                       
         </tr>
+         {%  set countItem = 0 %}
+        {% set acom = 0 %}
 		{% for item in expense %}
         <tr>
              <td class="content_table">
@@ -175,6 +179,8 @@ function clearForm()
 				{{ item.expenseValue | number_format(2)}}
              </td>
         </tr>
+         {% set countItem =  countItem + 1 %}
+        {% set acom = acom + item.expenseValue %}
 		{% endfor %}
 		{% if  total==0 %}
 		<tr>
@@ -195,4 +201,11 @@ function clearForm()
 </div>
 {% endif %}	
 </form>
+<table id="tags" style="visibility: hidden;">
+	<tr>
+    	<td >
+		Número de items: {{ countItem }} <b>Total Gastado: {{ acom | number_format(2) }}</b>
+        </td>	
+	</tr>
+</table>
 {% endblock %}

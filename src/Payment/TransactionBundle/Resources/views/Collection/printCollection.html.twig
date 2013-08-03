@@ -2,12 +2,8 @@
 function printService()
 {
 	document.getElementById("print").style.visibility='hidden' ;
-	document.getElementById("printTableDetail1").style.visibility='visible' ;
-	document.getElementById("printTable1").style.visibility='visible' ;
 	window.print();
 	document.getElementById("print").style.visibility='visible';
-	document.getElementById("printTableDetail1").style.visibility='hidden' ;
-	document.getElementById("printTable1").style.visibility='hidden' ;
 }
 
 window.onbeforeunload = confirmExit;
@@ -64,46 +60,7 @@ function confirmExit()
 <br>
 Válido como comprobante de Pago si tiene el sello de cancelación.
 <br><br><br>
-{% if(contItems > 0) %}
-<hr><br><br>
-<table id="printTable1" class="printReport">
-<tr><td colspan="4" align="left"><img src="{{ asset('images/image_report.png') }}" border="0"></td></tr>
-<tr><td class="itemTable1">Factura N°:</td><td>{{ factNumber }}</td>
-	<td class="itemTable1">Mes Facturado:</td><td>{{ dateFac }}</td>	
-<tr><td class="itemTable1">Cuenta N°:</td><td>{{ account.accountNumber }}</td></tr>
-	<td class="itemTable1">N° de Conexión:</td><td>{{ account.meterNumber }}</td>	
-<tr><td class="itemTable1">Nombre:</td><td>{{ account.member.name }} {{ account.member.lastName }}</td></tr>
-	<td class="itemTable1">Cédula:</td><td>{{ account.member.documentNumber }}</td></tr>        
-<tr><td class="itemTable1">Dirección:</td><td>{{ account.member.address }}</td>	  
-	<td class="itemTable1">Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
-</table>
-<br>
-<table id="printTableDetail1" border="1"  class="printReport">
-<tr><th colspan="3">LECTURAS</th><th colspan="4">DETALLE DE COMPROBANTE</th></tr>
-<tr><th>ANTERIOR</th><th>ACTUAL</th><th>CONSUMO</th><th>DETALLE</th><th>CANTIDAD</th><th>VALOR UNITARIO</th><th>VALOR TOTAL</th></tr>
-{% set total = 0 %}
-{% for item in items %}
-	<tr>
-	{% set ant = '' %}
-	{% set act = '' %}
-	{% set con = '' %}
-	{% if(item.type == 1) %}
-		{% set ant = item.entity.meterPreviousreading.meterCurrentReading %}
-		{% set act = item.entity.meterCurrentReading %}
-		{% set con = act - ant %}
-	{% endif %}
-	<td class="itemDetail">{{ ant }}</td>
-	<td class="itemDetail">{{ act }}</td>
-	<td class="itemDetail">{{ con }}</td>
-	<td> {{ item.motive }}</td>
-	<td class="itemDetail"> {{ item.amount }} {% set total = total + item.cost %}</td>
-	<td class="itemDetail"> {{ item.unitCost | number_format(2) }}</td>
-	<td class="itemDetail"> {{ item.cost  | number_format(2) }}</td>
-	</tr>
-{% endfor %}
-<tr><td colspan="6" align="right"><b>Total</b></td><td class="itemDetail"><b>{{ total | number_format(2) }}</b></td></tr>
-</table>
-{% endif %}
+
 {% else %}
 No existe consumos para esta cuenta.
 {% endif %}

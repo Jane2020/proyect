@@ -69,9 +69,14 @@ class MemberRepository extends EntityRepository
 	
 	public function findMemberByParameterToList($controller, $orderOption, $to, $from, $offset, $limit, $count = true)
 	{
+		
 		if ($to && $from)
 		{
-			$from = ($from +1) -$to;
+			if($to > 1)
+			{
+				$to = $to - 1;
+			}
+			$from = ($from ) -$to;
 			//$to = $to -1;			
 			$lim = 	" limit ".$to.",".$from;		
 		}
@@ -80,6 +85,7 @@ class MemberRepository extends EntityRepository
 			$lim = '';
 		}
 
+		
 			
 		$conec = $controller->get("database_connection");
 		if ($orderOption == 1)
