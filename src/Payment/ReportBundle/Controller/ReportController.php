@@ -83,7 +83,7 @@ class ReportController extends Controller
     	$to = null;
     	
     	$em = $this->getDoctrine()->getManager();
-    	$numberMember = $this->getNumberMember();
+    	$numberMember = $this->getNumberMember(1);
     	$memberForm = $this->createForm(new MemberSearchType($numberMember), $memberEntity);
     	if ($request->getMethod() == 'POST')
     	{
@@ -113,16 +113,59 @@ class ReportController extends Controller
     }
     
     
-    private function getNumberMember()
+    private function getNumberMember($option)
     {
     	$member = array();
     	$conec = $this->get('database_connection');
-    	$result =  $conec->fetchAll("SELECT @curRank := @curRank + 1 AS rank FROM member, (SELECT @curRank := 0) r where member.is_active = 1");
-    	foreach ($result as $item)
+    	//Member
+    	if ($option == 1)
     	{
-    		$member[$item['rank']] = $item['rank'];
-    	}    	
+	    	$result =  $conec->fetchAll("SELECT @curRank := @curRank + 1 AS rank FROM member, (SELECT @curRank := 0) r where member.is_active = 1");
+	    	foreach ($result as $item)
+	    	{
+	    		$member[$item['rank']] = $item['rank'];
+	    	}
+    	}   
+    	else
+    	{
+    		//Account
+    		$result =  $conec->fetchAll("SELECT @curRank := @curRank + 1 AS rank FROM account, (SELECT @curRank := 0) r where account.is_active = 1");
+    		foreach ($result as $item)
+    		{
+    			$member[$item['rank']] = $item['rank'];
+    		}
+    	}
     	return $member;
+    }
+    
+    /**
+     * @Secure(roles="ROLE_SECRETARY")
+     */
+    public function loadAjaxSelectAction(Request $request)
+    {
+    	$option = (int)$request->get('option1');
+    	$option1 = (int)$request->get('option2');
+    	
+    	$id = 'memberSearch_to';
+    	$name = 'memberSearch[to]';
+    	$action = '';
+    	
+    	if($option1 == 2)
+    	{
+    		$id = 'memberSearch_from';
+    		$name = 'memberSearch[from]';
+    		$action = 'onclick="javascript:elimineColor();"';
+    	}
+    	
+    	$numberMember = $this->getNumberMember($option);
+    	$html = '<select name="'.$name.'" id="'.$id.'" '.$action.'><option value="">Seleccione</option>';
+    	foreach ($numberMember as $item)
+    	{
+    		$html .= '<option value="'.$item.'">'.$item.'</option>';
+    	}
+    	$html .= '</select>';
+    	echo($html);
+    	exit();
     }
     
     /**

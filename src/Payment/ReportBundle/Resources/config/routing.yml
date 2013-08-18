@@ -24,8 +24,13 @@ reportList:
 
 reportAccountState:
     pattern:  /reportes/estado-de-cuenta
-    defaults: { _controller: PaymentReportBundle:Report:reportAccountState}      
+    defaults: { _controller: PaymentReportBundle:Report:reportAccountState}    
+      
 _printAccountState:
     pattern:  /reportes/estado-de-cuenta/imprimir/{accountId}/{year}
     defaults: { _controller: PaymentReportBundle:Report:printAccountState }     
+    
+loadAjaxSelect:    
+    pattern:  /reportes/loadAjaxSelect/{option1}/{option2}
+    defaults: { _controller: PaymentReportBundle:Report:loadAjaxSelect}
                                       

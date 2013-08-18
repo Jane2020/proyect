@@ -91,8 +91,17 @@ function elimineColor()
 	}		
 }
 $(document).ready(function() {
-$(".tdHidden").hide();
+	$(".tdHidden").hide();
+
+	$( "#memberSearch_order").change(function() {
+		var url = '{{ path("loadAjaxSelect", { "option1" : "0", "option2" : "0" }) }}';		
+		$('#to').load(url +  $(this).val() + '/' + '1');
+		$('#from').load(url +  $(this).val()+ '/' + '2');
+	});
+	
 });
+
+
 </script>
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}	
@@ -125,10 +134,11 @@ $(".tdHidden").hide();
     	<tr>
     	    <td class="titleSearch">{{ form_label(form.order) }}</td>
     	    <td>{{ form_widget(form.order) }}</td>
-    	    <td class="titleSearch">{{ form_label(form.to) }}</td>
-    	    <td>{{ form_widget(form.to) }}</td>
-    	     <td class="titleSearch">{{ form_label(form.from) }}</td>
-    	    <td>{{ form_widget(form.from, { 'attr': {'onClick': 'javascript:elimineColor();' } }) }}<div id="error"></div></td>
+    	    <td class="titleSearch">{{ form_label(form.to) }}</div></td>
+    	    <td><div id="from">{{ form_widget(form.to) }}</div></td>
+    	    
+    	    <td class="titleSearch">{{ form_label(form.from) }}</td>
+    	    <td><div id ="to">{{ form_widget(form.from, { 'attr': {'onClick': 'javascript:elimineColor();' } }) }}</div><div id="error"></div></td>
     	    <td valign="top">
 				{{ form_widget(form.offset, { 'attr': {'value': '0'} }) }}  
 				{{ form_widget(form.limit, { 'attr': {'value': limit } }) }}  

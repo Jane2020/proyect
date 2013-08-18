@@ -72,7 +72,7 @@ class MemberRepository extends EntityRepository
 		
 		if ($to && $from)
 		{
-			if($to > 1)
+			if($to > 0)
 			{
 				$to = $to - 1;
 			}
