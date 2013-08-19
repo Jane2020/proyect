@@ -143,8 +143,8 @@ class ReportController extends Controller
      */
     public function loadAjaxSelectAction(Request $request)
     {
-    	$option = (int)$request->get('option1');
-    	$option1 = (int)$request->get('option2');
+    	$option = (int)$request->get('option1');    	    
+    	$option1 = (int)$request->get('op');    	
     	
     	$id = 'memberSearch_to';
     	$name = 'memberSearch[to]';

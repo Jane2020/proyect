@@ -31,6 +31,6 @@ _printAccountState:
     defaults: { _controller: PaymentReportBundle:Report:printAccountState }     
     
 loadAjaxSelect:    
-    pattern:  /reportes/loadAjaxSelect/{option1}/{option2}
+    pattern:  /reportes/loadAjaxSelect/{option1}
     defaults: { _controller: PaymentReportBundle:Report:loadAjaxSelect}
                                       

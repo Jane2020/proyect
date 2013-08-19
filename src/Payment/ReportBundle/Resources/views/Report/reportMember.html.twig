@@ -94,9 +94,9 @@ $(document).ready(function() {
 	$(".tdHidden").hide();
 
 	$( "#memberSearch_order").change(function() {
-		var url = '{{ path("loadAjaxSelect", { "option1" : "0", "option2" : "0" }) }}';		
-		$('#to').load(url +  $(this).val() + '/' + '1');
-		$('#from').load(url +  $(this).val()+ '/' + '2');
+		var url = '{{ path("loadAjaxSelect", { "option1" : "0" }) }}';		
+		$('#to').load(url +  $(this).val() + '?op=' + '2');
+		$('#from').load(url +  $(this).val()+ '?op=' + '1');
 	});
 	
 });
