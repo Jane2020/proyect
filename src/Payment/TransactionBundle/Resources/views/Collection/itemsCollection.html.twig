@@ -64,12 +64,13 @@
 <tr><td colspan="4" align="center"><font size="3">Provincia de Tungurahua</font></td></tr>
 <tr><td colspan="4">&nbsp;</td></tr>
 <tr><td class="itemTable">Mes Facturado:</td><td>{{ dateFac }}</td>
-	<td class="itemTable">Cuenta N°:</td><td>{{ account.accountNumber }}</td></tr>
+	<td class="itemTable">Cuenta N°:</td><td><font size="3"><b>{{ account.accountNumber }}</b></font></td></tr>
 <tr><td class="itemTable">N° de Conexión:</td><td>{{ account.meterNumber }}</td>
 	<td class="itemTable">Nombre:</td><td>{{ account.member.name }} {{ account.member.lastName }}</td></tr>
 <tr><td class="itemTable">Cédula:</td><td>{{ account.member.documentNumber }}</td>       
 	<td class="itemTable">Dirección:</td><td>{{ account.member.address }}</td></tr>   
-<tr><td class="itemTable">Celular:</td><td>{{ account.member.celularPhone }}</td></tr>  
+<tr><td class="itemTable">Celular:</td><td>{{ account.member.celularPhone }}</td>
+	<td class="itemTable">Fecha Pago:</td><td>{{ dateImp }}</td></tr>   
 </table>
 <br>
 {% if(contItems > 0) %}
@@ -105,4 +106,4 @@ Válido como comprobante de Pago si tiene el sello de cancelación.
 <div class="itemTotal">No existe consumos para esta cuenta.</div>
 {% endif %}
 {% endif %}
-{% endblock %}	
+{% endblock %}		

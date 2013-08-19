@@ -252,15 +252,38 @@ class ReportController extends Controller
     {
     	$transactionId = $request->get('id');
     	$collections = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Income')->findByTransaction($transactionId);
-		$account = $collections[0]->getConsumption()->getAccount();
-		$transaction = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Transaction')->find($transactionId);
-		$date = $transaction->getSystemDate();
-		$year = $date->format('Y');
-		$date = $date->format('m');		
-		$month = array('02' => 'Enero', '03' => 'Febrero', '04' => 'Marzo', '05' => 'Abril', '06' => 'Mayo', '07' => 'Junio', '08' => 'Julio', '09' => 'Agosto', '10' => 'Septiembre', '11' => 'Octubre', '12' => 'Noviembre', '01' => 'Diciembre');
-		$date = $month[$date].' '.$year;
-    	return array ('collections' => $collections, 'date' => $date, 'account' => $account);
+    	$account = $collections[0]->getConsumption()->getAccount();
+    	$transaction = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Transaction')->find($transactionId);
+    	$date = $transaction->getSystemDate();
+    	$year = $date->format('Y');
+    	$date = $date->format('m');
+    	$month = array('02' => 'Enero', '03' => 'Febrero', '04' => 'Marzo', '05' => 'Abril', '06' => 'Mayo', '07' => 'Junio', '08' => 'Julio', '09' => 'Agosto', '10' => 'Septiembre', '11' => 'Octubre', '12' => 'Noviembre', '01' => 'Diciembre');
+    	$date = $month[$date].' '.$year;
+    	$factNumber = str_pad($transactionId, 8, "0", STR_PAD_LEFT);
+    	$dateImp = $transaction->getSystemDate()->format('d-m-Y H:i:s');
+    	return array ('collections' => $collections, 'date' => $date, 'account' => $account,'factNumber' => $factNumber,'dateImp' => $dateImp, 'transactionId' => $transactionId);
     }
+    
+    /**
+     * @Template()
+     * @Secure(roles="ROLE_SECRETARY")
+     */
+    public function printCollectionDetailNewlyAction(Request $request)
+    {
+    	$transactionId = $request->get('id');
+    	$collections = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Income')->findByTransaction($transactionId);
+    	$account = $collections[0]->getConsumption()->getAccount();
+    	$transaction = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Transaction')->find($transactionId);
+    	$date = $transaction->getSystemDate();
+    	$year = $date->format('Y');
+    	$date = $date->format('m');
+    	$month = array('02' => 'Enero', '03' => 'Febrero', '04' => 'Marzo', '05' => 'Abril', '06' => 'Mayo', '07' => 'Junio', '08' => 'Julio', '09' => 'Agosto', '10' => 'Septiembre', '11' => 'Octubre', '12' => 'Noviembre', '01' => 'Diciembre');
+    	$date = $month[$date].' '.$year;
+    	$factNumber = str_pad($transactionId, 8, "0", STR_PAD_LEFT);
+    	$dateImp = $transaction->getSystemDate()->format('d-m-Y H:i:s');
+    	return array ('collections' => $collections, 'date' => $date, 'account' => $account,'factNumber' => $factNumber,'dateImp' => $dateImp);
+    }
+     
     
     /**
      * @Template()

@@ -34,3 +34,6 @@ loadAjaxSelect:
     pattern:  /reportes/loadAjaxSelect/{option1}
     defaults: { _controller: PaymentReportBundle:Report:loadAjaxSelect}
                                       
+_printCollectionDetailNewly:
+    pattern:  /reportes/reporte-de-detalle-de-cobro/imprimir/{id}
+    defaults: { _controller: PaymentReportBundle:Report:printCollectionDetailNewly }                                       

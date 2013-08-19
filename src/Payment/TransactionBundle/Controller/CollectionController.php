@@ -45,7 +45,8 @@ class CollectionController extends Controller
 		}
 		$month = array('02' => 'Enero', '03' => 'Febrero', '04' => 'Marzo', '05' => 'Abril', '06' => 'Mayo', '07' => 'Junio', '08' => 'Julio', '09' => 'Agosto', '10' => 'Septiembre', '11' => 'Octubre', '12' => 'Noviembre', '01' => 'Diciembre');
 		$date = $month[date('m')].' '.date('Y');
-		return array('form' => $form->createView(), 'band' => $band, 'account' => $account, 'items' => $items, 'contItems' => $contItems, 'accountId' => $accountId, 'dateFac' => $date);
+		$dateImp = date('d-m-Y H:i:s');
+		return array('form' => $form->createView(), 'band' => $band, 'account' => $account, 'items' => $items, 'contItems' => $contItems, 'accountId' => $accountId, 'dateFac' => $date, 'dateImp' => $dateImp);
 	}
 	
 	/**
@@ -61,7 +62,8 @@ class CollectionController extends Controller
 		$contItems = count($items);
 		$month = array('02' => 'Enero', '03' => 'Febrero', '04' => 'Marzo', '05' => 'Abril', '06' => 'Mayo', '07' => 'Junio', '08' => 'Julio', '09' => 'Agosto', '10' => 'Septiembre', '11' => 'Octubre', '12' => 'Noviembre', '01' => 'Diciembre');
 		$date = $month[date('m')].' '.date('Y');
-		$factNumber = str_pad($result['transaction'], 8, "0", STR_PAD_LEFT);		
-		return array('account' => $account, 'items' => $items, 'contItems' => $contItems, 'dateFac' => $date,'factNumber' => $factNumber);
+		$factNumber = str_pad($result['transaction'], 8, "0", STR_PAD_LEFT);	
+		$dateImp = date('d-m-Y H:i:s');
+		return array('account' => $account, 'items' => $items, 'contItems' => $contItems, 'dateFac' => $date,'factNumber' => $factNumber, 'dateImp' => $dateImp);
 	}
 }
