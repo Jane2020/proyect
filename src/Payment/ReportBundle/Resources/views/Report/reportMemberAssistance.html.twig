@@ -21,7 +21,8 @@ function printService()
 	document.getElementById("printTableList").style.position = 'relative';
 	document.getElementById("title_image").style.visibility='hidden';
 	document.getElementById("title_image").style.position = 'absolute';
-	document.getElementById("tableListUser").border = 1;	
+	document.getElementById("tableListUser").border = 1;
+	document.getElementById("tags").style.visibility='visible';	
 	if ({{ total }} > 10)
 	{
 		document.getElementById("paginator").style.visibility='hidden';
@@ -47,7 +48,8 @@ function printService()
 	{
 		document.getElementById("paginator").style.visibility='visible';
 		document.getElementById("paginator").style.position = 'relative';
-	}				
+	}		
+	document.getElementById("tags").style.visibility='hidden';		
 }
  
 
@@ -161,6 +163,9 @@ function clearForm()
 <form id='form_check' name='form_check' action='' method='post'>
 	<table id="tableListUser">
     	<tr>
+    	<th class="title">
+                No.
+            </th>
         	<th class="title">
                 Nombre del Miembro
             </th>
@@ -169,11 +174,20 @@ function clearForm()
             </th>     
             <th class="title">
                Fecha de Registro
+            </th> 
+             <th class="title">
+               Reincidencia
+            </th>   
+            <th class="title">
+               Valor
             </th>        
     	</tr>
 		{% set i = 1 %}
+		{%  set countItem = 0 %}
+        {% set acom = 0 %}
 		{% for item in memberAssistance %}
         <tr>
+        <td>{{ countItem + 1 }}</td>
  			<td class="content_table" >
 				{% if (item.member) %}
 					{{ item.member.name}} {{ item.member.lastname}}
@@ -187,13 +201,31 @@ function clearForm()
             </td>
             <td class="content_table" >
 				{{ item.paymentDate|date('Y-m-d')}}
-            </td>                                          
+            </td>  
+            <td class="content_table" >
+				{% if(item.isRecidivism) %}
+					SI
+				{% else %}
+					NO
+				{% endif %}		
+            </td>   
+            <td class="content_table" >
+            {% set val = item.cost %}
+				{% if(item.isRecidivism) %}
+					{% set val = val + recidivism %}
+					{{ val |number_format(2)}}
+				{% else %}
+					{{ val |number_format(2)}}
+				{% endif %}		
+            </td>                                        
          </tr>
+         {% set countItem =  countItem + 1 %}
+        {% set acom = acom + val %}
 		{% set i = i +1 %}
 		{% endfor %}
          <tr>
 		{% if  total==0 %}
-        	<td colspan="3" align="center" class="content_table_left" id="content_table_left">
+        	<td colspan="6" align="center" class="content_table_left" id="content_table_left">
             	No existen items a mostrar
             </td>
 		{% endif %}
@@ -210,4 +242,11 @@ function clearForm()
 </div>
 {% endif %}	
 </form>
+<table id="tags" style="visibility: hidden;">
+	<tr>
+    	<td >
+		Número de items: {{ countItem }} <b>Total: {{ acom | number_format(2) }}</b>
+        </td>	
+	</tr>
+</table>
 {% endblock %}

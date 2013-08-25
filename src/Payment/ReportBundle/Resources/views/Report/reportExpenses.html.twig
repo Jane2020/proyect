@@ -142,6 +142,9 @@ function clearForm()
 <form id='form_check' name='form_check' action='' method='post'>
 	<table id="tableListUser">
     	<tr>
+    	<th class="title">
+                No.
+            </th>
 	    	<th class="title">
                 Fecha
             </th>
@@ -162,6 +165,7 @@ function clearForm()
         {% set acom = 0 %}
 		{% for item in expense %}
         <tr>
+         <td>{{ countItem + 1 }}</td>
              <td class="content_table">
 				{{ item.expenseDate | date("Y-m-d") }}
              </td>
@@ -184,7 +188,7 @@ function clearForm()
 		{% endfor %}
 		{% if  total==0 %}
 		<tr>
-			<td colspan="6" align="center" class="content_table_left" id="content_table_left">
+			<td colspan="7" align="center" class="content_table_left" id="content_table_left">
             	No existen gastos a mostrar
             </td>
         </tr>    

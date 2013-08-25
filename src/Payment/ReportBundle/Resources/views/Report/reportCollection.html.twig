@@ -154,6 +154,10 @@ function downPrint()
 <form id='form_check' name='form_check' action='' method='post'>
 	<table id="tableListUser" >
     	<tr>
+    	<th class="title">
+                No.
+            </th>
+    	
         	<th class="title_check">
             	Num. Fact
             </th>
@@ -176,6 +180,7 @@ function downPrint()
         {% set acom = 0 %}
 		{% for item in collection %}
         <tr>
+        <td>{{ countItem + 1 }}</td>
              <td class="content_table" >
              {% set num = '' %}
              {% for i in 1..(8 - item.id|length) %}
@@ -204,7 +209,7 @@ function downPrint()
 		{% endfor %}
 		{% if  total == 0 %}
 		<tr>
-			<td colspan="6" align="center" class="content_table_left">
+			<td colspan="7" align="center" class="content_table_left">
             	No existen Cobros a mostrar
             </td>
         </tr>    
