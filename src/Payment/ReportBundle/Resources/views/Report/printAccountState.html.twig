@@ -59,6 +59,8 @@ function printService()
 			<th>Saldos</th>
 			<th>Fecha de Pago</th>
 		</tr>
+		{%  set countItem = 0 %}
+        {% set acom = 0 %}
 		{% for item in stateAccount %}
 		<tr align="center" style="font-size: 11px; ">
 			<td>
@@ -109,6 +111,15 @@ function printService()
 				{{ item.date }}
 			</td>
 		</tr>
+		{% set countItem =  countItem + 1 %}
+        {% set acom = acom + totalF %}
 		{% endfor %}		
+	</table>
+	<table id="tags" >
+	<tr>
+    	<td >
+		Número de Meses: {{ countItem }} <b>Total: {{ acom | number_format(2) }}</b>
+        </td>	
+	</tr>
 	</table>
 {% endif %}	

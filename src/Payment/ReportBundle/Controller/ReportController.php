@@ -66,7 +66,10 @@ class ReportController extends Controller
     	$total = $total[0][1];
     	$memberAssistance = $em->getRepository('PaymentDataAccessBundle:Payment')->findMemberAssistanceToList($memberText, $paymentType, $startDate, $endDate,$offsetItem, $limit, false);
     	$paginator = new Paginator($memberAssitanceForm->getName(), $total, $offset, $limit);
-    	return array('form' => $memberAssitanceForm->createView(), 'limit' => $limit, 'total' => $total, 'memberAssistance' => $memberAssistance, 'paginator' => $paginator, 'limit_paginator' => $limit_paginator);    
+    	
+    	$valueRecidivism = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Parameter')->findByKey('recidivism_cost');
+    	$valueRecidivism = $valueRecidivism[0]->getValue();
+    	return array('form' => $memberAssitanceForm->createView(), 'limit' => $limit, 'total' => $total, 'memberAssistance' => $memberAssistance, 'paginator' => $paginator, 'limit_paginator' => $limit_paginator,'recidivism' => $valueRecidivism);    
     }
     
 	/**
