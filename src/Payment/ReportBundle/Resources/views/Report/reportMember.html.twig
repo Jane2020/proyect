@@ -98,7 +98,6 @@ $(document).ready(function() {
 		$('#to').load(url +  $(this).val() + '?op=' + '2');
 		$('#from').load(url +  $(this).val()+ '?op=' + '1');
 	});
-	
 });
 
 
@@ -142,6 +141,7 @@ $(document).ready(function() {
     	    <td valign="top">
 				{{ form_widget(form.offset, { 'attr': {'value': '0'} }) }}  
 				{{ form_widget(form.limit, { 'attr': {'value': limit } }) }}  
+				
 				<div id = "searchButton">
                 	<input type="button" name="btsend" id="button_search" value='Buscar' id="btsend" onclick="javascript:validation()"/>            
                 </div>

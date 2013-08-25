@@ -83,7 +83,13 @@ class ReportController extends Controller
     	$to = null;
     	
     	$em = $this->getDoctrine()->getManager();
-    	$numberMember = $this->getNumberMember(1);
+    	$form = $request->get('memberSearch');
+    	$option = $form['order'];
+    	if (is_null($option))
+    	{
+    		$option = 1;
+    	}
+    	$numberMember = $this->getNumberMember($option);
     	$memberForm = $this->createForm(new MemberSearchType($numberMember), $memberEntity);
     	if ($request->getMethod() == 'POST')
     	{
