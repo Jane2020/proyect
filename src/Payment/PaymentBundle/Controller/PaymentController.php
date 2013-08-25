@@ -48,10 +48,13 @@ class PaymentController extends Controller
 		}
 		$offsetItem = $offsetItem * $limit;
 		$total = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Payment')->findPaymentByNameToList($paymentText, $offsetItem, $limit);
-		$total = $total[0][1];
+		$total = $total[0][1];		
 		$payment = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Payment')->findPaymentByNameToList($paymentText, $offsetItem, $limit, false);
 		$paginator = new Paginator($paymentForm->getName(), $total, $offset, $limit);
-		return array('form' => $paymentForm->createView(), 'limit' => $limit, 'total' => $total, 'payment' => $payment, 'paginator' => $paginator);
+		$valueRecidivism = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Parameter')->findByKey('recidivism_cost');
+		$valueRecidivism = $valueRecidivism[0]->getValue();
+		
+		return array('form' => $paymentForm->createView(), 'limit' => $limit, 'total' => $total, 'payment' => $payment, 'paginator' => $paginator,'recidivism' => $valueRecidivism);
 	}
 	
 	/**

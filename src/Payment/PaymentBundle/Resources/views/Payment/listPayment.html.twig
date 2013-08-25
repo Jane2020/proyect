@@ -132,7 +132,7 @@ loadEvents();
             </td>
             <td class="content_table">
 				{% if(item.isRecidivism) %}
-					{% set val = item.cost * 2 %}
+					{% set val = item.cost + recidivism %}
 					{{ val |number_format(2)}}
 				{% else %}
 					{{ item.cost |number_format(2)}}
