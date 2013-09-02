@@ -58,7 +58,11 @@
 	{% set cost = '' %}
 	{% if(item.consumption) %}
 		{% if(item.incomeType.id == 1) %}
-			{% set ant = item.consumption.meterPreviousreading.meterCurrentReading %}
+			{% if(item.consumption.meterPreviousreading) %}
+				{% set ant = item.consumption.meterPreviousreading.meterCurrentReading %}
+			{% else %}
+				{% set ant = item.consumption.meterCurrentReading %}
+			{% endif %}
 			{% set act = item.consumption.meterCurrentReading %}
 			{% set con = act - ant %}
 		{% endif %}

@@ -382,12 +382,13 @@ class ReportController extends Controller
     		
     		if($consumption)
     		{
+    			
     			switch ($type)
     			{
     				case 1: 
     						if(isset($result['present']))
     						{
-    							$result['other'] = $sum;
+    							$result['other'] = $sum ;
     							$items[$i] = $result;
     							$i++;
     							$result = array('excedent' => 0, 'excedentCost' => 0, 'other' => 0);
@@ -395,9 +396,15 @@ class ReportController extends Controller
     							$result['basic'] = $basic;
     							$sum = 0;
     						}
+    						
     						$result['present'] = $consumption->getMeterCurrentReading();
     						$result['basicCost'] = $item->getBasicServiceUnitCost();
-    						$result['previous'] = $consumption->getMeterPreviousReading()->getMeterCurrentReading();
+    						if($consumption->getMeterPreviousReading())
+    						{
+    							$result['previous'] = $consumption->getMeterPreviousReading()->getMeterCurrentReading();
+    						} else {
+    							$result['previous'] = $consumption->getMeterCurrentReading();
+    						}
     						$date = $consumption->getReadDate();
     						$result['month'] = $month[$date->format('m')].' '.$date->format('Y');
     					break;
@@ -423,7 +430,7 @@ class ReportController extends Controller
     		}   		
     	}
 
-    	$result['other'] = $sum;
+    	$result['other'] = $sum + $sumFine;
     	$items[$i] = $result;
     	return $items;
     }

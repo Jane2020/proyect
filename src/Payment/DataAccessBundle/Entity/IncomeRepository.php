@@ -52,7 +52,7 @@ class IncomeRepository extends EntityRepository
 		$queryBuilder->innerJoin('i.transaction', 't1');
 		$queryBuilder->where($queryBuilder->expr()->in('t1.id', $ids));
 		$queryBuilder->orderBy('t1.systemDate');
-		$queryBuilder->addOrderBy('i.consumption');
+		$queryBuilder->addOrderBy('i.id');
 
 		$query = $queryBuilder->getQuery();
 		$result = $query->getResult();

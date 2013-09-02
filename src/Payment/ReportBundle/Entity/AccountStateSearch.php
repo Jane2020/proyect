@@ -15,6 +15,20 @@ class AccountStateSearch {
 	private $yearAccount;
 
 	/**
+	* @Assert\NotBlank(
+	*   message = "Por favor ingrese el mes de inicio."
+	*   )
+	*/
+	private $mounthStart;
+
+	/**
+	 * @Assert\NotBlank(
+	 *   message = "Por favor ingrese el mes de fin."
+	 *   )
+	 */
+	private $mounthEnd;
+
+	/**
 	 * Get account
 	 *
 	 * @return int
@@ -48,6 +62,22 @@ class AccountStateSearch {
 	 */
 	public function getYearAccount() {
 		return $this->yearAccount;
+	}
+
+	public function getMounthStart() {
+		return $this->mounthStart;
+	}
+
+	public function setMounthStart($mounthStart) {
+		$this->mounthStart = $mounthStart;
+	}
+
+	public function getMounthEnd() {
+		return $this->mounthEnd;
+	}
+
+	public function setMounthEnd($mounthEnd) {
+		$this->mounthEnd = $mounthEnd;
 	}
 
 }

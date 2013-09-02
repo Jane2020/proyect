@@ -16,8 +16,17 @@
 	  window.open(action_print, 'popup', "width="+ancho+",height="+alto+",menubar=0,toolbar=0,directories=0,scrollbars=0,resizable=1,left="+posicion_x+",top="+posicion_y+"");
   }
 
+  $(document).ready(function(){
+      $('#accounStateSearch').validate();
+  });
  
   </script> 
+<style type="text/css">  
+  label.error {
+	    color: #FF0000 !important;
+	    font-size: 7pt;
+	}
+</style>
 <link rel="stylesheet" type="text/css" href="{{ asset('bundles/paymentsecurity/css/security.css') }}" />
 {% endblock %}	
 {% block content %}
@@ -47,11 +56,17 @@
 {% endfor %}
 {{ app.session.flashbag.set('message', '')}}
 <form action="{{ path('reportAccountState') }}" method="post" {{ form_enctype(form) }} id='accounStateSearch' name="accounStateSearch" >
+	{{ form_errors(form.mounthStart) }}
+	{{ form_errors(form.mounthEnd) }}
 	{{ form_errors(form) }}
     <table class="tableSearch">
     	<tr>    
     	     {% set required = 0 %}
              {% include 'PaymentApplicationBundle:Finder:finder.html.twig' %}
+    	    <td class="titleSearch">{{ form_label(form.mounthStart) }}</td>
+    	    <td>{{ form_widget(form.mounthStart, { 'attr': {'class': 'required'}}) }}</td>
+    	     <td class="titleSearch">{{ form_label(form.mounthEnd) }}</td>
+    	     <td>{{ form_widget(form.mounthEnd, { 'attr': {'class': 'required'}}) }}</td>
     	    <td class="titleSearch">{{ form_label(form.yearAccount) }}</td>
     	    <td>{{ form_widget(form.yearAccount, { 'attr': {'class': 'required' } }) }}</td>    	    
     	    <td valign="top">
