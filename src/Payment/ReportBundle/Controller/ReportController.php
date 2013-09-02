@@ -325,10 +325,12 @@ class ReportController extends Controller
     		{
     			$account = $datas->getAccount();
     			$year = $datas->getYearAccount();
+    			$mounthStart = $datas->getMounthStart();
+    			$mounthEnd = $datas->getMounthEnd();
     			if ($account)
     			{
-    				$consumptions = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Income')->getStateAccount($account,$year);	   				
-	   				$stateAccount = $this->getItems($consumptions, $basicConsumption);
+    				$consumptions = $this->getDoctrine()->getManager()->getRepository('PaymentDataAccessBundle:Income')->getStateAccount($account,$year); 			
+    				$stateAccount = $this->getItems($consumptions, $basicConsumption,$mounthStart,$mounthEnd,$year);
 	   				$accountId = $account->getId();
     			}
     		}    		
@@ -352,7 +354,7 @@ class ReportController extends Controller
     }
     
     
-    private function getItems($consumptions, $basic)
+    private function getItems($consumptions, $basic, $mountStart, $mountEnd, $year)
     {
     	$items = array();
     	$account = null;
@@ -373,7 +375,7 @@ class ReportController extends Controller
     			$i++;
     			$result = array('excedent' => 0, 'excedentCost' => 0, 'other' => 0);
     			$sumFine = 0; $sum = 0;
-    			$result['date'] = $transaction->getSystemDate()->format('Y-m-d');
+    			$result['date'] = $transaction->getSystemDate()->format('Y-m-d');    			
     			$result['basic'] = $basic;
     			
     		} 
@@ -407,6 +409,7 @@ class ReportController extends Controller
     						}
     						$date = $consumption->getReadDate();
     						$result['month'] = $month[$date->format('m')].' '.$date->format('Y');
+    						$result['dates'] = $date->format('m').'-'.$date->format('Y');
     					break;
     				case 2: $sum = $sum + ($item->getAmount() * $item->getBasicServiceUnitCost());
     						break;
@@ -432,7 +435,19 @@ class ReportController extends Controller
 
     	$result['other'] = $sum + $sumFine;
     	$items[$i] = $result;
-    	return $items;
+    	
+    	$result = array();
+    	
+    	foreach ($items as $item)
+    	{
+    		if(($item['dates'] >= $mountStart.'-'.$year)&&($item['dates'] <= $mountEnd.'-'.$year))
+    		{    			
+    			$result[] = $item;
+    		}
+    	}
+    	
+    	
+    	return $result;
     }
     
     private function getStateAccount($consumption, $parameter)
@@ -496,6 +511,9 @@ class ReportController extends Controller
     		}
     		$i++;
     	}
+    	
+    	
+    	
     	return($stateAccounts);    	  	
     }
 }

@@ -33,7 +33,7 @@ class IncomeRepository extends EntityRepository
 		$queryBuilder1->innerJoin('i1.consumption', 'c');
 		$queryBuilder1->innerJoin('c.account', 'a');
 		$queryBuilder1->where('a.id = ?1');
-		$queryBuilder1->andwhere($queryBuilder1->expr()->like('c.systemDate', '?2'));
+		$queryBuilder1->andwhere($queryBuilder1->expr()->like('c.readDate', '?2'));
 		$queryBuilder1->setParameter(1, $account->getId());
 		$queryBuilder1->setParameter(2, $year.'%');
 		
