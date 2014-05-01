@@ -14,21 +14,15 @@ function printService()
   </tr>
 </table>
 <table id="printTable"  class="printReport">
-<tr><td colspan="4" align="left"><img src="{{ asset('images/image_report.png') }}" border="0"></td></tr>
-<tr><td class="itemTable1">Factura N°:</td><td>{{ factNumber }}</td>
-	<td class="itemTable1">Cuenta N°:</td><td><font size="3"><b>{{ account.accountNumber }}</b></font></td></tr>
-<tr><td class="itemTable1">Mes Facturado:</td><td>{{ date }}</td>
-	<td class="itemTable1">N° de Conexión:</td><td>{{ account.meterNumber }}</td></tr>
-<tr><td class="itemTable1">Nombre:</td><td>{{ account.member.name }} {{ account.member.lastName }}</td>
-	<td class="itemTable1">Cédula:</td><td>{{ account.member.documentNumber }}</td></tr>        
-<tr><td class="itemTable1">Dirección:</td><td>{{ account.member.address }}</td>  
-	<td class="itemTable">Fecha Pago:</td><td>{{ dateImp }}</td></tr> 
+<tr><td height="68px">&nbsp;</td></tr>
+<tr><td>{{ account.member.name }} {{ account.member.lastName }}</td><td width="26%">{{ account.meterNumber }}</td><td width="15%"><font size="3"><b>{{ account.accountNumber }}</b></font></td></tr>
+<tr><td>{{ account.member.documentNumber }}</td><td colspan="2">{{ date }}</td></tr>
+<tr><td>{{ account.member.address }}</td><td colspan="2">{{ dateImp }}</td></tr>
 </table>
 <br>
 
-<table id="printTableDetail" border="1"  class="printReport">
-<tr><th colspan="3">LECTURAS</th><th colspan="4">DETALLE DE COMPROBANTE</th></tr>
-<tr><th>ANTERIOR</th><th>ACTUAL</th><th>CONSUMO</th><th>DETALLE</th><th>CANTIDAD</th><th>VALOR UNITARIO</th><th>VALOR TOTAL</th></tr>
+<table id="printTableDetail" border="0"  class="printReport">
+<tr><td height="20px">&nbsp;</td></tr>
 {% set total = 0 %}
 {% for item in collections %}
 	<tr>
@@ -50,18 +44,21 @@ function printService()
 	{%  set amount = item.amount  %}
 	{%  set unitCost = item.basicServiceUnitCost  %}
 	{%  set cost = amount * unitCost  %}
-	<td class="itemDetail">{{ ant }}</td>
-	<td class="itemDetail">{{ act }}</td>
-	<td class="itemDetail">{{ con }}</td>
+	<td width="9%">{{ ant }}</td>
+	<td width="9%">{{ act }}</td>
+	<td class="itemDetail" width="9%">{{ con }}</td>
 	<td> {{ motive }}</td>
-	<td class="itemDetail"> {{ amount }} {% set total = total + cost %}</td>
-	<td class="itemDetail"> {{ unitCost | number_format(2) }}</td>
-	<td class="itemDetail"> {{ cost  | number_format(2) }}</td>
+	<td class="itemDetail" width="6%"> {{ amount }} {% set total = total + cost %}</td>
+	<td class="itemDetail" width="8%"> {{ unitCost | number_format(2) }}</td>
+	<td style="text-align: right;" width="8%"> {{ cost  | number_format(2) }}</td>
 	</tr>
 {% endfor %}
-<tr><td colspan="6" align="right"><b>Total</b></td><td class="itemDetail"><b>{{ total | number_format(2) }}</b></td></tr>
 </table>
-<br>
-Comprobante Re-impreso. Válido como comprobante de Pago si tiene el sello de cancelación.
-<br><br><br>
-
+<div style="position: absolute; right: 0px; top: 420px; width: 50px; text-align: right;">
+{{ total | number_format(2) }}</div>
+<div style="position: absolute; right: 0px; top: 460px; width: 50px; text-align: right;">
+{{ total | number_format(2) }}</div>
+<div style="position: absolute; right: 0px; top: 480px; width: 50px; text-align: right;">
+0.00</div>
+<div style="position: absolute; right: 0px; top: 498px; width: 50px; text-align: right;">
+<b>{{ total | number_format(2) }}</b></div>
