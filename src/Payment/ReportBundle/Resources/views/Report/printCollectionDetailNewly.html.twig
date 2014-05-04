@@ -14,15 +14,15 @@ function printService()
   </tr>
 </table>
 <table id="printTable"  class="printReport">
-<tr><td height="68px">&nbsp;</td></tr>
-<tr><td>{{ account.member.name }} {{ account.member.lastName }}</td><td width="26%">{{ account.meterNumber }}</td><td width="15%"><font size="3"><b>{{ account.accountNumber }}</b></font></td></tr>
+<tr><td height="80px">&nbsp;</td></tr>
+<tr><td>{{ account.member.name }} {{ account.member.lastName }}</td><td width="24%">{{ account.meterNumber }}</td><td width="21%"><font size="3"><b>{{ account.accountNumber }}</b></font></td></tr>
 <tr><td>{{ account.member.documentNumber }}</td><td colspan="2">{{ date }}</td></tr>
 <tr><td>{{ account.member.address }}</td><td colspan="2">{{ dateImp }}</td></tr>
 </table>
 <br>
 
 <table id="printTableDetail" border="0"  class="printReport">
-<tr><td height="20px">&nbsp;</td></tr>
+<tr><td height="28px">&nbsp;</td></tr>
 {% set total = 0 %}
 {% for item in collections %}
 	<tr>
@@ -44,21 +44,21 @@ function printService()
 	{%  set amount = item.amount  %}
 	{%  set unitCost = item.basicServiceUnitCost  %}
 	{%  set cost = amount * unitCost  %}
-	<td width="9%">{{ ant }}</td>
-	<td width="9%">{{ act }}</td>
+	<td class="itemDetail" width="12%">{{ ant }}</td>
+	<td class="itemDetail" width="10%">{{ act }}</td>
 	<td class="itemDetail" width="9%">{{ con }}</td>
 	<td> {{ motive }}</td>
-	<td class="itemDetail" width="6%"> {{ amount }} {% set total = total + cost %}</td>
-	<td class="itemDetail" width="8%"> {{ unitCost | number_format(2) }}</td>
-	<td style="text-align: right;" width="8%"> {{ cost  | number_format(2) }}</td>
+	<td style="text-align: right;" width="6%"> {{ amount | number_format(0)}} {% set total = total + cost %}</td>
+	<td style="text-align: right;" width="9%"> {{ unitCost | number_format(2) }}</td>
+	<td style="text-align: right;" width="9%"> {{ cost  | number_format(2) }}</td>
 	</tr>
 {% endfor %}
 </table>
-<div style="position: absolute; right: 0px; top: 420px; width: 50px; text-align: right;">
+<div style="position: absolute; right: 0px; top: 465px; width: 50px; text-align: right;" class="printReport">
 {{ total | number_format(2) }}</div>
-<div style="position: absolute; right: 0px; top: 460px; width: 50px; text-align: right;">
+<div style="position: absolute; right: 0px; top: 495px; width: 50px; text-align: right;" class="printReport" >
 {{ total | number_format(2) }}</div>
-<div style="position: absolute; right: 0px; top: 480px; width: 50px; text-align: right;">
+<div style="position: absolute; right: 0px; top: 525px; width: 50px; text-align: right;" class="printReport">
 0.00</div>
-<div style="position: absolute; right: 0px; top: 498px; width: 50px; text-align: right;">
+<div style="position: absolute; right: 0px; top: 543px; width: 50px; text-align: right;" class="printReport">
 <b>{{ total | number_format(2) }}</b></div>

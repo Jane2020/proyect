@@ -14,7 +14,7 @@ body{
 	font-family: "ArmataRegular","Trebuchet MS",Arial,Helvetica,sans-serif;
 	color:#666666;
 	background-color:##ebebed;
-	height: auto;
+	height: auto;	
 	}
 input, select{
 	border: 1px solid #a5c4d4;
@@ -570,7 +570,7 @@ div.error {
 }
 
 #printTable{
-	margin-left: 6%;
+	margin-left: 11%;
     width: 97%;
 }
 
@@ -590,7 +590,7 @@ div.error {
 	text-align: center;
 }
 
-#printTableDetail { width: 100%; border-collapse: collapse; border-spacing: 0; }
+#printTableDetail { width: 100%; border-collapse: collapse; border-spacing: 0; font-size: 13px !important;  }
 
 .itemTotal{
 	font-size: 20px;
@@ -704,4 +704,6 @@ div.error {
 #printTableDetail1 { width: 100%; border-collapse: collapse; border-spacing: 0; visibility: hidden;}
 #printTable1{ width: 100%; visibility: hidden;}
 .printReport{
-	font-size: 12px;}
+	font-size: 15px;
+	letter-spacing: 5px;
+	}
